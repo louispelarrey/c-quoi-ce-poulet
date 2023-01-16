@@ -6,3 +6,8 @@ controllers:
 auth:
     path: /auth
     methods: ['POST']
+
+coop_tilleuls_forgot_password:
+    resource: .
+    type: coop_tilleuls_forgot_password
+    prefix: '/forgot-password'

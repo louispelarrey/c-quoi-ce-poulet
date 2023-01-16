@@ -15,6 +15,7 @@
         "lexik/jwt-authentication-bundle": "^2.16",
         "nelmio/cors-bundle": "^2.2",
         "phpdocumentor/reflection-docblock": "^5.3",
+        "sendgrid/sendgrid": "^8.0",
         "symfony/asset": "6.1.*",
         "symfony/console": "6.1.*",
         "symfony/dotenv": "6.1.*",
@@ -31,7 +32,8 @@
         "symfony/serializer": "6.1.*",
         "symfony/twig-bundle": "6.1.*",
         "symfony/validator": "6.1.*",
-        "symfony/yaml": "6.1.*"
+        "symfony/yaml": "6.1.*",
+        "tilleuls/forgot-password-bundle": "^1.4"
     },
     "require-dev": {
         "api-platform/schema-generator": "^5.0",
