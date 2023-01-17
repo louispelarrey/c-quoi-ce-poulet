@@ -8,6 +8,7 @@ docker compose exec php sh -c '
     setfacl -R -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
     setfacl -dR -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
 '
+docker compose up -d
 cd ..
 cd thematic-front
 docker compose up -d
