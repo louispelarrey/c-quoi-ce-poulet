@@ -18,8 +18,11 @@ class UserFixtures extends Fixture
         $user = new User;
         $user
             ->setEmail('louispelarrey@gmail.com')
-            ->setPassword($this->passwordHasher->hashPassword($user, 'password'))
+            ->setPassword($this->passwordHasher->hashPassword($user, 'string'))
             ->setRoles(['ROLE_ADMIN'])
+            ->setFirstname('Louis')
+            ->setLastname('Pelarrey')
+            ->setNumberPhone('0649088205')
         ;
 
         $manager->persist($user);

@@ -20,6 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiProperty;
 
 #[ApiResource(
     operations: [
@@ -38,6 +39,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
             processor: UserPasswordHasher::class,
             security: 'is_granted("ROLE_ADMIN") or object == user',
             securityMessage: 'Only admins can edit other users.',
+            securityPostDenormalizeMessage: 'Only admins can edit roles.'
         ),
         new Delete(
             security: 'is_granted("ROLE_ADMIN") or object == user',
@@ -74,7 +76,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'json')]
     #[Groups(['user:read', 'user:update'])]
+    #[ApiProperty(securityPostDenormalize: 'is_granted("USER_EDIT", object)')]
     private array $roles = [];
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['user:read', 'user:create', 'user:update'])]
+    private ?string $firstname = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['user:read', 'user:create', 'user:update'])]
+    private ?string $lastname = null;
+
+    #[ORM\Column(length: 20)]
+    #[Groups(['user:read', 'user:create', 'user:update'])]
+    private ?string $numberPhone = null;
 
     public function getId(): ?int
     {
@@ -155,5 +170,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         $this->plainPassword = null;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(?string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getNumberPhone(): ?string
+    {
+        return $this->numberPhone;
+    }
+
+    public function setNumberPhone(string $numberPhone): self
+    {
+        $this->numberPhone = $numberPhone;
+
+        return $this;
     }
 }
