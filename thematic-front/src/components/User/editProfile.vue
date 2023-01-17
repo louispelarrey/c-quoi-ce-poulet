@@ -9,29 +9,29 @@ const email = ref('')
 const base64Url = token.split('.')[1];
 const base64 = base64Url.replace('-', '+').replace('_', '/');
 const decodedToken = JSON.parse(window.atob(base64));
-const actualUsername = decodedToken.username;
+const userId = decodedToken.user_id
 
-fetch( 'https://localhost/users?email[]=' + actualUsername, {
+fetch( 'https://localhost/users/'+ userId, {
   method: 'GET',
   headers: {
     "Content-Type": "application/json",
     "Accept": "application/json",
     'Authorization': `Bearer ${token}`,
   }
-  })
+})
   .then((res) => res.json())
   .then((data) => {
     if (data.error) {
       alert(data.error);
     } else {
-      user.value = data[0]
-      email.value = data[0].email
+      console.log(data)
+      user.value = data
+      email.value = data.email
     }
-  });
+});
 
 const submit = () => {
-  console.log("aaaaaaaaaaaa");
-  fetch("https://localhost/users/"+user.value.id, {
+  fetch("https://localhost/users/"+userId, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -42,25 +42,26 @@ const submit = () => {
       email: email.value,
     })
   })
-  .then((res) => res.json())
-  .then((data) => {
-    if (data.detail) {
-      alert(data.violations[0].message);
-    } else {
-      fetch("https://localhost/auth", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify({
-          email: email.value,
-          password: password.value,
-        }),
-      })
-      alert('Your profile has been updated')
-    }
-  });
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.detail) {
+        alert(data.violations[0].message);
+      } else {
+        fetch("https://localhost/auth", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            email: email.value,
+            password: password.value,
+          }),
+        })
+        alert('Your profile has been updated')
+      }
+    });
 }
 
 </script>
@@ -83,12 +84,12 @@ const submit = () => {
       <div class="w-full md:w-3/5 p-8 bg-white lg:ml-4 shadow-md">
         <div class="rounded  shadow p-6">
           <div class="pb-4">
-              <label for="about" class="font-semibold text-gray-700 block pb-1">Email</label>
-              <input id="email" class="border-1  rounded-r px-4 py-2 w-full" v-model="email" />
-              <span class="text-gray-600 pt-4 block opacity-70">Personal login information of your account</span>
-              <div class="pt-4 cursor-pointer " >
-                <a @click="submit" class="-mt-2 text-md font-bold text-white bg-gray-700 rounded-full px-5 py-2 hover:bg-gray-800">Edit</a>
-              </div>
+            <label for="about" class="font-semibold text-gray-700 block pb-1">Email</label>
+            <input id="email" class="border-1  rounded-r px-4 py-2 w-full" v-model="email" />
+            <span class="text-gray-600 pt-4 block opacity-70">Personal login information of your account</span>
+            <div class="pt-4 cursor-pointer " >
+              <a @click="submit" class="-mt-2 text-md font-bold text-white bg-gray-700 rounded-full px-5 py-2 hover:bg-gray-800">Edit</a>
+            </div>
           </div>
         </div>
       </div>

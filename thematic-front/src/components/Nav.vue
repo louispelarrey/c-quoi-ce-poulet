@@ -6,6 +6,12 @@ function logout() {
   window.location.href = "/";
 }
 
+function toggleNav() {
+  const nav = document.getElementById("nav-content");
+  nav.classList.toggle("hidden");
+
+}
+
 const token = localStorage.getItem("token");
 
 </script>
@@ -28,7 +34,7 @@ const token = localStorage.getItem("token");
           </li>
           <li class="mr-3">
             <div v-if="token">
-              <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" @click="logout">Logout</a>
+              <a class=" cursor-pointer inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" @click="logout">Logout</a>
             </div>
             <div v-else>
               <router-link class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" to="/login">Login</router-link>
@@ -45,6 +51,11 @@ const token = localStorage.getItem("token");
           Action
         </button>
       </div>
+      <div class="space-y-2 hidden cursor-pointer" id="burger_button" @click="toggleNav">
+        <span class="block w-8 h-0.5 bg-gray-600" />
+        <span class="block w-8 h-0.5 bg-gray-600" />
+        <span class="block w-5 h-0.5 bg-gray-600" />
+      </div>
     </div>
     <hr class="border-b border-gray-100 opacity-25 my-0 py-0" />
   </div>
@@ -55,3 +66,28 @@ const token = localStorage.getItem("token");
   color: #888;
 }
 </style>
+
+<script>
+export default {
+  data() {
+    return {
+      isMobile: false
+    }
+  },
+  created() {
+    window.addEventListener("resize", this.myEventHandler);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.myEventHandler);
+  },
+  methods: {
+    myEventHandler(e) {
+      if (window.matchMedia("(max-width: 1024px)").matches) {
+        document.getElementById("burger_button").classList.remove("hidden");
+      }else {
+        document.getElementById("burger_button").classList.add("hidden");
+      }
+    }
+  }
+}
+</script>
