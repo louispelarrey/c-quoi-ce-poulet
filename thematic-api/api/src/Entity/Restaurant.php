@@ -10,6 +10,8 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\ResetPasswordController;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
@@ -22,10 +24,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiProperty;
+use App\Repository\RestaurantRepository;
 
 #[ApiResource(
     operations: [
         new GetCollection(
+            normalizationContext: ['groups' => ['restaurant:read']],
             security: 'is_granted("ROLE_USER") or object == user',
             securityMessage: 'Only users can view restaurants.',
         ),
@@ -52,7 +56,7 @@ use ApiPlatform\Metadata\ApiProperty;
     denormalizationContext: ['groups' => ['restaurant:create', 'restaurant:update']],
 )]
 #[ApiFilter(SearchFilter::class, properties: ['email' => 'exact'])]
-#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Entity(repositoryClass: RestaurantRepository::class)]
 #[ORM\Table(name: '`restaurant`')]
 #[UniqueEntity('email')]
 class Restaurant implements UserInterface, PasswordAuthenticatedUserInterface
@@ -74,12 +78,11 @@ class Restaurant implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\NotBlank(groups: ['restaurant:create'])]
     #[Groups(['restaurant:create', 'restaurant:update'])]
-    #[ApiProperty(securityPostDenormalize: 'is_granted("USER_EDIT", object)')]
     private ?string $plainPassword = null;
 
     #[ORM\Column(type: 'json')]
     #[Groups(['restaurant:read', 'restaurant:update'])]
-    #[ApiProperty(securityPostDenormalize: 'is_granted("USER_EDIT", object)')]
+    #[ApiProperty(securityPostDenormalize: 'is_granted("RESTAURANT_EDIT", object)')]
     private array $roles = [];
 
     #[ORM\Column(length: 255)]
@@ -97,6 +100,20 @@ class Restaurant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::JSON)]
     #[Groups(['restaurant:read', 'restaurant:update'])]
     private array $openingTime = [];
+
+    #[ORM\ManyToMany(targetEntity: TagRestaurant::class, mappedBy: 'restaurant')]
+    #[Groups(['restaurant:read', 'restaurant:update'])]
+    private Collection $tagRestaurants;
+
+    #[ORM\OneToMany(mappedBy: 'restaurant', targetEntity: Meal::class)]
+    #[Groups(['restaurant:read', 'restaurant:update'])]
+    private Collection $meal;
+
+    public function __construct()
+    {
+        $this->tagRestaurants = new ArrayCollection();
+        $this->meal = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -223,6 +240,63 @@ class Restaurant implements UserInterface, PasswordAuthenticatedUserInterface
     public function setOpeningTime(array $openingTime): self
     {
         $this->openingTime = $openingTime;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TagRestaurant>
+     */
+    public function getTagRestaurants(): Collection
+    {
+        return $this->tagRestaurants;
+    }
+
+    public function addTagRestaurant(TagRestaurant $tagRestaurant): self
+    {
+        if (!$this->tagRestaurants->contains($tagRestaurant)) {
+            $this->tagRestaurants->add($tagRestaurant);
+            $tagRestaurant->addRestaurant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTagRestaurant(TagRestaurant $tagRestaurant): self
+    {
+        if ($this->tagRestaurants->removeElement($tagRestaurant)) {
+            $tagRestaurant->removeRestaurant($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Meal>
+     */
+    public function getMeal(): Collection
+    {
+        return $this->meal;
+    }
+
+    public function addMeal(Meal $meal): self
+    {
+        if (!$this->meal->contains($meal)) {
+            $this->meal->add($meal);
+            $meal->setRestaurant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeal(Meal $meal): self
+    {
+        if ($this->meal->removeElement($meal)) {
+            // set the owning side to null (unless already changed)
+            if ($meal->getRestaurant() === $this) {
+                $meal->setRestaurant(null);
+            }
+        }
 
         return $this;
     }
