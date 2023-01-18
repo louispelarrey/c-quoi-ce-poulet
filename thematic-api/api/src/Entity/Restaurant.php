@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\ResetPasswordController;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use App\State\UserPasswordHasher;
@@ -25,37 +26,38 @@ use ApiPlatform\Metadata\ApiProperty;
 #[ApiResource(
     operations: [
         new GetCollection(
-            security: 'is_granted("ROLE_ADMIN")',
-            securityMessage: 'Only admins can view other users.',
-        ),
-        new Post(
-            processor: UserPasswordHasher::class,
+            security: 'is_granted("ROLE_USER") or object == user',
+            securityMessage: 'Only users can view restaurants.',
         ),
         new Get(
-            security: 'is_granted("ROLE_ADMIN") or object == user',
-            securityMessage: 'Only admins can view other users.',
+            security: 'is_granted("ROLE_USER") or object == user',
+            securityMessage: 'Only users can view restaurants.',
+        ),
+        new Post(
+            security: 'is_granted("ROLE_ADMIN")',
+            securityMessage: 'Only admins can create restaurants.',
+            processor: UserPasswordHasher::class,
         ),
         new Put(
             processor: UserPasswordHasher::class,
             security: 'is_granted("ROLE_ADMIN") or object == user',
-            securityMessage: 'Only admins can edit other users.',
-            securityPostDenormalizeMessage: 'Only admins can edit roles.'
+            securityMessage: 'Only admins can edit other restaurants.',
         ),
         new Delete(
             security: 'is_granted("ROLE_ADMIN") or object == user',
-            securityMessage: 'Only admins can delete users.',
+            securityMessage: 'Only admins can delete other restaurants.',
         ),
     ],
-    normalizationContext: ['groups' => ['user:read']],
-    denormalizationContext: ['groups' => ['user:create', 'user:update']],
+    normalizationContext: ['groups' => ['restaurant:read']],
+    denormalizationContext: ['groups' => ['restaurant:create', 'restaurant:update']],
 )]
 #[ApiFilter(SearchFilter::class, properties: ['email' => 'exact'])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
+#[ORM\Table(name: '`restaurant`')]
 #[UniqueEntity('email')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class Restaurant implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[Groups(['user:read'])]
+    #[Groups(['restaurant:read'])]
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
@@ -63,37 +65,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\NotBlank]
     #[Assert\Email]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
+    #[Groups(['restaurant:read', 'restaurant:create', 'restaurant:update'])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
     #[ORM\Column]
     private ?string $password = null;
 
-    #[Assert\NotBlank(groups: ['user:create'])]
-    #[Groups(['user:create', 'user:update'])]
+    #[Assert\NotBlank(groups: ['restaurant:create'])]
+    #[Groups(['restaurant:create', 'restaurant:update'])]
+    #[ApiProperty(securityPostDenormalize: 'is_granted("USER_EDIT", object)')]
     private ?string $plainPassword = null;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['user:read', 'user:update'])]
+    #[Groups(['restaurant:read', 'restaurant:update'])]
     #[ApiProperty(securityPostDenormalize: 'is_granted("USER_EDIT", object)')]
     private array $roles = [];
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
-    private ?string $firstname = null;
+    #[Groups(['restaurant:read', 'restaurant:update'])]
+    private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
-    private ?string $lastname = null;
-
-    #[ORM\Column(length: 20)]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
-    private ?string $numberPhone = null;
+    #[Groups(['restaurant:read', 'restaurant:update'])]
+    private ?string $picturePath = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
+    #[Groups(['restaurant:read', 'restaurant:update'])]
     private ?string $address = null;
+
+    #[ORM\Column(type: Types::JSON)]
+    #[Groups(['restaurant:read', 'restaurant:update'])]
+    private array $openingTime = [];
 
     public function getId(): ?int
     {
@@ -176,38 +179,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->plainPassword = null;
     }
 
-    public function getFirstname(): ?string
+    public function getName(): ?string
     {
-        return $this->firstname;
+        return $this->name;
     }
 
-    public function setFirstname(string $firstname): self
+    public function setName(string $name): self
     {
-        $this->firstname = $firstname;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getLastname(): ?string
+    public function getPicturePath(): ?string
     {
-        return $this->lastname;
+        return $this->picturePath;
     }
 
-    public function setLastname(?string $lastname): self
+    public function setPicturePath(?string $picturePath): self
     {
-        $this->lastname = $lastname;
-
-        return $this;
-    }
-
-    public function getNumberPhone(): ?string
-    {
-        return $this->numberPhone;
-    }
-
-    public function setNumberPhone(string $numberPhone): self
-    {
-        $this->numberPhone = $numberPhone;
+        $this->picturePath = $picturePath;
 
         return $this;
     }
@@ -220,6 +211,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAddress(string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getOpeningTime(): array
+    {
+        return $this->openingTime;
+    }
+
+    public function setOpeningTime(array $openingTime): self
+    {
+        $this->openingTime = $openingTime;
 
         return $this;
     }
