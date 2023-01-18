@@ -3,9 +3,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Restaurant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -13,19 +13,19 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 /**
  * @extends ServiceEntityRepository<User>
  *
- * @method User|null find($id, $lockMode = null, $lockVersion = null)
- * @method User|null findOneBy(array $criteria, array $orderBy = null)
- * @method User[]    findAll()
- * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Restaurant|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Restaurant|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Restaurant[]    findAll()
+ * @method Restaurant[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class RestaurantRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, User::class);
+        parent::__construct($registry, Restaurant::class);
     }
 
-    public function save(User $entity, bool $flush = false): void
+    public function save(Restaurant $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -34,7 +34,7 @@ class RestaurantRepository extends ServiceEntityRepository implements PasswordUp
         }
     }
 
-    public function remove(User $entity, bool $flush = false): void
+    public function remove(Restaurant $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -48,7 +48,7 @@ class RestaurantRepository extends ServiceEntityRepository implements PasswordUp
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
-        if (!$user instanceof User) {
+        if (!$user instanceof Restaurant) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
 
