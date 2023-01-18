@@ -28,12 +28,6 @@ RUN set -eux; \
 		opcache \
     ;
 
-RUN set -e\
-    apk add openssl\
-    php bin/console lexik:jwt:generate-keypair\
-    setfacl -R -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt\
-    setfacl -dR -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt;
-
 ###> recipes ###
 ###> doctrine/doctrine-bundle ###
 RUN set -eux; \
@@ -98,12 +92,6 @@ RUN set -eux; \
 	install-php-extensions xdebug
 
 RUN rm -f .env.local.php
-
-RUN set -e\
-    apk add openssl\
-    php bin/console lexik:jwt:generate-keypair\
-    setfacl -R -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt\
-    setfacl -dR -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt;
 
 # Build Caddy with the Mercure and Vulcain modules
 FROM caddy:2-builder-alpine AS app_caddy_builder
