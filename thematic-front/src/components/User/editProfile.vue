@@ -11,7 +11,7 @@ const base64 = base64Url.replace('-', '+').replace('_', '/');
 const decodedToken = JSON.parse(window.atob(base64));
 const actualUsername = decodedToken.username;
 
-fetch( 'https://localhost/users?email[]=' + actualUsername, {
+fetch( 'import.meta.env.VITE_API_URLusers?email[]=' + actualUsername, {
   method: 'GET',
   headers: {
     "Content-Type": "application/json",
@@ -31,7 +31,7 @@ fetch( 'https://localhost/users?email[]=' + actualUsername, {
 
 const submit = () => {
   console.log("aaaaaaaaaaaa");
-  fetch("https://localhost/users/"+user.value.id, {
+  fetch(import.meta.env.VITE_API_URL+"users/"+user.value.id, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -47,7 +47,7 @@ const submit = () => {
     if (data.detail) {
       alert(data.violations[0].message);
     } else {
-      fetch("https://localhost/auth", {
+      fetch(import.meta.env.VITE_API_URL+"auth", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

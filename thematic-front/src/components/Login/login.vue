@@ -9,9 +9,8 @@ const route = useRoute();
 
 const email = ref('')
 const password = ref('')
-
 const submit = () => {
-  fetch("https://localhost/auth", {
+  fetch(import.meta.env.VITE_API_URL+"auth", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
