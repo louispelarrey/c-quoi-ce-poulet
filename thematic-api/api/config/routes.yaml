@@ -4,10 +4,10 @@ controllers:
 
 # api/config/routes.yaml
 auth:
-    path: /auth
+    path: api/auth
     methods: ['POST']
 
 coop_tilleuls_forgot_password:
     resource: .
     type: coop_tilleuls_forgot_password
-    prefix: '/forgot-password'
+    prefix: '/api/forgot-password'
