@@ -72,7 +72,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\NotBlank(groups: ['user:create'])]
     #[Groups(['user:create', 'user:update'])]
-    #[ApiProperty(securityPostDenormalize: 'is_granted("USER_EDIT", object)')]
     private ?string $plainPassword = null;
 
     #[ORM\Column(type: 'json')]
