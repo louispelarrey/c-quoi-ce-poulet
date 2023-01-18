@@ -96,7 +96,7 @@ class Restaurant implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::JSON)]
     #[Groups(['restaurant:read', 'restaurant:update'])]
-    private array $opening_time = [];
+    private array $openingTime = [];
 
     public function getId(): ?int
     {
@@ -217,12 +217,12 @@ class Restaurant implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getOpeningTime(): array
     {
-        return $this->opening_time;
+        return $this->openingTime;
     }
 
-    public function setOpeningTime(array $opening_time): self
+    public function setOpeningTime(array $openingTime): self
     {
-        $this->opening_time = $opening_time;
+        $this->openingTime = $openingTime;
 
         return $this;
     }
