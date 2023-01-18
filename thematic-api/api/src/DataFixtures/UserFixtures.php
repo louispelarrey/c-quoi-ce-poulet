@@ -22,6 +22,7 @@ class UserFixtures extends Fixture
             ->setRoles(['ROLE_ADMIN'])
             ->setFirstname('Louis')
             ->setLastname('Pelarrey')
+            ->setAddress('1 rue de la petite maison')
             ->setNumberPhone('0649088205')
         ;
 
