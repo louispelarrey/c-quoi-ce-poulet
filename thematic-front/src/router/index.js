@@ -4,6 +4,7 @@ import Home from "../components/Home.vue";
 import Register from "../components/Login/register.vue"
 import editProfile from "../components/User/editProfile.vue"
 import Users from "../components/Admin/Users.vue";
+import Meals from "../components/Menu/Meals.vue";
 
 const router = createRouter({
   history: createWebHistory('/'),
@@ -43,6 +44,11 @@ const router = createRouter({
     //   name: "not-found",
     //   component: NotFound,
     // },
+    {// TODO: change to /Restaurant/:id/Menu
+      path: "/Restaurant/1/Menu",
+      name: "Meals",
+      component: Meals,
+    }
   ],
 });
 
