@@ -7,7 +7,7 @@ const token = localStorage.getItem('token')
 
 const users = ref([])
 
-fetch("https://localhost/users", {
+fetch(import.meta.env.VITE_API_URL+"users", {
   method: "GET",
   headers: {
     "Content-Type": "application/json",
@@ -25,7 +25,7 @@ fetch("https://localhost/users", {
   });
 
 const deleteUser = (id) => {
-  fetch("https://localhost/users/"+id, {
+  fetch(import.meta.env.VITE_API_URL+"users/"+id, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
