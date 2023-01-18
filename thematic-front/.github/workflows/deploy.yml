@@ -1,4 +1,4 @@
-name: Test Deploy
+name: Test Deploy Heroku
 
 on:
   push:
@@ -7,8 +7,29 @@ on:
       - feature/deploy
   
 jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      
+      - name: Install dependancies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
   deploy:
     runs-on: ubuntu-latest
+
+    needs: build-test # permet de definir que le Job nommé doit fonctionner avant de lancer celui là
+
     steps:
       - uses: actions/checkout@v3
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
