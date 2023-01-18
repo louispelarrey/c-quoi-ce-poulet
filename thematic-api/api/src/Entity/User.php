@@ -72,6 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\NotBlank(groups: ['user:create'])]
     #[Groups(['user:create', 'user:update'])]
+    #[ApiProperty(securityPostDenormalize: 'is_granted("USER_EDIT", object)')]
     private ?string $plainPassword = null;
 
     #[ORM\Column(type: 'json')]
@@ -90,6 +91,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 20)]
     #[Groups(['user:read', 'user:create', 'user:update'])]
     private ?string $numberPhone = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['user:read', 'user:create', 'user:update'])]
+    private ?string $address = null;
 
     public function getId(): ?int
     {
@@ -204,6 +209,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNumberPhone(string $numberPhone): self
     {
         $this->numberPhone = $numberPhone;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
 
         return $this;
     }
