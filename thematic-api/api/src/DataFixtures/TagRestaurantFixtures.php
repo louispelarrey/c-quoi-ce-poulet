@@ -15,7 +15,8 @@ class TagRestaurantFixtures extends Fixture
     public function __construct(
         private TagRestaurantRepository $tagRestaurantRepository,
         private UserPasswordHasherInterface $passwordHasher
-    ){}
+    ) {
+    }
 
     public function load(ObjectManager $manager): void
     {
@@ -37,7 +38,7 @@ class TagRestaurantFixtures extends Fixture
             "Algérien",
             "Russie"
         ];
-        foreach($tagRestaurants as $tagRestaurant) {
+        foreach ($tagRestaurants as $tagRestaurant) {
             $tagRestaurantEntity = new TagRestaurant;
             $tagRestaurantEntity->setName($tagRestaurant);
             $manager->persist($tagRestaurantEntity);
