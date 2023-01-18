@@ -2,6 +2,8 @@ name: Test deploy
 
 on:
   push:
+    branches:
+      - feature/cicd
   
 jobs:
   build-test:
@@ -18,9 +20,6 @@ jobs:
 
       - name: Run unit tests
         run: npm test
-
-      - name: Build
-        run: npm run build
 
   deploy:
     runs-on: ubuntu-latest
