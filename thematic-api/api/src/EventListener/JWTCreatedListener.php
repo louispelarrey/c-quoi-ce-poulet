@@ -8,13 +8,6 @@ use App\Entity\User;
 
 class JWTCreatedListener
 {
-    private RequestStack $requestStack;
-
-    public function __construct(RequestStack $requestStack)
-    {
-        $this->requestStack = $requestStack;
-    }
-
     public function onLexikJwtAuthenticationOnJwtCreated(JWTCreatedEvent $event)
     {
         $payload       = $event->getData();
