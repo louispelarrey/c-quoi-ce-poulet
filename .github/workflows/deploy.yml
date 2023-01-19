@@ -44,7 +44,7 @@ jobs:
           node-version: 16
       
       - name: Install dependancies
-        run: npm ci
+        run: cd ./thematic-front && npm ci
 
       - name: Build
         run: npm run build
@@ -52,7 +52,8 @@ jobs:
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: './thematic-front/'
+#          publish-dir: './thematic-front/'
+          publish-dir: 'dist'
 #          production-branch: master
 #          github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Deploy from GitHub Actions"
