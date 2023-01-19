@@ -49,12 +49,17 @@ class Tag
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'tag', targetEntity: TagRestaurant::class, orphanRemoval: true)]
-    #[Groups(['tag:read'])]
     private Collection $tagRestaurants;
 
     public function __construct()
     {
         $this->tagRestaurants = new ArrayCollection();
+    }
+
+    #[Groups(['tag:read'])]
+    public function getRestaurants(): Collection
+    {
+        return $this->tagRestaurants->map(fn (TagRestaurant $tagRestaurant) => $tagRestaurant->getRestaurant());
     }
 
     public function getId(): ?int

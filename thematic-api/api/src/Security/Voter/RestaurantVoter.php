@@ -20,11 +20,12 @@ class RestaurantVoter extends Voter
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
         return in_array($attribute, [self::EDIT])
-            && $subject instanceof \App\Entity\User;
+            && $subject instanceof \App\Entity\Restaurant;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
+
         $user = $token->getUser();
         // if the user is anonymous, do not grant access
         if (!$user instanceof UserInterface) {
@@ -34,9 +35,13 @@ class RestaurantVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::EDIT:
-                // logic to determine if the user can EDIT
-                // return true or false
-                return $this->security->isGranted('ROLE_ADMIN');
+                /**
+                 * @var User $user
+                 * @var Restaurant $subject
+                 */
+                if($user->getRestaurants()->contains($subject) || $user->getRoles()[0] === 'ROLE_ADMIN'){
+                    return true;
+                }
                 break;
             // case self::VIEW:
             //     // logic to determine if the user can VIEW
