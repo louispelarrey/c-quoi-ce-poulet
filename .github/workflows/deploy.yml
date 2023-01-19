@@ -9,6 +9,9 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./thematic-front
 
     steps:
       - uses: actions/checkout@v3
@@ -28,7 +31,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-#    needs: build-test # permet de definir que le Job nommé doit fonctionner avant de lancer celui là
+    needs: build-test # permet de definir que le Job nommé doit fonctionner avant de lancer celui là
 
     steps:
       - uses: actions/checkout@v3
