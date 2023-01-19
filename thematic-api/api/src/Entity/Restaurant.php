@@ -46,11 +46,19 @@ class Restaurant
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['restaurant:read', 'user:read', 'tag:read'])]
+    #[Groups(['restaurant:read', 'user:read', 'tag:read', 'meal:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['restaurant:read', 'restaurant:update', 'restaurant:create', 'tag:read', 'user:read', 'tag:read'])]
+    #[Groups([
+        'restaurant:read',
+        'restaurant:update',
+        'restaurant:create',
+        'tag:read',
+        'user:read',
+        'tag:read',
+        'meal:read'
+    ])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -65,10 +73,6 @@ class Restaurant
     #[Groups(['restaurant:read', 'restaurant:update'])]
     private array $openingTime = [];
 
-    #[ORM\OneToMany(mappedBy: 'restaurant', targetEntity: Meal::class)]
-    #[Groups(['restaurant:read', 'restaurant:update'])]
-    private Collection $meal;
-
     #[ORM\OneToMany(mappedBy: 'restaurant', targetEntity: TagRestaurant::class, orphanRemoval: true)]
     private Collection $tagRestaurants;
 
@@ -76,6 +80,15 @@ class Restaurant
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['restaurant:read', 'restaurant:update'])]
     private ?User $owner = null;
+
+    #[ORM\OneToMany(mappedBy: 'restaurant', targetEntity: Meals::class, orphanRemoval: true)]
+    #[Groups(['restaurant:read'])]
+    private Collection $meals;
+
+    public function __construct()
+    {
+        $this->meals = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -136,37 +149,6 @@ class Restaurant
         return $this;
     }
 
-
-    /**
-     * @return Collection<int, Meal>
-     */
-    public function getMeal(): Collection
-    {
-        return $this->meal;
-    }
-
-    public function addMeal(Meal $meal): self
-    {
-        if (!$this->meal->contains($meal)) {
-            $this->meal->add($meal);
-            $meal->setRestaurant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMeal(Meal $meal): self
-    {
-        if ($this->meal->removeElement($meal)) {
-            // set the owning side to null (unless already changed)
-            if ($meal->getRestaurant() === $this) {
-                $meal->setRestaurant(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, TagRestaurant>
      */
@@ -205,6 +187,36 @@ class Restaurant
     public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Meals>
+     */
+    public function getMeals(): Collection
+    {
+        return $this->meals;
+    }
+
+    public function addMeal(Meals $meal): self
+    {
+        if (!$this->meals->contains($meal)) {
+            $this->meals->add($meal);
+            $meal->setRestaurant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeal(Meals $meal): self
+    {
+        if ($this->meals->removeElement($meal)) {
+            // set the owning side to null (unless already changed)
+            if ($meal->getRestaurant() === $this) {
+                $meal->setRestaurant(null);
+            }
+        }
 
         return $this;
     }
