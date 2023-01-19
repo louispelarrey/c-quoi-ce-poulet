@@ -1,6 +1,5 @@
 <script setup lang="ts">
 
-
 import { useRoute, useRouter } from "vue-router";
 import {ref} from "vue";
 
@@ -9,6 +8,7 @@ const route = useRoute();
 
 const email = ref('')
 const password = ref('')
+
 const submit = () => {
   fetch(import.meta.env.VITE_API_URL+"auth", {
     method: "POST",

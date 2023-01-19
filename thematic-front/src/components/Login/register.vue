@@ -10,6 +10,10 @@ const route = useRoute();
 const email = ref('')
 const password = ref('')
 const password_confirm = ref('')
+const firstname = ref('')
+const lastname = ref('')
+const NumberPhone = ref('')
+const address = ref('')
 
 const submit = () => {
     if (password.value !== password_confirm.value) {
@@ -26,6 +30,10 @@ const submit = () => {
         body: JSON.stringify({
             email: email.value,
             plainPassword: password.value,
+            firstname: firstname.value,
+            lastname: lastname.value,
+            numberPhone: NumberPhone.value,
+            address: address.value,
         }),
     })
         .then((res) => res.json())
@@ -66,19 +74,19 @@ const submit = () => {
             <div class="form-group mb-6">
                 <label for="exampleInputPassword2" class="form-label inline-block mb-2 text-gray-700">Password</label>
                 <input type="password" name="password" v-model="password" required class="form-control block
-        w-full
-        px-3
-        py-1.5
-        text-base
-        font-normal
-        text-gray-700
-        bg-white bg-clip-padding
-        border border-solid border-gray-300
-        rounded
-        transition
-        ease-in-out
-        m-0
-        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="password"
+                  w-full
+                  px-3
+                  py-1.5
+                  text-base
+                  font-normal
+                  text-gray-700
+                  bg-white bg-clip-padding
+                  border border-solid border-gray-300
+                  rounded
+                  transition
+                  ease-in-out
+                  m-0
+                  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="password"
                     placeholder="Password">
             </div>
             <div class="form-group mb-6">
@@ -100,6 +108,79 @@ const submit = () => {
         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="password_confirm"
                     placeholder="Repeated Password">
             </div>
+
+          <div class="form-group mb-6">
+            <label for="exampleInputPassword2" class="form-label inline-block mb-2 text-gray-700">Firtsname</label>
+            <input type="text" name="firstname" v-model="firstname" required class="form-control block
+        w-full
+        px-3
+        py-1.5
+        text-base
+        font-normal
+        text-gray-700
+        bg-white bg-clip-padding
+        border border-solid border-gray-300
+        rounded
+        transition
+        ease-in-out
+        m-0
+        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInputPassword2"
+                   placeholder="Firstname">
+          </div>
+          <div class="form-group mb-6">
+            <label for="exampleInputPassword2" class="form-label inline-block mb-2 text-gray-700">Lastname</label>
+            <input type="text" name="lastname" v-model="lastname" required class="form-control block
+        w-full
+        px-3
+        py-1.5
+        text-base
+        font-normal
+        text-gray-700
+        bg-white bg-clip-padding
+        border border-solid border-gray-300
+        rounded
+        transition
+        ease-in-out
+        m-0
+        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInputPassword2"
+                   placeholder="Lastname">
+          </div>
+          <div class="form-group mb-6">
+            <label for="exampleInputPassword2" class="form-label inline-block mb-2 text-gray-700">Phone number</label>
+            <input type="tel" name="NumberPhone" v-model="NumberPhone" required class="form-control block
+        w-full
+        px-3
+        py-1.5
+        text-base
+        font-normal
+        text-gray-700
+        bg-white bg-clip-padding
+        border border-solid border-gray-300
+        rounded
+        transition
+        ease-in-out
+        m-0
+        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInputPassword2"
+                   placeholder="NumberPhone">
+          </div>
+          <div class="form-group mb-6">
+            <label for="exampleInputPassword2" class="form-label inline-block mb-2 text-gray-700">Address</label>
+            <input type="string" name="address" v-model="address" required class="form-control block
+        w-full
+        px-3
+        py-1.5
+        text-base
+        font-normal
+        text-gray-700
+        bg-white bg-clip-padding
+        border border-solid border-gray-300
+        rounded
+        transition
+        ease-in-out
+        m-0
+        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInputPassword2"
+                   placeholder="address">
+          </div>
             <button type="submit"
                 class="
         w-full

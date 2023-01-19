@@ -7,16 +7,24 @@ function logout() {
 }
 
 const token = localStorage.getItem("token");
+//create a constant user to store the user data
+const user = ref(null);
+const isAdmin = ref(false);
+// if token existe decode the token to get user information
+if (token) {
+  user.value = JSON.parse(atob(token.split(".")[1]));
+  isAdmin.value = Object.values(user.value.roles).includes("ROLE_ADMIN");
+}
+
 
 </script>
 
 <template>
-  <!--Nav-->
   <div id="header" class="w-full z-30 top-0 text-white bg-purple-400">
     <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
       <div class="pl-4 flex items-center">
         <router-link class="toggleColour text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl" to="/">
-          Challenge
+          C quoi ce poulet ?
         </router-link>
       </div>
       <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden mt-2 lg:mt-0 bg-white lg:bg-transparent text-black p-4 lg:p-0 z-20" id="nav-content">
@@ -27,11 +35,16 @@ const token = localStorage.getItem("token");
             </a>
           </li>
           <li class="mr-3">
-            <div v-if="token">
+            <div v-if="user">
               <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" @click="logout">Logout</a>
             </div>
             <div v-else>
               <router-link class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" to="/login">Login</router-link>
+            </div>
+          </li>
+          <li class="mr-3">
+            <div v-if="isAdmin">
+              <router-link class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" to="/admin">Admin</router-link>
             </div>
           </li>
           <li class="mr-3">
@@ -49,9 +62,3 @@ const token = localStorage.getItem("token");
     <hr class="border-b border-gray-100 opacity-25 my-0 py-0" />
   </div>
 </template>
-
-<style scoped>
-.read-the-docs {
-  color: #888;
-}
-</style>
