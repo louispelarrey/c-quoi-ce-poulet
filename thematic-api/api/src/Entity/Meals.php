@@ -8,61 +8,64 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use App\Repository\MealRepository;
+use App\Repository\MealsRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: MealRepository::class)]
+#[ORM\Entity(repositoryClass: MealsRepository::class)]
 #[ApiResource(
     operations: [
         new GetCollection(),
         new Get(),
         new Post(
-            security: 'is_granted("ROLE_ADMIN")',
-            securityMessage: 'Only admins can create meals.',
-            processor: UserPasswordHasher::class,
+            securityPostDenormalize: 'is_granted("MEAL_CHANGE", object)',
+            securityMessage: 'Only admins can update meals.',
+            denormalizationContext: ['groups' => ['meal:post']],
         ),
         new Put(
-            processor: UserPasswordHasher::class,
-            security: 'is_granted("ROLE_ADMIN") or object == user',
+            security: 'is_granted("MEAL_CHANGE", object)',
             securityMessage: 'Only admins can edit other meals.',
         ),
         new Delete(
-            security: 'is_granted("ROLE_ADMIN") or object == user',
+            security: 'is_granted("MEAL_CHANGE", object)',
             securityMessage: 'Only admins can delete other meals.',
         ),
     ],
     normalizationContext: ['groups' => ['meal:read']],
-    denormalizationContext: ['groups' => ['meal:create', 'meal:update']],
+    denormalizationContext: ['groups' => ['meal:update']],
 )]
-class Meal
+class Meals
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['meal:read', 'restaurant:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['meal:read', 'meal:create', 'meal:update'])]
+    #[Groups(['meal:read', 'meal:update', 'meal:post', 'restaurant:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['meal:read', 'meal:create', 'meal:update'])]
+    #[Groups(['meal:read', 'meal:update', 'meal:post'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['meal:read', 'meal:create', 'meal:update'])]
+    #[Groups(['meal:read'])]
     private ?string $picturePath = null;
 
-    #[ORM\Column(length: 255)]
-    #[Groups(['meal:read', 'meal:create', 'meal:update'])]
-    private ?string $price = null;
+    #[ORM\Column]
+    #[Groups(['meal:read', 'meal:update', 'meal:post'])]
+    private ?int $price = null;
 
     #[ORM\Column]
-    #[Groups(['meal:read', 'meal:create', 'meal:update'])]
+    #[Groups(['meal:read', 'meal:update', 'meal:post'])]
     private ?bool $isAvailable = true;
 
-    #[ORM\ManyToOne(inversedBy: 'meal')]
+    #[ORM\ManyToOne(inversedBy: 'meals')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['meal:read', 'meal:post'])]
     private ?Restaurant $restaurant = null;
 
     public function getId(): ?int
@@ -106,18 +109,6 @@ class Meal
         return $this;
     }
 
-    public function getPrice(): ?string
-    {
-        return $this->price;
-    }
-
-    public function setPrice(string $price): self
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
     public function isIsAvailable(): ?bool
     {
         return $this->isAvailable;
@@ -126,6 +117,18 @@ class Meal
     public function setIsAvailable(bool $isAvailable): self
     {
         $this->isAvailable = $isAvailable;
+
+        return $this;
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setPrice(int $price): self
+    {
+        $this->price = $price;
 
         return $this;
     }
