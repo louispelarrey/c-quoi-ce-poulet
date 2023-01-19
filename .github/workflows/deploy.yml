@@ -4,7 +4,7 @@ on:
   push:
     branches:
 #      - dev
-      - feature/deploy
+#      - feature/deploy
   
 jobs:
   build-test:
@@ -17,13 +17,13 @@ jobs:
           node-version: 16
       
       - name: Install dependancies
-        run: npm i
+        run: npm ci
 
       - name: Build
         run: npm run build
 
-#     - name: Run unit tests
-#       run: npm test
+      - name: Run unit tests
+        run: npm test
 
   deploy:
     runs-on: ubuntu-latest
