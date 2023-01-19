@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             securityMessage: 'Only admins can create tags.',
         ),
         new Post(
-            security: 'is_granted("TAG_RESTAURANT_CHANGE", object)',
+            securityPostDenormalize: 'is_granted("TAG_RESTAURANT_CHANGE", object)',
             securityMessage: 'Only admins can create tags.',
         ),
         new Delete(
