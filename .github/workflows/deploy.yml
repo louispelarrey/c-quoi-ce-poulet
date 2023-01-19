@@ -39,15 +39,15 @@ jobs:
   # deploy:
   #     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
+#      - uses: actions/setup-node@v3
+#        with:
+#          node-version: 16
       
-      - name: Install dependancies
-        run: npm ci
+#     - name: Install dependancies
+#        run: npm ci
 
-      - name: Build
-        run: npm run build
+#      - name: Build
+#        run: npm run build
       # ( Build to ./dist or other directory... )
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
