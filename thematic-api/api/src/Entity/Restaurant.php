@@ -23,14 +23,8 @@ use App\Repository\RestaurantRepository;
 #[ORM\Entity(repositoryClass: RestaurantRepository::class)]
 #[ApiResource(
     operations: [
-        new GetCollection(
-            security: 'is_granted("ROLE_ADMIN")',
-            securityMessage: 'Only admin can view all restaurants.',
-        ),
-        new Get(
-            security: 'is_granted("RESTAURANT_EDIT", object)',
-            securityMessage: 'Only admin can view restaurants.',
-        ),
+        new GetCollection(),
+        new Get(),
         new Post(
             security: 'is_granted("ROLE_ADMIN")',
             securityMessage: 'Only admins can create restaurants.',

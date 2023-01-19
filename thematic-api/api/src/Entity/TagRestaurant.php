@@ -13,10 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: TagRestaurantRepository::class)]
 #[ApiResource(
     operations: [
-        new Get(
-            security: 'is_granted("TAG_RESTAURANT_CHANGE", object)',
-            securityMessage: 'Only admins can create tags.',
-        ),
+        new Get(),
         new Post(
             securityPostDenormalize: 'is_granted("TAG_RESTAURANT_CHANGE", object)',
             securityMessage: 'Only admins can create tags.',
