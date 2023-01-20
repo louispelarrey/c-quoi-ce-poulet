@@ -1,14 +1,5 @@
-<script setup lang="ts">
-import { ref, reactive } from 'vue'
-
-//TODO: Get meal from API
-const meal = ref({
-  "id": "6",
-  "name": "Spaghetti Bolognese",
-  "picture": "https://www.example.com/images/spaghetti.jpg",
-  "price": 12.99,
-  "description": "Tender spaghetti noodles in a rich and flavorful meat sauce, topped with Parmesan cheese.",
-})
+<script setup>
+import { ref } from 'vue'
 
 let mealCounter = ref(0)
 const isMorethanOneInCart = ref(false)
@@ -26,14 +17,24 @@ const removeFromCart = () => {
   mealCounter.value--
   toggleCartHandler()
 }
+
+const props = defineProps({
+  menu: {
+    type: Object,
+    required: true
+  }
+})
+
+const menu = ref(props.menu)
+
 </script>
 
 <template>
-  <div v-bind:meal="meal.id" class="meal">
-    <img :src="meal.picture" :alt="meal.name" />
-    <h3>{{ meal.name }}</h3>
-    <h4>{{ meal.price }} €</h4>
-    <p>{{ meal.description }}</p>
+  <div class="meal">
+    <img :src="menu" :alt="menu.name" />
+    <h3>{{ menu.name }}</h3>
+    <h4>{{ menu.price }} €</h4>
+    <p>{{ menu.description }}</p>
     <div v-if="isMorethanOneInCart">
       <input type="button" value="+" @click="addToCart" />
       <span>{{ mealCounter }}</span>
