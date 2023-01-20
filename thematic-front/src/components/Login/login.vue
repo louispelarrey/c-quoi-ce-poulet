@@ -26,7 +26,7 @@ const submit = () => {
         if (data.code === 401) {
           alert(data.message);
         } else {
-          if (data.error) {
+          if (data.error && !data.token) {
             alert(data.error);
           } else {
             localStorage.setItem("token", data.token);

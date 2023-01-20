@@ -33,8 +33,7 @@ const submit = () => {
             if (data.detail) {
                 alert(data.violations[0].message);
             } else {
-                localStorage.setItem("token", data.token);
-                router.push("/");
+                router.push("/login");
             }
         });
 }

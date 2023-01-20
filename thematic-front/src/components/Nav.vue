@@ -27,8 +27,13 @@ const token = localStorage.getItem("token");
             </a>
           </li>
           <li class="mr-3">
+<<<<<<< Updated upstream
             <div v-if="token">
               <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" @click="logout">Logout</a>
+=======
+            <div v-if="user">
+              <a class="cursor-pointer inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" @click="logout">Logout</a>
+>>>>>>> Stashed changes
             </div>
             <div v-else>
               <router-link class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" to="/login">Login</router-link>

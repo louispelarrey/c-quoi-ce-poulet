@@ -13,45 +13,60 @@ const props = defineProps({
   token: String
 })
 
-const getRestaurant = async (datas) => {
-  console.log(datas)
-}
+let restaurants = ref({})
 
-const restaurants = ref([
-  {
-    'id': 1,
-    'nom': 'test 1',
-    'adresse': 'aaaaa',
-    'description': 'aaaaa',
-    'heureOuverture': '12:00',
-    'type': 'burger',
-    'image': 'https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg'
-  }, {
-    'id': 2,
-    'nom': 'test 2',
-    'adresse': 'aaaaa',
-    'description': 'aaaaa',
-    'heureOuverture': '12:00',
-    'type': 'africain',
-    'image': 'https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg'
-  }, {
-    'id': 3,
-    'nom': 'test 3',
-    'adresse': 'aaaaa',
-    'description': 'aaaaa',
-    'heureOuverture': '12:00',
-    'type': 'chinois',
-    'image': 'https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg'
-  }, {
-    'id': 4,
-    'nom': 'test 4',
-    'adresse': 'aaaaa',
-    'description': 'aaaaa',
-    'heureOuverture': '12:00',
-    'type': 'chinois',
-    'image': 'https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg'
-  },
-])
+fetch(import.meta.env.VITE_API_URL+"restaurants", {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    'Authorization': `Bearer ${token}`,
+  }
+})
+.then((res) => res.json())
+.then((data) => {
+  if (data.error) {
+    alert(data.error);
+  } else {
+    restaurants.value = data
+  }
+});
+
+// const restaurants = ref([
+//   {
+//     'id': 1,
+//     'nom': 'test 1',
+//     'adresse': 'aaaaa',
+//     'description': 'aaaaa',
+//     'heureOuverture': '12:00',
+//     'type': 'burger',
+//     'image': 'https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg'
+//   }, {
+//     'id': 2,
+//     'nom': 'test 2',
+//     'adresse': 'aaaaa',
+//     'description': 'aaaaa',
+//     'heureOuverture': '12:00',
+//     'type': 'africain',
+//     'image': 'https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg'
+//   }, {
+//     'id': 3,
+//     'nom': 'test 3',
+//     'adresse': 'aaaaa',
+//     'description': 'aaaaa',
+//     'heureOuverture': '12:00',
+//     'type': 'chinois',
+//     'image': 'https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg'
+//   }, {
+//     'id': 4,
+//     'nom': 'test 4',
+//     'adresse': 'aaaaa',
+//     'description': 'aaaaa',
+//     'heureOuverture': '12:00',
+//     'type': 'chinois',
+//     'image': 'https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg'
+//   },
+// ])
 
 
 </script>
