@@ -82,28 +82,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read'])]
+    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read', 'report:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read'])]
+    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read', 'report:read'])]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 20)]
-    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read'])]
+    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read' , 'report:read'])]
     private ?string $numberPhone = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read'])]
+    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read', 'report:read'])]
     private ?string $address = null;
 
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Restaurant::class, orphanRemoval: true)]
     #[Groups(['user:read'])]
     private Collection $restaurants;
 
+    #[ORM\OneToMany(mappedBy: 'reportedBy', targetEntity: Report::class, orphanRemoval: true)]
+    #[Groups(['user:read'])]
+    private Collection $reports;
+
     public function __construct()
     {
         $this->restaurants = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -259,6 +264,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($restaurant->getOwner() === $this) {
                 $restaurant->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Report>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Report $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+            $report->setReportedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Report $report): self
+    {
+        if ($this->reports->removeElement($report)) {
+            // set the owning side to null (unless already changed)
+            if ($report->getReportedBy() === $this) {
+                $report->setReportedBy(null);
             }
         }
 
