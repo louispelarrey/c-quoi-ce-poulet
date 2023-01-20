@@ -14,6 +14,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+
 //TODO : add security on the report entity
 
 #[ORM\Entity(repositoryClass: ReportRepository::class)]
@@ -59,8 +60,9 @@ class Report
     #[Groups(['report:read', 'user:read', 'report:post', 'report:update'])]
     private ?string $reason = null;
 
-    #[ORM\Column(type: Types::BINARY)]
-    private $status = null;
+    #[ORM\Column(type: Types::BOOLEAN)]
+    #[Groups(['report:read', 'user:read', 'report:post', 'report:update'])]
+    private $status = false;
 
     public function getId(): ?int
     {
@@ -103,7 +105,7 @@ class Report
         return $this;
     }
 
-    public function getStatus()
+    public function getStatus(): ?bool
     {
         return $this->status;
     }
@@ -114,4 +116,5 @@ class Report
 
         return $this;
     }
+
 }
