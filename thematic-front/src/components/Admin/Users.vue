@@ -49,9 +49,30 @@ const deleteUser = (id) => {
   });
 }
 
+fetch(import.meta.env.VITE_API_URL+"users", {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    'Authorization': `Bearer ${token}`,
+  }
+})
+.then((res) => res.json())
+.then((data) => {
+  if (data.error) {
+    alert(data.error);
+  } else {
+    users.value = data
+  }
+});
+
 const showPopupEditUser = (userfromList) => {
+  modalOpen.value = true;
   userToEdit.value = userfromList
-  console.log(userToEdit.value)
+}
+
+const closePopup = () => {
+  modalOpen.value = false;
 }
 
 </script>
@@ -61,11 +82,11 @@ const showPopupEditUser = (userfromList) => {
     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
         <div class="overflow-hidden">
-          <Modal v-if="!!userToEdit">
-            <template #modalContent="{ userToEdit }" :openModal="userToEdit">
-              <EditUser :userEdit="userToEdit"/>
-            </template>
-          </Modal>
+<!--          <Modal v-if="!!userToEdit">-->
+<!--            <template #modalContent="{ userToEdit }" :openModal="userToEdit">-->
+<!--              <EditUser :userEdit="userToEdit"/>-->
+<!--            </template>-->
+<!--          </Modal>-->
 <!--          <div id="overlay" class="overlay" v-if="!!userToEdit">-->
 <!--          </div>-->
 <!--          <div id="modal-edit-user" class="popup" v-if="!!userToEdit">-->
@@ -83,7 +104,13 @@ const showPopupEditUser = (userfromList) => {
             </tr>
             </thead>
             <tbody>
-            <tr class="border-b" v-for="(userfromList,index) in users" :key="index">
+            <tr class="border-b" v-for="userfromList in users">
+              <div @click="closePopup" id="overlay" class="overlay" v-if="modalOpen">
+              </div>
+              <div   id="modal-edit-user" class="popup" v-if="modalOpen">
+                <button @click="closePopup">close</button>
+                <EditUser :userEdit="userToEdit" />
+              </div>
               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 {{ userfromList.email }}
               </td>

@@ -2,41 +2,44 @@
 import Nav from "./components/Nav.vue";
 import Footer from "./components/Footer.vue";
 import { RouterView } from "vue-router";
-const token = localStorage.getItem('token')
-<<<<<<< Updated upstream
-=======
+import NavAdmin from "./components/Admin/navAdmin.vue";
+import {ref} from "vue";
+import AuthProvider from "./components/Provider/AuthProvider.vue";
 
+const token = localStorage.getItem('token')
 let userAdmin = ref(false)
 if (token) {
   const user = JSON.parse(atob(token.split('.')[1]))
-  // check if toke is epxired
-  if (user.exp * 1000 < Date.now()) {
-    localStorage.removeItem('token')
-    location.href = '/login'
-  } else {
-    userAdmin = Object.values(user.roles).includes('ROLE_ADMIN');
-    if (!userAdmin) {
-      document.addEventListener("DOMContentLoaded", function(event) {
-        document.querySelector('#viewcontainer').classList.add('mt-10')
-        document.querySelector('#viewcontainer').classList.add('container')
-      });
-    }
+  userAdmin = Object.values(user.roles).includes('ROLE_ADMIN');
+  if (!userAdmin) {
+    document.addEventListener("DOMContentLoaded", function(event) {
+      document.querySelector('#viewcontainer').classList.add('mt-10')
+      document.querySelector('#viewcontainer').classList.add('container')
+    });
   }
-
 }
->>>>>>> Stashed changes
 
 </script>
 <template>
-  <Nav/>
-  <div class="container fitPageHeight mx-auto mt-10">
-    <RouterView />
-  </div>
-  <Footer/>
+  <AuthProvider>
+    <Nav/>
+    <div class="relative">
+      <div id="viewcontainer" class="fitPageHeight mx-auto">
+        <div v-if="userAdmin" class="flex flex-row">
+          <navAdmin/>
+          <RouterView/>
+        </div>
+        <div v-else>
+          <RouterView/>
+        </div>
+      </div>
+    </div>
+    <Footer/>
+  </AuthProvider>
 </template>
 
 <style>
-  .fitPageHeight {
-    min-height: 70vh;
-  }
+.fitPageHeight {
+  min-height: 70vh;
+}
 </style>

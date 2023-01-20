@@ -4,13 +4,13 @@ import { ref } from 'vue'
 const props = defineProps(
   {
     userEdit: {
-      type: Object,
-      default: {}
+      type: Object
     }
   }
 )
 
 let user = ref({});
+
 if (props.userEdit) {
   user = props.userEdit
 }
@@ -18,7 +18,7 @@ if (props.userEdit) {
 const token = localStorage.getItem('token')
 const actualUserId = JSON.parse(atob(token.split('.')[1])).user_id;
 
-if(!props.userEdit){
+if(!props.userEdit || props.userEdit.id !== actualUserId) {
   fetch( import.meta.env.VITE_API_URL+'users/' + actualUserId, {
     method: 'GET',
     headers: {
@@ -32,11 +32,11 @@ if(!props.userEdit){
       if (data.error) {
         alert(data.error);
       } else {
+        console.log(user)
         user.value = data
       }
     });
 }
-
 
 const submit = (user) => {
   fetch(import.meta.env.VITE_API_URL+"users/"+user.id, {
