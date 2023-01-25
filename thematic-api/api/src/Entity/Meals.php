@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\MealsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -67,6 +68,14 @@ class Meals
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['meal:read', 'meal:post'])]
     private ?Restaurant $restaurant = null;
+
+    #[ORM\OneToMany(mappedBy: 'meal', targetEntity: MealOrder::class, orphanRemoval: true)]
+    private Collection $mealOrders;
+
+    public function __construct()
+    {
+        $this->mealOrders = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -141,6 +150,36 @@ class Meals
     public function setRestaurant(?Restaurant $restaurant): self
     {
         $this->restaurant = $restaurant;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MealOrder>
+     */
+    public function getMealOrders(): Collection
+    {
+        return $this->mealOrders;
+    }
+
+    public function addMealOrder(MealOrder $mealOrder): self
+    {
+        if (!$this->mealOrders->contains($mealOrder)) {
+            $this->mealOrders->add($mealOrder);
+            $mealOrder->setMeal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMealOrder(MealOrder $mealOrder): self
+    {
+        if ($this->mealOrders->removeElement($mealOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($mealOrder->getMeal() === $this) {
+                $mealOrder->setMeal(null);
+            }
+        }
 
         return $this;
     }

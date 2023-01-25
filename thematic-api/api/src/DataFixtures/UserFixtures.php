@@ -10,7 +10,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture
 {
-    public function __construct(private UserRepository $userRepository, private UserPasswordHasherInterface $passwordHasher)
+    public function __construct(
+        private UserRepository $userRepository,
+        private UserPasswordHasherInterface $passwordHasher,
+        )
     {}
 
     public function load(ObjectManager $manager): void
@@ -26,6 +29,18 @@ class UserFixtures extends Fixture
             ->setNumberPhone('0649088205')
         ;
 
+        $manager->persist($user);
+
+        $user = new User;
+        $user
+            ->setEmail('user@user.com')
+            ->setPassword($this->passwordHasher->hashPassword($user, 'string'))
+            ->setRoles(['ROLE_USER'])
+            ->setFirstname('User')
+            ->setLastname('User')
+            ->setAddress('1 rue de la petite maison')
+            ->setNumberPhone('0649088205')
+        ;
         $manager->persist($user);
         $manager->flush();
     }
