@@ -8,14 +8,11 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\ApiFilter;
-use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Metadata\ApiProperty;;
 use App\Repository\ReportRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-
 //TODO : add security on the report entity
 
 #[ORM\Entity(repositoryClass: ReportRepository::class)]
@@ -40,11 +37,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['report:read']],
     denormalizationContext: ['groups' => ['report:update']],
 )]
-#[ApiFilter(BooleanFilter::class, properties: ['status'])]
 class Report
 {
-    const STATUS_PENDING = 'pending';
-    const STATUS_DONE = 'done';
+    const STATUS_OPEN = 'open';
+    const STATUS_IN_PROGRESS = 'in_progress';
+    const STATUS_CLOSED = 'closed';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -63,20 +60,13 @@ class Report
     private ?User $reportedUser = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['report:read', 'user:read', 'report:post', 'report:update'])]
+    #[Groups(['report:read', 'user:read', 'report:post'])]
     private ?string $reason = null;
 
-    #[ORM\Column]
-    private array $status = [];
-
-    /*#[ORM\Column(type: Types::STRING, nullable: false)]
+    #[ORM\Column(type: Types::JSON, nullable: false)]
+    #[ApiProperty(securityPostDenormalize: 'is_granted("ROLE_ADMIN")')]
     #[Groups(['report:read', 'user:read', 'report:update'])]
-    private $status = self::STATUS_PENDING;*/
-
-
-    public function __construct()
-    {
-    }
+    private array $status = [Report::STATUS_OPEN];
 
     public function getId(): ?int
     {

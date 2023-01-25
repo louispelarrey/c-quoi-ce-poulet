@@ -37,6 +37,6 @@ class ReportListener implements EventSubscriberInterface
         }
 
         $user = $this->tokenStorage->getToken()->getUser();
-        $report->setReportedBy($user)->setStatus(false);;
+        $report->setReportedBy($user);
     }
 }
