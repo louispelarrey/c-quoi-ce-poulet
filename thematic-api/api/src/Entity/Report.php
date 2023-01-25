@@ -6,14 +6,15 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use App\Repository\ReportRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use Symfony\Component\Validator\Constraints as Assert;
 
 //TODO : add security on the report entity
 
@@ -21,37 +22,42 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new GetCollection(),
-        new Get(),
         new Post(
             security: 'is_granted("IS_AUTHENTICATED_FULLY")',
             securityMessage: 'Only admins can create reports.',
             denormalizationContext: ['groups' => ['report:post']],
         ),
+        new Get(),
         new Put(
             security: 'is_granted("ROLE_ADMIN")',
             securityMessage: 'Only admins can edit reports.',
         ),
         new Delete(
             security: 'is_granted("ROLE_ADMIN")',
-            securityMessage: 'Only admins can create reports.',
+            securityMessage: 'Only admins can delete reports.',
         ),
     ],
     normalizationContext: ['groups' => ['report:read']],
     denormalizationContext: ['groups' => ['report:update']],
 )]
+#[ApiFilter(BooleanFilter::class, properties: ['status'])]
 class Report
 {
+    const STATUS_PENDING = 'pending';
+    const STATUS_DONE = 'done';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(['report:read', 'user:read'])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reports')]
+    #[ORM\ManyToOne(inversedBy: 'reportsBy')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['report:read', 'report:post'])]
+    #[Groups(['report:read'])]
     private ?User $reportedBy = null;
 
+    #[ORM\ManyToOne(inversedBy: 'reportsOn')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['report:read', 'user:read', 'report:post'])]
     private ?User $reportedUser = null;
@@ -60,9 +66,17 @@ class Report
     #[Groups(['report:read', 'user:read', 'report:post', 'report:update'])]
     private ?string $reason = null;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
-    #[Groups(['report:read', 'user:read', 'report:post', 'report:update'])]
-    private $status = false;
+    #[ORM\Column]
+    private array $status = [];
+
+    /*#[ORM\Column(type: Types::STRING, nullable: false)]
+    #[Groups(['report:read', 'user:read', 'report:update'])]
+    private $status = self::STATUS_PENDING;*/
+
+
+    public function __construct()
+    {
+    }
 
     public function getId(): ?int
     {
@@ -105,12 +119,12 @@ class Report
         return $this;
     }
 
-    public function getStatus(): ?bool
+    public function getStatus(): array
     {
         return $this->status;
     }
 
-    public function setStatus($status): self
+    public function setStatus(array $status): self
     {
         $this->status = $status;
 
