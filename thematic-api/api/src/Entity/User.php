@@ -82,28 +82,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read'])]
+    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read', 'report:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read'])]
+    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read', 'report:read'])]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 20)]
-    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read'])]
+    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read' , 'report:read'])]
     private ?string $numberPhone = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read'])]
+    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read', 'report:read'])]
     private ?string $address = null;
 
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Restaurant::class, orphanRemoval: true)]
     #[Groups(['user:read'])]
     private Collection $restaurants;
 
+    #[ORM\OneToMany(mappedBy: 'reportedBy', targetEntity: Report::class)]
+    #[Groups(['user:read'])]
+    private Collection $reportsBy;
+
+    #[ORM\OneToMany(mappedBy: 'reportedUser', targetEntity: Report::class)]
+    #[Groups(['user:read'])]
+    private Collection $reportsOn;
+
     public function __construct()
     {
         $this->restaurants = new ArrayCollection();
+        $this->reportsBy = new ArrayCollection();
+        $this->reportsOn = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -259,6 +269,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($restaurant->getOwner() === $this) {
                 $restaurant->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Report>
+     */
+    public function getReportsBy(): Collection
+    {
+        return $this->reportsBy;
+    }
+
+    public function addReportsBy(Report $reportsBy): self
+    {
+        if (!$this->reportsBy->contains($reportsBy)) {
+            $this->reportsBy->add($reportsBy);
+            $reportsBy->setReportedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportsBy(Report $reportsBy): self
+    {
+        if ($this->reportsBy->removeElement($reportsBy)) {
+            // set the owning side to null (unless already changed)
+            if ($reportsBy->getReportedBy() === $this) {
+                $reportsBy->setReportedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Report>
+     */
+    public function getReportsOn(): Collection
+    {
+        return $this->reportsOn;
+    }
+
+    public function addReportsOn(Report $reportsOn): self
+    {
+        if (!$this->reportsOn->contains($reportsOn)) {
+            $this->reportsOn->add($reportsOn);
+            $reportsOn->setReportedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportsOn(Report $reportsOn): self
+    {
+        if ($this->reportsOn->removeElement($reportsOn)) {
+            // set the owning side to null (unless already changed)
+            if ($reportsOn->getReportedUser() === $this) {
+                $reportsOn->setReportedUser(null);
             }
         }
 
