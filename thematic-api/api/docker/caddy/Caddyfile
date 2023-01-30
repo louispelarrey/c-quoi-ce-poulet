@@ -7,6 +7,10 @@
 
 log
 
+tls {
+	dns cloudflare IUGWwLCtDglBPt-Rahs64P3IFrN1tzLYRrJE-AtH
+}
+
 # Matches requests for HTML documents, for static files and for Next.js files,
 # except for known API paths and paths with extensions handled by API Platform
 @pwa expression `(
@@ -17,6 +21,7 @@ log
         )
     )
     || path('/favicon.ico', '/manifest.json', '/robots.txt', '/_next*', '/sitemap*')`
+
 
 route {
     root * /srv/app/public
