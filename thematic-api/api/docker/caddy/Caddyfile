@@ -22,7 +22,6 @@ tls {
     )
     || path('/favicon.ico', '/manifest.json', '/robots.txt', '/_next*', '/sitemap*')`
 
-
 route {
     root * /srv/app/public
     mercure {
