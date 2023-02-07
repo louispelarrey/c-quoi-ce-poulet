@@ -27,7 +27,7 @@ fetch(import.meta.env.VITE_API_URL+"restaurants", {
 });
 
 const getMenu = (restaurant) => {
-  router.push({ name: 'Meals', params: { restaurant: restaurant } })
+  router.push({ name: 'Meals', params: { id: restaurant.id } })
 }
 
 </script>
@@ -46,7 +46,8 @@ const getMenu = (restaurant) => {
         Title
       </h1>
       <div v-for="restaurant in restaurants" class="md:w-1/3 p-6 flex flex-col relative">
-        <div @click="getMenu(restaurant)" :style="{ backgroundImage: `url(${restaurant.image ? restaurant.image : '~@/assets/Images/img_resto_global.jpg'})`, backgroundSize: 'cover', minHeight: '80%' }">          <div class="bg-red flex-none mt-auto bg-transparent rounded-b rounded-t-none overflow-hidden shadow p-6" style="min-height: 30vh">
+        <div class="cursor-pointer" @click="getMenu(restaurant)" :style="{ backgroundImage: `url(${restaurant.image ? restaurant.image : '~@/assets/Images/img_resto_global.jpg'})`, backgroundSize: 'cover', minHeight: '80%' }">
+          <div class="bg-red flex-none mt-auto bg-transparent rounded-b rounded-t-none overflow-hidden shadow p-6" style="min-height: 30vh">
           </div>
         </div>
         <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-3">
