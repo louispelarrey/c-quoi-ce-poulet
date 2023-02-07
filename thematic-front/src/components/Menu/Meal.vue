@@ -30,32 +30,38 @@ const menu = ref(props.menu)
 </script>
 
 <template>
-  <div class="meal">
+  <div v-if="menu.isAvailable" class="meal-container col-span-1 bg-white">
     <img :src="menu" :alt="menu.name" />
-    <h3>{{ menu.name }}</h3>
-    <h4>{{ menu.price }} €</h4>
-    <p>{{ menu.description }}</p>
-    <div v-if="isMorethanOneInCart">
-      <input type="button" value="+" @click="addToCart" />
-      <span>{{ mealCounter }}</span>
-      <input type="button" value="-" @click="removeFromCart" />
+    <div class="meal">
+      <h3>{{ menu.name }}</h3>
+      <h4>{{ menu.price }} €</h4>
+      <p>{{ menu.description }}</p>
+      <div v-if="isMorethanOneInCart">
+        <input style="width: 40px" class="cursor-pointer bg-transparent text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded"
+               value="-"
+               @click="removeFromCart" />
+        <span class="m-5">{{ mealCounter }}</span>
+        <input style="width: 40px" class="cursor-pointer bg-transparent text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded"
+               type="button" value="+"
+               @click="addToCart" />
+
+      </div>
+      <input class="cursor-pointer bg-transparent text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded" v-else type="button" value="Ajouter au panier" @click="addToCart" />
     </div>
-    <input v-else type="button" value="Ajouter au panier" @click="addToCart" />
   </div>
+
 </template>
 
 <style scoped>
-  .meal {
+  .meal-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
     padding: 1rem;
     border: 1px solid #ccc;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    justify-content: space-between;
   }
 
   .meal img {
