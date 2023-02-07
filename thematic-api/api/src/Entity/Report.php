@@ -56,7 +56,7 @@ class Report
 
     #[ORM\ManyToOne(inversedBy: 'reportsOn')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['report:read', 'user:read', 'report:post'])]
+    #[Groups(['report:read', 'report:post'])]
     private ?User $reportedUser = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

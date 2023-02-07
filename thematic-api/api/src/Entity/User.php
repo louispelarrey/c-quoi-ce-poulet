@@ -38,10 +38,10 @@ use ApiPlatform\Metadata\ApiProperty;
             securityMessage: 'Only admins can view other users.',
         ),
         new Put(
-            processor: UserPasswordHasher::class,
             security: 'is_granted("ROLE_ADMIN") or object == user',
             securityMessage: 'Only admins can edit other users.',
-            securityPostDenormalizeMessage: 'Only admins can edit roles.'
+            securityPostDenormalizeMessage: 'Only admins can edit roles.',
+            processor: UserPasswordHasher::class
         ),
         new Delete(
             security: 'is_granted("ROLE_ADMIN") or object == user',
