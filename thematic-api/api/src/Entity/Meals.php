@@ -48,19 +48,19 @@ class Meals
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['meal:read', 'meal:update', 'meal:post'])]
+    #[Groups(['meal:read', 'meal:update', 'meal:post', 'restaurant:read'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['meal:read'])]
+    #[Groups(['meal:read', 'meal:update', 'meal:post', 'restaurant:read'])]
     private ?string $picturePath = null;
 
     #[ORM\Column]
-    #[Groups(['meal:read', 'meal:update', 'meal:post'])]
+    #[Groups(['meal:read', 'meal:update', 'meal:post', 'restaurant:read'])]
     private ?int $price = null;
 
     #[ORM\Column]
-    #[Groups(['meal:read', 'meal:update', 'meal:post'])]
+    #[Groups(['meal:read', 'meal:update', 'meal:post', 'restaurant:read'])]
     private ?bool $isAvailable = true;
 
     #[ORM\ManyToOne(inversedBy: 'meals')]
