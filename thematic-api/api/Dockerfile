@@ -100,7 +100,9 @@ RUN xcaddy build \
 	--with github.com/dunglas/mercure \
 	--with github.com/dunglas/mercure/caddy \
 	--with github.com/dunglas/vulcain \
-	--with github.com/dunglas/vulcain/caddy
+	--with github.com/dunglas/vulcain/caddy \
+	--with github.com/caddy-dns/cloudflare
+
 
 # Caddy image
 FROM caddy:2-alpine AS app_caddy
