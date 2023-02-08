@@ -46,7 +46,7 @@ const getMenu = (restaurant) => {
         Title
       </h1>
       <div v-for="restaurant in restaurants" class="md:w-1/3 p-6 flex flex-col relative">
-        <div class="cursor-pointer" @click="getMenu(restaurant)" :style="{ backgroundImage: `url(${restaurant.image ? restaurant.image : '~@/assets/Images/img_resto_global.jpg'})`, backgroundSize: 'cover', minHeight: '80%' }">
+        <div class="cursor-pointer" @click="getMenu(restaurant)" :style="{ backgroundImage: `url(${restaurant.image ? restaurant.image : '../src/assets/Images/img_resto_global.jpg'})`, backgroundSize: 'cover', minHeight: '80%' }">
           <div class="bg-red flex-none mt-auto bg-transparent rounded-b rounded-t-none overflow-hidden shadow p-6" style="min-height: 30vh">
           </div>
         </div>
