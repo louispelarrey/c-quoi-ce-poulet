@@ -5,6 +5,9 @@ const props = defineProps(
   {
     userEdit: {
       type: Object
+    },
+    adminEdit: {
+      type: Boolean
     }
   }
 )
@@ -32,13 +35,13 @@ if(!props.userEdit || props.userEdit.id !== actualUserId) {
       if (data.error) {
         alert(data.error);
       } else {
-        console.log(user)
         user.value = data
       }
     });
 }
 
 const submit = (user) => {
+  console.log(user)
   fetch(import.meta.env.VITE_API_URL+"users/"+user.id, {
     method: "PUT",
     headers: {
@@ -58,6 +61,7 @@ const submit = (user) => {
   });
 }
 
+
 </script>
 <template v-if="user.value">
     <div class="border-b-2 block text-center">
@@ -70,7 +74,7 @@ const submit = (user) => {
           <img id="showImage" class="max-w-xs w-32 items-center border" src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1631&q=80" alt="">
         </div>
       </div>
-      <div class="w-full flex flex-column p-8 bg-white lg:ml-4 mt-1">
+      <div class="w-full flex flex-column p-8 bg-white lg:ml-5 mt-1">
         <div class=" md:w-1/3 p-6 flex flex-col relative rounded  shadow p-6">
           <div class="pb-4">
               <label for="about" class="font-semibold text-gray-700 block pb-1">Email</label>
@@ -101,15 +105,14 @@ const submit = (user) => {
             <input id="address" name="address" class=" border rounded-r px-4 py-2 w-full" v-model="user.address" />
           </div>
         </div>
-        <div class="md:w-1/3 p-6 flex flex-col relative rounded  shadow p-6">
-          <div class="pb-4">
-            <label for="about" class="font-semibold text-gray-700 block pb-1">Address</label>
-            <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-              <option selected>Choose a country</option>
-              <option value="US">Administrateur</option>
-              <option value="CA">User</option>
-              <option value="FR">France</option>
-              <option value="DE">Germany</option>
+        <div class="md:w-1/3 p-6 flex flex-col relative rounded  shadow p-6" v-if="adminEdit">
+          <div class="pb-4" >
+            <label for="about" class="font-semibold text-gray-700 block pb-1">Roles</label>
+            <select v-model="user.roles[0]" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <option value="ROLE_ADMIN">Admin</option>
+              <option value="ROLE_USER">User</option>
+              <option value="ROLE_USER">Restaurants</option>
+              <option value="ROLE_USER">Deliverer</option>
             </select>
           </div>
         </div>

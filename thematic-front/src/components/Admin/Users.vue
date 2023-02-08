@@ -82,16 +82,6 @@ const closePopup = () => {
     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
         <div class="overflow-hidden">
-<!--          <Modal v-if="!!userToEdit">-->
-<!--            <template #modalContent="{ userToEdit }" :openModal="userToEdit">-->
-<!--              <EditUser :userEdit="userToEdit"/>-->
-<!--            </template>-->
-<!--          </Modal>-->
-<!--          <div id="overlay" class="overlay" v-if="!!userToEdit">-->
-<!--          </div>-->
-<!--          <div id="modal-edit-user" class="popup" v-if="!!userToEdit">-->
-<!--            <EditUser :userEdit="userToEdit"/>-->
-<!--          </div>-->
           <table class="min-w-full">
             <thead class="border-b">
             <tr>
@@ -107,9 +97,9 @@ const closePopup = () => {
             <tr class="border-b" v-for="userfromList in users">
               <div @click="closePopup" id="overlay" class="overlay" v-if="modalOpen">
               </div>
-              <div   id="modal-edit-user" class="popup" v-if="modalOpen">
+              <div id="modal-edit-user" class="popup" v-if="modalOpen">
                 <button @click="closePopup">close</button>
-                <EditUser :userEdit="userToEdit" />
+                <EditUser :userEdit="userToEdit" :adminEdit="true"/>
               </div>
               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 {{ userfromList.email }}
@@ -148,6 +138,7 @@ const closePopup = () => {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 20;
+  width: 80vw;
   background-color: white;
   border-radius: 10px;
   padding: 20px;
