@@ -9,6 +9,7 @@ import HomeAdmin from "../components/Admin/HomeAdmin.vue";
 import Meals from "../components/Menu/Meals.vue";
 import {ref} from "vue";
 import Restaurants from "../components/Admin/Restaurants.vue";
+import Reports from "../components/Admin/Reports.vue";
 
 const token = localStorage.getItem("token");
 let userAdmin = ref(false);
@@ -61,11 +62,11 @@ const router = createRouter({
             name: "admin_restaurants",
             component: Restaurants,
         },
-        // {
-        //   path: "/admin/reports",
-        //   name: "admin_reports",
-        //   component: Reports,
-        // }
+        {
+          path: "/admin/reports",
+          name: "admin_reports",
+          component: Reports,
+        }
     ],
 });
 
