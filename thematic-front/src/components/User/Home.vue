@@ -5,54 +5,30 @@ import {useRoute, useRouter} from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
-// get token props from App.vue
+const token = localStorage.getItem('token')
 
-const token = route.params.token
+const restaurants = ref({})
 
-const props = defineProps({
-  token: String
+fetch(import.meta.env.VITE_API_URL+"restaurants", {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    'Authorization': `Bearer ${token}`,
+  }
 })
+.then((res) => res.json())
+.then((data) => {
+  if (data.error) {
+    alert(data.error);
+  } else {
+    restaurants.value = data
+  }
+});
 
-const getRestaurant = async (datas) => {
-  console.log(datas)
+const getMenu = (restaurant) => {
+  router.push({ name: 'Meals', params: { id: restaurant.id } })
 }
-
-const restaurants = ref([
-  {
-    'id': 1,
-    'nom': 'test 1',
-    'adresse': 'aaaaa',
-    'description': 'aaaaa',
-    'heureOuverture': '12:00',
-    'type': 'burger',
-    'image': 'https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg'
-  }, {
-    'id': 2,
-    'nom': 'test 2',
-    'adresse': 'aaaaa',
-    'description': 'aaaaa',
-    'heureOuverture': '12:00',
-    'type': 'africain',
-    'image': 'https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg'
-  }, {
-    'id': 3,
-    'nom': 'test 3',
-    'adresse': 'aaaaa',
-    'description': 'aaaaa',
-    'heureOuverture': '12:00',
-    'type': 'chinois',
-    'image': 'https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg'
-  }, {
-    'id': 4,
-    'nom': 'test 4',
-    'adresse': 'aaaaa',
-    'description': 'aaaaa',
-    'heureOuverture': '12:00',
-    'type': 'chinois',
-    'image': 'https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg'
-  },
-])
-
 
 </script>
 
@@ -69,27 +45,21 @@ const restaurants = ref([
       <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
         Title
       </h1>
-
       <div v-for="restaurant in restaurants" class="md:w-1/3 p-6 flex flex-col relative">
-        <div v-bind:style="{ backgroundImage: 'url(' + restaurant.image + ')' }" style="background-size: cover; min-height: 80%">
-          <div class="flex-none mt-auto bg-transparent rounded-b rounded-t-none overflow-hidden shadow p-6">
-            <div class="flex items-center justify-start">
-              <button
-                  @click="getRestaurant(restaurant)"
-                  class="mx-auto lg:mx-0 hover:underline gradient text-black font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-                Go
-              </button>
-            </div>
+        <div class="cursor-pointer" @click="getMenu(restaurant)" :style="{ backgroundImage: `url(${restaurant.image ? restaurant.image : '../src/assets/Images/img_resto_global.jpg'})`, backgroundSize: 'cover', minHeight: '80%' }">
+          <div class="bg-red flex-none mt-auto bg-transparent rounded-b rounded-t-none overflow-hidden shadow p-6" style="min-height: 30vh">
           </div>
         </div>
         <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-3">
           <div class="text-center">
               <p class="text-xl px-6">
-                {{ restaurant.nom }}
+                {{ restaurant.name }}
               </p>
-              <p class="text-small px-6">
-                {{restaurant.description}}
-              </p>
+            <div v-for="tag in restaurant.tags">
+              <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-pink-600 bg-red-200 uppercase last:mr-0 mr-1">
+                  {{tag.name}}
+              </span>
+            </div>
           </div>
         </div>
       </div>

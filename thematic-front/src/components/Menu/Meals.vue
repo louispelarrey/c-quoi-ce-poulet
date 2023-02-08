@@ -1,65 +1,40 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import mealItem from './meal.vue'
+import {useRoute} from "vue-router";
+import Meal from "./Meal.vue";
 
-//TODO: Get meals from API
+const route = useRoute()
+const id = route.params.id
 
-const meals = ref([
-  {
-    "id": "1",
-    "name": "Spaghetti Bolognese",
-    "picture": "https://www.example.com/images/spaghetti.jpg",
-    "price": 12.99,
-    "description": "Tender spaghetti noodles in a rich and flavorful meat sauce, topped with Parmesan cheese.",
-  },
-  {
-    "id": "2",
-    "name": "Chicken Parmesan",
-    "picture": "https://www.example.com/images/chicken-parmesan.jpg",
-    "price": 14.99,
-    "description": "Breaded chicken breast topped with marinara sauce and melted mozzarella cheese, served with spaghetti.",
-  },
-  {
-    "id": "3",
-    "name": "Lasagna",
-    "picture": "https://www.example.com/images/lasagna.jpg",
-    "price": 11.99,
-    "description": "Layers of pasta, meat sauce, and cheese, topped with Parmesan cheese.",
-  },
-  {
-    "id": "4",
-    "name": "Chicken Alfredo",
-    "picture": "https://www.example.com/images/chicken-alfredo.jpg",
-    "price": 13.99,
-    "description": "Chicken breast sautéed with mushrooms in a creamy garlic Parmesan sauce, served over fettuccine.",
-  },
-  {
-    "id": "5",
-    "name": "Chicken Marsala",
-    "picture": "https://www.example.com/images/chicken-marsala.jpg",
-    "price": 14.99,
-    "description": "Chicken breast sautéed with mushrooms in a Marsala wine sauce, served over fettuccine.",
-  },
-  {
-    "id": "6",
-    "name": "Spaghetti Bolognese",
-    "picture": "https://www.example.com/images/spaghetti.jpg",
-    "price": 12.99,
-    "description": "Tender spaghetti noodles in a rich and flavorful meat sauce, topped with Parmesan cheese.",
-  },
-  {
-    "id": "7",
-    "name": "Chicken Parmesan",
-    "picture": "https://www.example.com/images/chicken-parmesan.jpg",
-    "price": 14.99,
-    "description": "Breaded chicken breast topped with marinara sauce and melted mozzarella cheese, served with spaghetti.",
+const token = localStorage.getItem('token')
+const menus = ref({})
+const restaurant = ref({})
+
+fetch(import.meta.env.VITE_API_URL+"restaurants/"+id, {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    'Authorization': `Bearer ${token}`,
   }
-]);
+})
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.error) {
+        alert(data.error);
+      } else {
+        console.log(data)
+        restaurant.value = data
+        menus.value = data.meals
+      }
+    });
 
 </script>
 
 <template>
-    <div class="menu">
-      <meal-item v-for="meal in meals" :key="meal.id"/>
-    </div>
+  <h1 class="text-4xl text-center mb-10">Menus du restaurant {{restaurant.name}}</h1>
+  <p class="text-center" v-if="restaurant.meals.length === 0">Il n'y a aucun menu pour le moment</p>
+  <div class="menu grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-10 my-5">
+    <Meal :menu="menu" v-for="menu in menus" :key="menu"/>
+  </div>
 </template>
