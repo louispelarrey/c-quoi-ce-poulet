@@ -1,3 +1,30 @@
+<script>
+
+import {ref} from "vue";
+
+const token = localStorage.getItem('token')
+
+const reportsCount = ref(0)
+
+fetch(import.meta.env.VITE_API_URL+"reports", {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    'Authorization': `Bearer ${token}`,
+  }
+})
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.error) {
+        alert(data.error);
+      } else {
+        reportsCount.value = data.length
+      }
+    });
+
+</script>
+
 <template>
     <div class="hidden z-5 lg:block navbar-menu relative ">
       <nav style="min-height: 70vh" class="top-0 left-0 bottom-0 flex flex-col w-2/4 lg:w-60 sm:max-w-xs pt-6 pb-8 bg-gray-800 overflow-y-auto">
@@ -42,7 +69,7 @@
                 </svg>
               </span>
                 <span>Signalements</span>
-                <span class="flex justify-center items-center ml-auto bg-indigo-500 w-6 h-6 text-xs rounded-full">4</span>
+                <span class="flex justify-center items-center ml-auto bg-indigo-500 w-6 h-6 text-xs rounded-full">{{}}</span>
               </router-link>
             </li>
             <li>
