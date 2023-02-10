@@ -5,11 +5,11 @@ import Register from "../components/Login/register.vue"
 import editProfile from "../components/User/editProfile.vue"
 import Users from "../components/Admin/Users.vue";
 import HomeAdmin from "../components/Admin/HomeAdmin.vue";
-// import Reports from "../components/Admin/Reports.vue";
 import Meals from "../components/Menu/Meals.vue";
 import {ref} from "vue";
 import Restaurants from "../components/Admin/Restaurants.vue";
 import Reports from "../components/Admin/Reports.vue";
+import CreateRestaurant from "../components/Restaurant/CreateRestaurant.vue";
 
 const token = localStorage.getItem("token");
 let userAdmin = ref(false);
@@ -63,11 +63,28 @@ const router = createRouter({
             component: Restaurants,
         },
         {
+            path: "/restaurants/new",
+            name: "create_restaurants",
+            component: CreateRestaurant,
+        },
+        {
           path: "/admin/reports",
           name: "admin_reports",
           component: Reports,
         }
     ],
 });
+
+router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem("token");
+    if (!token && to.path !== "/login" && to.path !== "/register") {
+        next({
+            path: "/login",
+            query: { redirect: to.fullPath }
+        });
+    } else {
+        next();
+    }
+})
 
 export default router;

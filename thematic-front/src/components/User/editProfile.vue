@@ -41,7 +41,6 @@ if(!props.userEdit || props.userEdit.id !== actualUserId) {
 }
 
 const submit = (user) => {
-  console.log(user)
   fetch(import.meta.env.VITE_API_URL+"users/"+user.id, {
     method: "PUT",
     headers: {

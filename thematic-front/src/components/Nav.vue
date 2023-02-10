@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import AuthProvider from "./Provider/AuthProvider.vue";
 
 function logout() {
   localStorage.removeItem("token");
@@ -7,6 +8,14 @@ function logout() {
 }
 
 const token = localStorage.getItem("token");
+
+const user = ref(null);
+
+// get user information from the AuthProvider which is provide(
+console.log(AuthProvider.user);
+user.value = AuthProvider.user;
+
+console.log(user);
 
 </script>
 
@@ -39,10 +48,16 @@ const token = localStorage.getItem("token");
           </li>
         </ul>
         <button
-            id="navAction"
+            class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full lg:mt-0 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+        >
+          <router-link class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" to="/restaurants/new" >
+            Inscrire un restaurant
+          </router-link>
+        </button>
+        <button
             class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
         >
-          Commande
+          Panier
         </button>
       </div>
     </div>
