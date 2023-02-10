@@ -17,6 +17,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\Controller\ActivateRestaurantController;
 use App\Repository\RestaurantRepository;
 
 
@@ -28,6 +29,14 @@ use App\Repository\RestaurantRepository;
         new Post(
             security: 'is_granted("ROLE_ADMIN")',
             securityMessage: 'Only admins can create restaurants.',
+        ),
+        new Post(
+            security: 'is_granted("ROLE_USER")',
+            securityMessage: 'Only users can create restaurants.',
+            uriTemplate: '/restaurants/activate/{id}',
+            controller: ActivateRestaurantController::class,
+            normalizationContext: ['groups' => ['restaurant:read', 'restaurant:update']],
+            denormalizationContext: ['groups' => ['restaurant:create', 'restaurant:update']],
         ),
         new Put(
             security: 'is_granted("RESTAURANT_EDIT", object)',
@@ -84,6 +93,10 @@ class Restaurant
     #[ORM\OneToMany(mappedBy: 'restaurant', targetEntity: Meals::class, orphanRemoval: true)]
     #[Groups(['restaurant:read'])]
     private Collection $meals;
+
+    #[ORM\Column]
+    #[Groups(['restaurant:read'])]
+    private ?bool $isActivated = false;
 
     public function __construct()
     {
@@ -217,6 +230,18 @@ class Restaurant
                 $meal->setRestaurant(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsActivated(): ?bool
+    {
+        return $this->isActivated;
+    }
+
+    public function setIsActivated(bool $isActivated): self
+    {
+        $this->isActivated = $isActivated;
 
         return $this;
     }

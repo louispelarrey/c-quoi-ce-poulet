@@ -22,7 +22,6 @@ class RestaurantFixtures extends Fixture implements DependentFixtureInterface
         ];
     }
 
-
     public function load(ObjectManager $manager): void
     {
         $restaurant = new Restaurant;
@@ -35,6 +34,7 @@ class RestaurantFixtures extends Fixture implements DependentFixtureInterface
                 "12:00",
             ])
             ->setOwner($this->userRepository->findOneBy(['email' => 'user@user.com']))
+            ->setIsActivated(true)
         ;
         $manager->persist($restaurant);
         $manager->flush();
