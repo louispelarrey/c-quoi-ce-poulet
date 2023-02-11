@@ -43,7 +43,6 @@ class TagRestaurant
     #[Groups(['tagRestaurant:read', 'tagRestaurant:create', 'tagRestaurant:update'])]
     private ?Restaurant $restaurant = null;
 
-
     public function getId(): ?int
     {
         return $this->id;

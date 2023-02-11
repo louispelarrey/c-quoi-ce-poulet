@@ -25,20 +25,24 @@ class MealsFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        $meal = new Meals;
-        $meal
+        $meal1 = new Meals;
+        $meal1
             ->setName('Burger')
             ->setPrice(18)
             ->setPicturePath('string')
             ->setRestaurant($this->restaurantRepository->findOneBy(['name' => 'Schwartz Deli']));
 
-        $meal
+        $manager->persist($meal1);
+
+        $meal2 = new Meals;
+        $meal2
             ->setName('Salade')
             ->setPrice(8)
             ->setPicturePath('string')
             ->setRestaurant($this->restaurantRepository->findOneBy(['name' => 'Schwartz Deli']));
 
-        $manager->persist($meal);
+        $manager->persist($meal2);
+
         $manager->flush();
     }
 }
