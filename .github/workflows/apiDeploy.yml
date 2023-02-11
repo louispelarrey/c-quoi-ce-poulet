@@ -1,4 +1,4 @@
-name: Test API Server Deployment 
+name: Test API Server Deployment
 
 on:
   push:
