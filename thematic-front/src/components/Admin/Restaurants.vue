@@ -46,7 +46,6 @@ const getRestaurants = () => {
                 }
               });
           restaurants.value = data
-
         }
       });
 
