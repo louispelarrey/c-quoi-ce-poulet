@@ -36,7 +36,7 @@ const getRestaurants = () => {
         }
       });
 }
-console.log(actualTags)
+
 const deleteRestaurants = (id) => {
   fetch(import.meta.env.VITE_API_URL+"restaurants/"+id, {
     method: "DELETE",
@@ -51,7 +51,7 @@ const deleteRestaurants = (id) => {
         if (data.error) {
           alert(data.error);
         } else {
-          alert('User deleted successfully')
+          alert('Restaurant deleted successfully')
           location.reload()
         }
       });
@@ -112,6 +112,30 @@ const showPopupEditRestaurant = (restaurantFromList) => {
 const closePopup = () => {
   modalOpen.value = false;
 }
+
+const validate = (restaurantId) => {
+  fetch(import.meta.env.VITE_API_URL+"restaurants/activate/"+restaurantId, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      "restaurant": "/api/restaurants/"+restaurantId,
+    })
+  })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          alert(data.error);
+        } else {
+          alert('Restaurant validate successfully')
+          location.reload()
+        }
+      });
+}
+
 </script>
 
 <template>
@@ -187,6 +211,10 @@ const closePopup = () => {
                 <button @click="deleteRestaurants(restaurant.id)"
                         class="mx-auto lg:mx-0 hover:underline gradient text-red font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
                   Delete</button>
+                <button v-if="restaurant.isActivated === false"
+                    @click="validate(restaurant.id)"
+                    class="mx-auto lg:mx-0 hover:underline gradient text-red font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                  Valider</button>
               </td>
             </tr>
             </tbody>
