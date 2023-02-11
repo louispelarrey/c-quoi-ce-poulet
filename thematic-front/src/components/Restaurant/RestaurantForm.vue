@@ -144,5 +144,3 @@ const loadFile = (event) => {
     </div>
   </form>
 </template>
-
-<style src="@vueform/multiselect/themes/default.css"></style>
