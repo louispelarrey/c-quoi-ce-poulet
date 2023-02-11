@@ -33,7 +33,7 @@ class RestaurantFixtures extends Fixture implements DependentFixtureInterface
                 "11:00",
                 "12:00",
             ])
-            ->setOwner($this->userRepository->findOneBy(['email' => 'user@user.com']))
+            ->setOwner($this->userRepository->findOneBy(['email' => 'restaurant1@gmail.com']))
             ->setIsActivated(true)
         ;
         $manager->persist($restaurant);

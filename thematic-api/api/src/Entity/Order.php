@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
@@ -64,18 +65,19 @@ class Order
     private array $status = [];
 
     #[ORM\OneToMany(mappedBy: 'orderEntity', targetEntity: MealOrder::class, orphanRemoval: true)]
+    #[Groups(["order:read", "order:update"])]
     private Collection $mealOrders;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
-    #[Groups(["order:read", "order:update", "user:read"])]
+    #[Groups(["order:read", "order:update"])]
     private ?User $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'deliveryOrders')]
-    #[Groups(["order:read", "order:update", "user:read"])]
+    #[Groups(["order:read", "order:update"])]
     private ?User $deliverer = null;
 
     #[ORM\ManyToOne(inversedBy: 'restaurantOrders')]
-    #[Groups(["order:read", "order:update", "user:read"])]
+    #[Groups(["order:read", "order:update"])]
     private ?User $restaurantUser = null;
 
     public function __construct()
