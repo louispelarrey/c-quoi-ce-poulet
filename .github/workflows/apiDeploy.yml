@@ -32,9 +32,9 @@ jobs:
           # Optional, SSH private key
           key: ${{secrets.SERV_SSH_KEY}}
           # Optional, literal inventory file contents
-          # inventory: |
-          #    [all]
-          #    example.com
+          inventory: |
+            [all]
+            ${{secrets.SERV_IP}}:22
 
           #    [group1]
           #    example.com
