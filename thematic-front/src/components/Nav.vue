@@ -11,12 +11,6 @@ const token = localStorage.getItem("token");
 
 const user = ref(null);
 
-// get user information from the AuthProvider which is provide(
-console.log(AuthProvider.user);
-user.value = AuthProvider.user;
-
-console.log(user);
-
 </script>
 
 <template>

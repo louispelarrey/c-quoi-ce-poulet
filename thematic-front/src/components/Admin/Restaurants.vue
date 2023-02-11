@@ -1,8 +1,6 @@
 <script setup>
 import {onMounted, ref} from 'vue'
 import RestaurantForm from "../Restaurant/RestaurantForm.vue";
-// check if the user is the admin via his token
-// if not, redirect to home page
 
 const token = localStorage.getItem('token')
 
@@ -28,29 +26,17 @@ const getRestaurants = () => {
         if (data.error) {
           alert(data.error);
         } else {
-          fetch(import.meta.env.VITE_API_URL+"tag_restaurants?restaurant.id="+restaurantToEdit.id, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json",
-              'Authorization': `Bearer ${token}`,
-            }
-          })
-              .then((res) => res.json())
-              .then((data) => {
-                if (data.error) {
-                  alert(data.error);
-                } else {
-                  actualTags.value = data
-
-                }
-              });
           restaurants.value = data
+          // set all data tags id to actualTags
+          data.forEach(restaurant => {
+            restaurant.tags.forEach(tag => {
+              actualTags.value.push(tag.id)
+            })
+          })
         }
       });
-
 }
-
+console.log(actualTags)
 const deleteRestaurants = (id) => {
   fetch(import.meta.env.VITE_API_URL+"restaurants/"+id, {
     method: "DELETE",
@@ -86,14 +72,10 @@ const editRestaurant = (restaurantToEdit) => {
       .then((res) => res.json())
       .then((data) => {
         restaurantToEdit.tags.map(tag => {
-          // if the tag already exist in the base we don't need to create it
-          console.log(restaurantToEdit.tags)
-          if (restaurantToEdit.tags.value.contains(tag)) {
+          console.log(actualTags.value)
+          console.log(tag)
+          if (actualTags.value.includes(tag)) {
             return;
-          }
-          console.log(restaurantToEdit.tags)
-          if (tag.id) {
-            tag = tag.id
           }
           fetch(import.meta.env.VITE_API_URL+"tag_restaurants", {
             method: "POST",
