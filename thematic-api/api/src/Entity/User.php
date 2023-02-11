@@ -60,12 +60,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
-    #[Groups(['user:read', 'restaurant:read'])]
+    #[Groups(['user:read', 'restaurant:read', 'report:read', 'order:read'])]
     private ?int $id = null;
 
     #[Assert\NotBlank]
     #[Assert\Email]
-    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read'])]
+    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read', 'report:read', 'order:read'])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -82,11 +82,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read', 'report:read'])]
+    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read', 'report:read', 'order:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read', 'report:read'])]
+    #[Groups(['user:read', 'user:create', 'user:update', 'restaurant:read', 'report:read', 'order:read'])]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 20)]

@@ -75,6 +75,19 @@ class UserFixtures extends Fixture
         $this->addReference(self::ADMIN_TWO_REFERENCE, $adminTwo);
         $this->addReference(self::CUSTOMER_ONE_REFERENCE, $customerOne);
 
+        $customerTwo = new User;
+        $customerTwo
+            ->setEmail('customer2@gmail.com')
+            ->setPassword($this->passwordHasher->hashPassword($customerTwo, 'customer2'))
+            ->setRoles(['ROLE_USER'])
+            ->setFirstname('Customer')
+            ->setLastname('Two')
+            ->setAddress('1 rue de la petite maison')
+            ->setNumberPhone('000000002')
+        ;
+
+        $manager->persist($customerTwo);
+
         $delivererOne = new User;
         $delivererOne
             ->setEmail('deliverer1@gmail.com')

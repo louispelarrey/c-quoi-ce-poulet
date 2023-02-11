@@ -36,8 +36,20 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
             return;
         }
 
+
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        $queryBuilder->andWhere(sprintf('%s.user = :current_user', $rootAlias));
+
+        switch ($user->getRoles()[0]) {
+            case 'ROLE_USER':
+                $queryBuilder->andWhere(sprintf('%s.client = :current_user', $rootAlias));
+                break;
+            case 'ROLE_DELIVERY':
+                $queryBuilder->andWhere(sprintf('%s.deliverer = :current_user', $rootAlias));
+                break;
+            case 'ROLE_RESTAURANT':
+                $queryBuilder->andWhere(sprintf('%s.restaurantUser = :current_user', $rootAlias));
+                break;
+        }
         /**
          * @var User $user
          */
