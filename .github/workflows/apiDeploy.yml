@@ -19,8 +19,8 @@ jobs:
       - uses: kielabokkie/ssh-key-and-known-hosts-action@v1
         with:
           ssh-private-key: ${{ secrets.SERV_SSH_KEY }} # <---- faire une clé SSH et en faire un secret
-          ssh-host: 134.209.246.99 # ${{secrets.Serv_IP}} # <---- mettre l'adresse IP du server dans un secret pour pouvoir l'utiliser
-          #ssh-port: 2222
+          ssh-host: ${{secrets.SERV_IP}} # <---- mettre l'adresse IP du server dans un secret pour pouvoir l'utiliser
+          ssh-port: 22
 
       - name: Update docker compose image
         uses: dawidd6/action-ansible-playbook@v2
