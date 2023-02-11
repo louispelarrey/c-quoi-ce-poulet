@@ -25,14 +25,14 @@
     - name: Clone a github repository
       git:
         repo: https://github.com/louispelarrey/c-quoi-ce-poulet.git
-        dest: /home/c-quoi-ce-poulet/thematic-api
+        dest: /home/root
         clone: yes
         update: yes
         version: dev
 
     - name: Build and start Docker Compose services
       community.docker.docker_compose:
-        project_src: /home/c-quoi-ce-poulet/thematic-api
+        project_src: /home/root/c-quoi-ce-poulet/thematic-api
         project_name: c-quoi-ce-poulet/thematic-api
         files:
           - docker-compose.yml
