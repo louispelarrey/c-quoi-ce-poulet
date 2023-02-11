@@ -37,10 +37,9 @@ class MealsVoter extends Voter
                 /**
                  * @var \App\Entity\User $user
                  */
-                foreach($user->getRestaurants() as $restaurant) {
-                    if($restaurant->getMeals()->contains($subject)) {
-                        return true;
-                    }
+                //Pour que le user puisse créer un meal, le restaurant doit lui appartenir
+                if($user->getId() === $subject->getRestaurant()->getOwner()->getId() && $user->getRoles()[0] === 'ROLE_RESTAURANT') {
+                    return true;
                 }
 
                 break;

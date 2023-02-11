@@ -38,7 +38,7 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
                 'status' => 'pending',
                 'date' => new \DateTime(),
             ])
-            ->setClient($this->userRepository->findOneBy(['email' => 'customer11@gmail.com']))
+            ->setClient($this->userRepository->findOneBy(['email' => 'customer1@gmail.com']))
             ->setRestaurantUser($this->userRepository->findOneBy(['email' => 'restaurant1@gmail.com']))
             ->setDeliverer($this->userRepository->findOneBy(['email' => 'deliverer1@gmail.com']))
         ;
