@@ -8,9 +8,34 @@ const address = ref('')
 const openingTime = ref('')
 const closingTime = ref('')
 const picturePath = ref('')
+const tags = ref([])
+const tagsValues = ref([])
 
 const token = localStorage.getItem('token')
 const actualUserId = JSON.parse(atob(token.split('.')[1])).user_id;
+
+fetch(import.meta.env.VITE_API_URL+"tags", {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": `Bearer ${localStorage.getItem('token')}`
+  }
+})
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.error) {
+        alert(data.error);
+      } else {
+        const dataFormated = data.map((tag) => {
+          return {
+            name: tag.name,
+            id: tag.id
+          }
+        })
+        tags.value = dataFormated
+      }
+    });
 
 const submit = () => {
   fetch(import.meta.env.VITE_API_URL+"restaurants", {
@@ -26,6 +51,7 @@ const submit = () => {
       openingTime: [openingTime.value,closingTime.value],
       picturePath: picturePath.value,
       owner: 'api/users/'+actualUserId,
+      tags: tagsValues.value
     }),
   })
       .then((res) => res.json())
@@ -86,6 +112,17 @@ const loadFile = (event) => {
           <div class="pb-4">
             <label for="about" class="font-semibold text-gray-700 block pb-1">Closing time</label>
             <input required type="time" id="address" name="address" class=" border rounded-r px-4 py-2 w-full" v-model="closingTime" />
+          </div>
+        </div>
+        <div class="md:w-1/3 p-6 flex flex-col relative rounded  shadow p-6">
+          <div class="pb-4">
+            <select multiple aria-expanded="true" v-model="tagsValues">
+              <template v-for="tag in tags">
+                <option :value="tag.id">
+                  {{ tag.name }}
+                </option>
+              </template>
+            </select>
           </div>
         </div>
       </div>

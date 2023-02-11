@@ -36,14 +36,14 @@ const getMenu = (restaurant) => {
   <section class="bg-white border-b py-8">
     <div class="container max-w-5xl mx-auto m-8">
       <h1 class="w-full my-2 text-3xl font-bold leading-tight text-center text-gray-800">
-        C Quoi ce poulet ?
+
       </h1>
     </div>
   </section>
   <section class="bg-white border-b py-8">
     <div class="container mx-auto flex flex-wrap pt-4 pb-12">
       <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
-        Title
+        Liste des restaurants
       </h1>
       <div v-for="restaurant in restaurants" class="md:w-1/3 p-6 flex flex-col relative">
         <div class="cursor-pointer" @click="getMenu(restaurant)" :style="{ backgroundImage: `url(${restaurant.image ? restaurant.image : '../src/assets/Images/img_resto_global.jpg'})`, backgroundSize: 'cover', minHeight: '80%' }">
