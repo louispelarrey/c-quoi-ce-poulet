@@ -1,0 +1,40 @@
+name: api Server Deployment
+
+on:
+  push:
+    branches:
+      - feature/deploy
+    paths:
+      - 'thematic-api/**'
+      - '.github/workflows/apiDeploy.yml'
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: kielabokkie/ssh-key-and-known-hosts-action@v1
+        with:
+          ssh-private-key: ${{ secrets.SERV_SSH_KEY }} # <---- faire une clé SSH et en faire un secret
+          ssh-host: cquoicepoulet.com # ${{secrets.Serv_IP}} # <---- mettre l'adresse IP du server dans un secret pour pouvoir l'utiliser
+          #ssh-port: 2222
+
+      - name: Update docker compose image
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          # Required, playbook filepath
+          playbook: apiDeploy.yml
+          # Optional, directory where playbooks live
+          directory: ./ansible
+          # Optional, SSH private key
+          key: ${{secrets.SERV_SSH_KEY}}
+          # Optional, literal inventory file contents
+          # inventory: |
+          #    [all]
+          #    example.com
+
+          #    [group1]
+          #    example.com
