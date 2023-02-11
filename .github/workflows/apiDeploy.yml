@@ -3,7 +3,7 @@ name: Test API Server Deployment
 on:
   push:
     branches:
-      - feature/deploy
+      - dev
     paths:
       - 'thematic-api/**'
       - '.github/workflows/apiDeploy.yml'
