@@ -6,22 +6,22 @@ const token = localStorage.getItem('token')
 
 const reportsCount = ref(0)
 
-fetch(import.meta.env.VITE_API_URL+"reports", {
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    'Authorization': `Bearer ${token}`,
-  }
-})
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.error) {
-        alert(data.error);
-      } else {
-        reportsCount.value = data.length
-      }
-    });
+// fetch(import.meta.env.VITE_API_URL+"reports", {
+//   method: "GET",
+//   headers: {
+//     "Content-Type": "application/json",
+//     "Accept": "application/json",
+//     'Authorization': `Bearer ${token}`,
+//   }
+// })
+//     .then((res) => res.json())
+//     .then((data) => {
+//       if (data.error) {
+//         alert(data.error);
+//       } else {
+//         reportsCount.value = data.length
+//       }
+//     });
 
 </script>
 

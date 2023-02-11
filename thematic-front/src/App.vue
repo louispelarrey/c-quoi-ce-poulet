@@ -26,7 +26,7 @@ if (token) {
     <Nav/>
     <div class="relative">
       <div id="viewcontainer" class="fitPageHeight mx-auto">
-        <div class="flex flex-row">
+        <div class="flex flex-row container_page">
           <navAdmin v-if="userAdmin"/>
           <RouterView/>
         </div>
@@ -40,5 +40,10 @@ if (token) {
 .fitPageHeight {
   min-height: 70vh;
   height: 100%;
+}
+
+.container_page {
+  margin: 0 auto;
+  width: 80vw;
 }
 </style>

@@ -47,8 +47,6 @@ const changeReport = (id, state) => {
   });
 }
 
-console.log(reports)
-
 </script>
 
 <template>

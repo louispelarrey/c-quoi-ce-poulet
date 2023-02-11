@@ -23,7 +23,6 @@ fetch(import.meta.env.VITE_API_URL+"restaurants/"+id, {
       if (data.error) {
         alert(data.error);
       } else {
-        console.log(data)
         restaurant.value = data
         menus.value = data.meals
       }

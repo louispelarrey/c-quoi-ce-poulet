@@ -3,7 +3,7 @@ import { ref } from 'vue'
 </script>
 
 <template>
-  <footer class="bg-white">
+  <footer class="bg-white border-t-8 mt-5">
     <div class="container mx-auto px-8">
       <div class="w-full flex flex-col md:flex-row py-6">
         <div class="flex-1 mb-6 text-black">

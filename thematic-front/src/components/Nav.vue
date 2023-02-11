@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue'
-import AuthProvider from "./Provider/AuthProvider.vue";
 
 function logout() {
   localStorage.removeItem("token");
@@ -10,12 +9,6 @@ function logout() {
 const token = localStorage.getItem("token");
 
 const user = ref(null);
-
-// get user information from the AuthProvider which is provide(
-console.log(AuthProvider.user);
-user.value = AuthProvider.user;
-
-console.log(user);
 
 </script>
 
@@ -41,6 +34,7 @@ console.log(user);
             </div>
             <div v-else>
               <router-link class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" to="/login">Login</router-link>
+              <router-link class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" to="/register">Register</router-link>
             </div>
           </li>
           <li class="mr-3">
@@ -48,7 +42,7 @@ console.log(user);
           </li>
         </ul>
         <button
-            class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full lg:mt-0 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+            class="ml-2 mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
         >
           <router-link class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" to="/restaurants/new" >
             Inscrire un restaurant

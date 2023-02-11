@@ -39,7 +39,7 @@ const submit = () => {
 </script>
 
 <template>
-  <div class="p-6 rounded-lg shadow-lg bg-white max-w-md">
+  <div class="p-6 rounded-lg shadow-lg bg-white flex flex-column container_register mx-auto mt-20">
     <form @submit.prevent="submit">
       <div class="form-group mb-6">
         <label for="exampleInputEmail2" class="form-label inline-block mb-2 text-gray-700">Email address</label>
@@ -112,5 +112,14 @@ const submit = () => {
     </form>
   </div>
 </template>
+
+<style scoped>
+.container_register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+}
+</style>
 
 
