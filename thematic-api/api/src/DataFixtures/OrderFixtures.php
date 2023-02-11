@@ -44,6 +44,21 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
         ;
 
         $manager->persist($order);
+
+        $order = new Order;
+        $order
+            ->setAddress($this->userRepository->findOneBy(['email' => 'customer2@gmail.com'])->getAddress())
+            ->setStatus([
+                'status' => 'pending',
+                'date' => new \DateTime(),
+            ])
+            ->setClient($this->userRepository->findOneBy(['email' => 'customer2@gmail.com']))
+            ->setRestaurantUser($this->userRepository->findOneBy(['email' => 'restaurant1@gmail.com']))
+            ->setDeliverer($this->userRepository->findOneBy(['email' => 'deliverer1@gmail.com']))
+        ;
+
+        $manager->persist($order);
+
         $manager->flush();
     }
 }

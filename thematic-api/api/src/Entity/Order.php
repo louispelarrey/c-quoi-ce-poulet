@@ -21,11 +21,10 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 #[ApiResource(
     operations: [
         new GetCollection(
-            security: 'is_granted("ROLE_ADMIN")',
             securityMessage: 'Only admins can list orders.',
         ),
         new Get(
-            security: 'is_granted("RESTAURANT_GET", object)',
+            security: 'is_granted("ORDER_GET", object)',
             securityMessage: 'Only admins can get other orders.',
         ),
         new Post(

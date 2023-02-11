@@ -44,6 +44,13 @@ class MealOrderFixtures extends Fixture implements DependentFixtureInterface
 
         $manager->persist($mealOrder);
 
+        $mealOrder = new MealOrder;
+        $mealOrder
+            ->setMeal($this->mealsRepository->findOneBy(['name' => 'Burger']))
+            ->setOrderEntity($this->orderRepository->findOneBy(['id' => 2]));
+
+        $manager->persist($mealOrder);
+
         $manager->flush();
     }
 }
