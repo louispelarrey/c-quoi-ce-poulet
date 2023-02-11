@@ -31,6 +31,7 @@
         version: dev
 
     - name: Build and start Docker Compose services
+      gather_facts: false
       community.docker.docker_compose:
         project_src: /home/root/c-quoi-ce-poulet/thematic-api
         project_name: c-quoi-ce-poulet/thematic-api
