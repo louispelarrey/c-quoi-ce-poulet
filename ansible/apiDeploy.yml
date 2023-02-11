@@ -30,15 +30,14 @@
         update: yes
         version: dev
 
-    - name: Build and start Docker Compose services
-      gather_facts: false
-      community.docker.docker_compose:
-        project_src: /home/root/c-quoi-ce-poulet/thematic-api
-        project_name: c-quoi-ce-poulet/thematic-api
-        files:
-          - docker-compose.yml
-          - docker-compose.prod.yml
-        build: yes
-        pull: yes
-        recreate: yes
-        detach: yes
+    # - name: Build and start Docker Compose services
+    #   community.docker.docker_compose:
+    #     project_src: /home/root/c-quoi-ce-poulet/thematic-api
+    #     project_name: c-quoi-ce-poulet/thematic-api
+    #     files:
+    #       - docker-compose.yml
+    #       - docker-compose.prod.yml
+    #     build: yes
+    #     pull: yes
+    #     recreate: yes
+    #     detach: yes
