@@ -57,7 +57,6 @@ class UserFixtures extends Fixture
         ;
 
         $manager->persist($adminTwo);
-        $manager->flush();
 
         $customerOne = new User;
         $customerOne
@@ -71,13 +70,38 @@ class UserFixtures extends Fixture
         ;
 
         $manager->persist($customerOne);
-        $manager->flush();
 
         $this->addReference(self::ADMIN_ONE_REFERENCE, $adminOne);
         $this->addReference(self::ADMIN_TWO_REFERENCE, $adminTwo);
         $this->addReference(self::CUSTOMER_ONE_REFERENCE, $customerOne);
 
+        $delivererOne = new User;
+        $delivererOne
+            ->setEmail('deliverer1@gmail.com')
+            ->setPassword($this->passwordHasher->hashPassword($delivererOne, 'deliverer1'))
+            ->setRoles(['ROLE_DELIVERER'])
+            ->setFirstname('JeanMi')
+            ->setLastname('Du13')
+            ->setAddress('1 rue de la petite maison')
+            ->setNumberPhone('000000001')
+        ;
 
+        $manager->persist($delivererOne);
+
+        $restaurantOne = new User;
+        $restaurantOne
+            ->setEmail('restaurant1@gmail.com')
+            ->setPassword($this->passwordHasher->hashPassword($restaurantOne, 'restaurant1'))
+            ->setRoles(['ROLE_RESTAURANT'])
+            ->setFirstname('Kaaris')
+            ->setLastname('Le mélangeur')
+            ->setAddress('1 rue de la petite maison')
+            ->setNumberPhone('000000001')
+        ;
+
+        $manager->persist($restaurantOne);
+
+        $manager->flush();
     }
 }
 

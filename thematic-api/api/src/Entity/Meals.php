@@ -41,11 +41,11 @@ class Meals
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['meal:read', 'restaurant:read'])]
+    #[Groups(['meal:read', 'restaurant:read', 'order:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['meal:read', 'meal:update', 'meal:post', 'restaurant:read'])]
+    #[Groups(['meal:read', 'meal:update', 'meal:post', 'restaurant:read', 'order:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -80,6 +80,12 @@ class Meals
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    #[Groups(['meal:read'])]
+    public function getOrders()
+    {
+        return $this->mealOrders->map(fn (MealOrder $mealOrder) => $mealOrder->getOrderEntity());
     }
 
     public function getName(): ?string

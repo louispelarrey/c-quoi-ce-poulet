@@ -101,9 +101,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private Collection $restaurants;
 
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Order::class)]
-    private Collection $orders;
-
     #[ORM\OneToMany(mappedBy: 'reportedBy', targetEntity: Report::class)]
     #[Groups(['user:read'])]
     private Collection $reportsBy;
@@ -112,12 +109,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private Collection $reportsOn;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Order::class)]
+    #[Groups(['user:read'])]
+    private Collection $orders;
+
+    #[ORM\OneToMany(mappedBy: 'deliverer', targetEntity: Order::class)]
+    #[Groups(['user:read'])]
+    private Collection $deliveryOrders;
+
+    #[ORM\OneToMany(mappedBy: 'restaurantUser', targetEntity: Order::class)]
+    #[Groups(['user:read'])]
+    private Collection $restaurantOrders;
+
     public function __construct()
     {
         $this->restaurants = new ArrayCollection();
         $this->orders = new ArrayCollection();
         $this->reportsBy = new ArrayCollection();
         $this->reportsOn = new ArrayCollection();
+        $this->deliveryOrders = new ArrayCollection();
+        $this->restaurantOrders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -362,6 +373,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($reportsOn->getReportedUser() === $this) {
                 $reportsOn->setReportedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getDeliveryOrders(): Collection
+    {
+        return $this->deliveryOrders;
+    }
+
+    public function addDeliveryOrder(Order $deliveryOrder): self
+    {
+        if (!$this->deliveryOrders->contains($deliveryOrder)) {
+            $this->deliveryOrders->add($deliveryOrder);
+            $deliveryOrder->setDeliverer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeliveryOrder(Order $deliveryOrder): self
+    {
+        if ($this->deliveryOrders->removeElement($deliveryOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($deliveryOrder->getDeliverer() === $this) {
+                $deliveryOrder->setDeliverer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getRestaurantOrders(): Collection
+    {
+        return $this->restaurantOrders;
+    }
+
+    public function addRestaurantOrder(Order $restaurantOrder): self
+    {
+        if (!$this->restaurantOrders->contains($restaurantOrder)) {
+            $this->restaurantOrders->add($restaurantOrder);
+            $restaurantOrder->setRestaurantUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRestaurantOrder(Order $restaurantOrder): self
+    {
+        if ($this->restaurantOrders->removeElement($restaurantOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($restaurantOrder->getRestaurantUser() === $this) {
+                $restaurantOrder->setRestaurantUser(null);
             }
         }
 
