@@ -1,3 +1,24 @@
+# ---
+# - hosts: all
+#   tasks:
+#     - name: Clone a github repository
+#       git:
+#         repo: https://github.com/louispelarrey/c-quoi-ce-poulet.git
+#         dest: /home/thematic-api
+#         version: dev
+#         clone: yes
+#         update: yes
+
+# - hosts: all
+#   name: Run using a project directory
+#   gather_facts: false
+#   tasks:
+#     - name: Create and pull compose services
+#       community.docker.docker_compose:
+#         project_src: /home/thematic-api
+#         pull: true
+#         state: present
+#       register: output
 ---
 - hosts: all
   tasks:
@@ -9,13 +30,14 @@
         update: yes
         version: dev
 
-- hosts: all
-  name: Run using a project directory
-  gather_facts: false
-  tasks:
-    - name: Create and pull compose services
+    - name: Build and start Docker Compose services
       community.docker.docker_compose:
         project_src: /home/thematic-api
-        pull: true
-        state: present
-      register: output
+        project_name: thematic-api
+        files:
+          - docker-compose.yml
+          - docker-compose.prod.yml
+        build: yes
+        pull: yes
+        recreate: yes
+        detach: yes
