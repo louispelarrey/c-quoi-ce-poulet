@@ -35,5 +35,3 @@ jobs:
           inventory: |
             [all]
             134.209.246.99 ansible_user=root
-            [api_deploy:vars]
-            ansible_python_interpreter=/usr/bin/python3
