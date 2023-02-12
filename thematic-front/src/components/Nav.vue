@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-import Cart from "./Cart/Cart.vue";
-import Reports from "./Admin/Reports.vue";
+import Commands from "./Commands.vue";
+import CommandsUser from "./User/CommandsUser.vue";
 
 function logout() {
   localStorage.removeItem("token");
@@ -10,25 +10,34 @@ function logout() {
 
 let userRoles = ref([]);
 let isNotUser = ref(false);
+const cartOpen = ref(false);
+
 
 const token = localStorage.getItem("token");
 if (token){
   const user = JSON.parse(atob(token.split('.')[1]))
   userRoles.value = Object.values(user.roles);
 
-const user = ref(null);
-const cartOpen = ref(false);
+
   isNotUser.value = !(userRoles.value.includes('ROLE_USER') && userRoles.value.length === 1);
+}
+
+const closePopup = () => {
+  cartOpen.value = false;
 }
 
 </script>
 
 <template>
+  <div @click="closePopup" id="overlay" class="overlay" v-if="cartOpen">
+  </div>
+  <div id="modal-edit-user" class="popup" v-if="cartOpen">
+    <button @click="closePopup">close</button>
+    <CommandsUser />
+  </div>
   <div v-if="cartOpen">
     <div class="relative">
-
     </div>
-    < restaurant_id="" menu="" />
   </div>
   <div id="header" class="w-full z-30 top-0 text-white bg-purple-400">
     <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
@@ -79,7 +88,26 @@ const cartOpen = ref(false);
 </template>
 
 <style scoped>
-.read-the-docs {
-  color: #888;
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  background-color: rgba(0, 0, 0, 0.47);
+  width: 100%;
+  height: 100%;
+}
+
+.popup{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  width: 80vw;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
 }
 </style>
