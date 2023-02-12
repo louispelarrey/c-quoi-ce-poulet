@@ -101,6 +101,19 @@ class UserFixtures extends Fixture
 
         $manager->persist($delivererOne);
 
+        $delivererTwo = new User;
+        $delivererTwo
+            ->setEmail('deliverer2@gmail.com')
+            ->setPassword($this->passwordHasher->hashPassword($delivererTwo, 'deliverer2'))
+            ->setRoles(['ROLE_DELIVERER'])
+            ->setFirstname('Un livreur')
+            ->setLastname('Oui')
+            ->setAddress('1 rue de la petite maison')
+            ->setNumberPhone('000000002')
+        ;
+
+        $manager->persist($delivererTwo);
+
         $restaurantOne = new User;
         $restaurantOne
             ->setEmail('restaurant1@gmail.com')
