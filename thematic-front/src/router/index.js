@@ -10,6 +10,8 @@ import {ref} from "vue";
 import Restaurants from "../components/Admin/Restaurants.vue";
 import Reports from "../components/Admin/Reports.vue";
 import CreateRestaurant from "../components/Restaurant/CreateRestaurant.vue";
+import RecapOrder from "../components/Order/RecapOrder.vue";
+import Commands from "../components/Commands.vue";
 import HomeRestaurateur from "../components/Restaurant/HomeRestaurateur.vue";
 
 const token = localStorage.getItem("token");
@@ -79,6 +81,16 @@ const router = createRouter({
           path: "/admin/reports",
           name: "admin_reports",
           component: Reports,
+        },
+        {
+          path: "/your_order",
+          name: "order_recap",
+          component: RecapOrder,
+        },
+        {
+            path: "/orders",
+            name: "orders",
+            component: Commands,
         }
     ],
 });

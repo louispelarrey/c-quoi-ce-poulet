@@ -18,8 +18,8 @@ jobs:
 
       - uses: kielabokkie/ssh-key-and-known-hosts-action@v1
         with:
-          ssh-private-key: ${{ secrets.SERV_SSH_KEY }} # <---- faire une clé SSH et en faire un secret
-          ssh-host: ${{secrets.SERV_IP}} # <---- mettre l'adresse IP du server dans un secret pour pouvoir l'utiliser
+          ssh-private-key: ${{ secrets.SERV_SSH_KEY }} # <---- mettre clé SSH privée faire un secret
+          ssh-host: ${{secrets.SERV_IP}} # <---- mettre l'adresse IP du server dans un secret
           ssh-port: 22
 
       - name: Update docker compose image
@@ -34,6 +34,7 @@ jobs:
           # Optional, literal inventory file contents
           inventory: |
             [all]
-            ${{secrets.SERV_IP}}:22 ansible_user= root ansible_ssh_private_key_file=${{ secrets.SERV_SSH_KEY }}
+            ${{secrets.SERV_IP}}:22 ansible_user=root
+
             [apiDeploy:vars]
             ansible_python_interpreter=/usr/bin/python3

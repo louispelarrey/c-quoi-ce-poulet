@@ -26,20 +26,21 @@ fetch(import.meta.env.VITE_API_URL+"restaurants", {
   }
 });
 
-const getMenu = (restaurant) => {
-  router.push({ name: 'Meals', params: { id: restaurant.id } })
+const command = {
+  meals: [
+    {
+      id: 1,
+      name: 'Pizza',
+      price: 10,
+      img: 'https://www.lesfoodies.com/wp-content/uploads/2019/05/pizza-vegetarienne-1.jpg',
+
+    }
+  ],
 }
 
 </script>
 
 <template>
-  <section class="bg-white border-b py-8">
-    <div class="container max-w-5xl mx-auto m-8">
-      <h1 class="w-full my-2 text-3xl font-bold leading-tight text-center text-gray-800">
-
-      </h1>
-    </div>
-  </section>
   <section class="bg-white border-b py-8">
     <div class="container mx-auto flex flex-wrap pt-4 pb-12">
       <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
