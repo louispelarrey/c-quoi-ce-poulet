@@ -14,16 +14,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new Get(
-            security: 'is_granted("ROLE_ADMIN")',
-            securityMessage: 'Only admins can get meal orders.',
+            // security: 'is_granted("ROLE_ADMIN")',
+            // securityMessage: 'Only admins can get meal orders.',
         ),
         new Post(
-            security: 'is_granted("ROLE_ADMIN")',
-            securityMessage: 'Only admins can create meal orders.',
+            // security: 'is_granted("ROLE_ADMIN")',
+            // securityMessage: 'Only admins can create meal orders.',
         ),
         new Delete(
-            security: 'is_granted("ROLE_ADMIN")',
-            securityMessage: 'Only admins can delete meal orders.',
+            // security: 'is_granted("ROLE_ADMIN")',
+            // securityMessage: 'Only admins can delete meal orders.',
         ),
     ],
     normalizationContext: ['groups' => ['mealOrder:read']],
