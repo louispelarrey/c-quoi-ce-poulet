@@ -62,6 +62,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['order:read']],
     denormalizationContext: ['groups' => ['order:update']],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['client.id' => 'exact'])]
 class Order
 {
     #[ORM\Id]
