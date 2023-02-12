@@ -37,6 +37,22 @@ class RestaurantFixtures extends Fixture implements DependentFixtureInterface
             ->setIsActivated(true)
         ;
         $manager->persist($restaurant);
+
+        $restaurant = new Restaurant;
+        $restaurant
+            ->setName('Le petit resto')
+            ->setAddress('1 rue de la petite maison')
+            ->setPicturePath('string')
+            ->setOpeningTime([
+                "11:00",
+                "12:00",
+            ])
+            ->setOwner($this->userRepository->findOneBy(['email' => 'restaurant2@gmail.com']))
+            ->setIsActivated(false)
+        ;
+
+        $manager->persist($restaurant);
+
         $manager->flush();
     }
 }

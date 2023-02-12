@@ -43,6 +43,15 @@ class MealsFixtures extends Fixture implements DependentFixtureInterface
 
         $manager->persist($meal2);
 
+        $meal3 = new Meals;
+        $meal3
+            ->setName('Pizza')
+            ->setPrice(12)
+            ->setPicturePath('string')
+            ->setRestaurant($this->restaurantRepository->findOneBy(['name' => 'Le petit resto']));
+
+        $manager->persist($meal3);
+
         $manager->flush();
     }
 }

@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\AcceptDeliveryController;
 use App\Controller\DeliveredDeliveryController;
+use App\Controller\PreparingOrderController;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -30,6 +31,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Post(
             security: 'is_granted("ROLE_USER")',
             securityMessage: 'Only users can create orders.',
+        ),
+        new Patch(
+            security: 'is_granted("ORDER_CAN_PREPARE", object)',
+            securityMessage: 'Only restaurant can deliver deliveries.',
+            uriTemplate: '/orders/{id}/preparing',
+            controller: PreparingOrderController::class,
         ),
         new Patch(
             security: 'is_granted("ORDER_CAN_DELIVER", object)',
