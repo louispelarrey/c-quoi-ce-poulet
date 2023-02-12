@@ -57,7 +57,7 @@ class Meals
     private ?string $picturePath = null;
 
     #[ORM\Column]
-    #[Groups(['meal:read', 'meal:update', 'meal:post', 'restaurant:read'])]
+    #[Groups(['meal:read', 'meal:update', 'meal:post', 'restaurant:read', 'order:read'])]
     private ?int $price = null;
 
     #[ORM\Column]
