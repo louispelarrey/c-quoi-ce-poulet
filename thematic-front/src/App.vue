@@ -12,7 +12,6 @@ let userAdmin = ref(false)
 
 if (token) {
   const user = JSON.parse(atob(token.split('.')[1]))
-  console.log(user)
   userAdmin.value = Object.values(user.roles).includes('ROLE_ADMIN');
   if (!userAdmin.value) {
     document.addEventListener("DOMContentLoaded", function(event) {

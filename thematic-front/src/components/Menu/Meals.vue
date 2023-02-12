@@ -23,7 +23,6 @@ fetch(import.meta.env.VITE_API_URL+"restaurants/"+id, {
       if (data.error) {
         alert(data.error);
       } else {
-        console.log(data)
         restaurant.value = data
         menus.value = data.meals
       }
@@ -32,9 +31,15 @@ fetch(import.meta.env.VITE_API_URL+"restaurants/"+id, {
 </script>
 
 <template>
-  <h1 class="text-4xl text-center mb-10">Menus du restaurant {{restaurant.name}}</h1>
-  <p class="text-center" v-if="restaurant.meals.length === 0">Il n'y a aucun menu pour le moment</p>
-  <div class="menu grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-10 my-5">
-    <Meal :menu="menu" v-for="menu in menus" :key="menu"/>
+  <div>
+    <div>
+      <h1 class="text-4xl text-center mb-10">Menus du restaurant {{restaurant.name}}</h1>
+    </div>
+    <div>
+      <p class="text-center" v-if="restaurant.meals?.length === 0">Il n'y a aucun menu pour le moment</p>
+      <div class="menu grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-10 my-5">
+        <Meal :menu="menu" v-for="menu in menus" :key="menu" :restaurant_id="restaurant.id"/>
+      </div>
+    </div>
   </div>
 </template>

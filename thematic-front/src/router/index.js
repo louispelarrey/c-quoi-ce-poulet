@@ -6,7 +6,7 @@ import editProfile from "../components/User/editProfile.vue"
 import Users from "../components/Admin/Users.vue";
 import HomeAdmin from "../components/Admin/HomeAdmin.vue";
 import Meals from "../components/Menu/Meals.vue";
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 import Restaurants from "../components/Admin/Restaurants.vue";
 import Reports from "../components/Admin/Reports.vue";
 import CreateRestaurant from "../components/Restaurant/CreateRestaurant.vue";
@@ -14,16 +14,18 @@ import RecapOrder from "../components/Order/RecapOrder.vue";
 import Commands from "../components/Commands.vue";
 import HomeRestaurateur from "../components/Restaurant/HomeRestaurateur.vue";
 
-const token = localStorage.getItem("token");
-let userAdmin = ref(false);
-let userRestaurateur = ref(false);
-let userDeliverer = ref(false);
+const state = reactive({
+    token: localStorage.getItem("token"),
+    userAdmin: false,
+    userRestaurateur: false,
+    userDeliverer: false
+});
 
-if (token) {
-    const user = JSON.parse(atob(token.split('.')[1]))
-    userAdmin = Object.values(user.roles).includes('ROLE_ADMIN');
-    userRestaurateur = Object.values(user.roles).includes('ROLE_RESTAURANT');
-    userDeliverer = Object.values(user.roles).includes('ROLE_DELIVERER');
+if (state.token) {
+    const user = JSON.parse(atob(state.token.split('.')[1]))
+    state.userAdmin = Object.values(user.roles).includes('ROLE_ADMIN');
+    state.userRestaurateur = Object.values(user.roles).includes('ROLE_RESTAURANT');
+    state.userDeliverer = Object.values(user.roles).includes('ROLE_DELIVERER');
 }
 
 const router = createRouter({
@@ -33,9 +35,9 @@ const router = createRouter({
             path: '/',
             name: 'home',
             component: function () {
-                if (token && userAdmin) {
+                if (state.token && state.userAdmin) {
                     return HomeAdmin
-                } else if (token && userRestaurateur) {
+                } else if (state.token && state.userRestaurateur) {
                     return HomeRestaurateur
                 }else {
                     return Home

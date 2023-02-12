@@ -28,11 +28,10 @@ fetch(import.meta.env.VITE_API_URL+"orders", {
     alert(data.error);
   } else {
     data.map((order) => {
-      if (order.status !== 'accepted'){
+      if (order.status !== 'accepted' && order.status !== 'opened') {
         order.status = JSON.parse(order.status)
       }
       orders.value.push(order)
-
     })
   }
 });
@@ -76,7 +75,6 @@ const confirmDelivery = (order) => {
         }
       });
 }
-
 </script>
 
 <template>
@@ -86,7 +84,7 @@ const confirmDelivery = (order) => {
         Orders List
       </h1>
       <div v-for="order in orders" class="rounded bg-white md:w-1/3 m-6 flex flex-col relative"
-           :style="order.status?.status !== 'pending' && actualUserId === order.deliverer.id ? 'background-color:rgba(27, 159, 45, 0.4)' : 'background-color:rgba(226, 122, 38, 0.4)'"
+           :style="order.status?.status !== 'pending' && actualUserId === order.deliverer?.id ? 'background-color:rgba(27, 159, 45, 0.4)' : 'background-color:rgba(226, 122, 38, 0.4)'"
       >
         <div class="flex-none mt-auto overflow-hidden p-3">
           <div class="text-center">
