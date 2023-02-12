@@ -34,7 +34,7 @@ jobs:
           # Optional, literal inventory file contents
           inventory: |
             [all]
-            ${{secrets.SERV_IP}}:22
+            ${{secrets.SERV_IP}}:22 ansible_user= root
 
-          #    [group1]
-          #    example.com
+            [apiDeploy:vars]
+            ansible_python_interpreter=/usr/bin/python3
