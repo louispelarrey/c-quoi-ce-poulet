@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from 'vue'
+import Cart from "./Cart/Cart.vue";
+import Reports from "./Admin/Reports.vue";
 import Commands from "./Commands.vue";
 import CommandsUser from "./User/CommandsUser.vue";
 
@@ -11,21 +13,19 @@ function logout() {
 let userRoles = ref([]);
 let isNotUser = ref(false);
 const cartOpen = ref(false);
+const user = ref(null);
 
 
 const token = localStorage.getItem("token");
 if (token){
   const user = JSON.parse(atob(token.split('.')[1]))
   userRoles.value = Object.values(user.roles);
-
-
   isNotUser.value = !(userRoles.value.includes('ROLE_USER') && userRoles.value.length === 1);
 }
 
 const closePopup = () => {
   cartOpen.value = false;
 }
-
 </script>
 
 <template>

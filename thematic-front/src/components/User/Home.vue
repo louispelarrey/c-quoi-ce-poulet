@@ -26,6 +26,11 @@ fetch(import.meta.env.VITE_API_URL+"restaurants", {
   }
 });
 
+const getMenu = (restaurant) => {
+  router.push({ name: 'Meals', params: { id: restaurant.id } })
+}
+
+
 </script>
 
 <template>
