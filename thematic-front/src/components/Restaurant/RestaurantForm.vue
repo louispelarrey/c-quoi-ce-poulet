@@ -114,6 +114,14 @@ const loadFile = (event) => {
                    v-model="restaurant.closingTime"/>
           </div>
         </div>
+        <div v-if="restaurant.tags.length > 1" class="md:w-1/3 p-6 flex flex-col relative rounded  shadow p-6">
+          <div class="pb-4">
+            <p>Actual tags : </p>
+            <span v-for="tag in restaurant.tags" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-blue-800">
+              {{ tag.name }}
+            </span>
+          </div>
+        </div>
         <div class="md:w-1/3 p-6 flex flex-col relative rounded  shadow p-6">
           <div class="pb-4">
             <select multiple aria-expanded="true" v-model="restaurant.tags">

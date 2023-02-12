@@ -10,14 +10,20 @@ import {ref} from "vue";
 import Restaurants from "../components/Admin/Restaurants.vue";
 import Reports from "../components/Admin/Reports.vue";
 import CreateRestaurant from "../components/Restaurant/CreateRestaurant.vue";
+import HomeRestaurateur from "../components/Restaurant/HomeRestaurateur.vue";
 
 const token = localStorage.getItem("token");
 let userAdmin = ref(false);
+let userRestaurateur = ref(false);
+let userDeliverer = ref(false);
 
 if (token) {
     const user = JSON.parse(atob(token.split('.')[1]))
     userAdmin = Object.values(user.roles).includes('ROLE_ADMIN');
+    userRestaurateur = Object.values(user.roles).includes('ROLE_RESTAURANT');
+    userDeliverer = Object.values(user.roles).includes('ROLE_DELIVERER');
 }
+
 const router = createRouter({
     history: createWebHistory('/'),
     routes: [
@@ -27,7 +33,9 @@ const router = createRouter({
             component: function () {
                 if (token && userAdmin) {
                     return HomeAdmin
-                } else {
+                } else if (token && userRestaurateur) {
+                    return HomeRestaurateur
+                }else {
                     return Home
                 }
             }

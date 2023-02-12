@@ -50,6 +50,7 @@ use App\Repository\RestaurantRepository;
     normalizationContext: ['groups' => ['restaurant:read']],
     denormalizationContext: ['groups' => ['restaurant:create', 'restaurant:update']],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['owner.id' => 'exact'])]
 class Restaurant
 {
     #[ORM\Id]
