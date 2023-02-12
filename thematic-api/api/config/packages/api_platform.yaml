@@ -1,13 +1,16 @@
 api_platform:
+
     title: Hello API Platform
     version: 1.0.0
     # Mercure integration, remove if unwanted
     mercure: ~
     # Good cache defaults for REST APIs
     defaults:
+        resource: .
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
+        route_prefix: /api
 
     swagger:
         api_keys:
@@ -17,6 +20,7 @@ api_platform:
     
     formats:
         json:     ['application/json']
+        jsonld:   ['application/ld+json']
         xml:      ['application/xml', 'text/xml']
         yaml:     ['application/x-yaml']
         csv:      ['text/csv']

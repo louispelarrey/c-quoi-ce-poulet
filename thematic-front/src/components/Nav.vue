@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import AuthProvider from "./Provider/AuthProvider.vue";
 
 function logout() {
   localStorage.removeItem("token");
@@ -7,6 +8,8 @@ function logout() {
 }
 
 const token = localStorage.getItem("token");
+
+const user = ref(null);
 
 </script>
 
@@ -16,7 +19,7 @@ const token = localStorage.getItem("token");
     <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
       <div class="pl-4 flex items-center">
         <router-link class="toggleColour text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl" to="/">
-          Challenge
+          C Quoi Ce Poulet
         </router-link>
       </div>
       <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden mt-2 lg:mt-0 bg-white lg:bg-transparent text-black p-4 lg:p-0 z-20" id="nav-content">
@@ -28,7 +31,7 @@ const token = localStorage.getItem("token");
           </li>
           <li class="mr-3">
             <div v-if="token">
-              <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" @click="logout">Logout</a>
+              <a class="cursor-pointer inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" @click="logout">Logout</a>
             </div>
             <div v-else>
               <router-link class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" to="/login">Login</router-link>
@@ -39,10 +42,16 @@ const token = localStorage.getItem("token");
           </li>
         </ul>
         <button
-            id="navAction"
+            class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full lg:mt-0 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+        >
+          <router-link class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" to="/restaurants/new" >
+            Inscrire un restaurant
+          </router-link>
+        </button>
+        <button
             class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
         >
-          Action
+          Panier
         </button>
       </div>
     </div>

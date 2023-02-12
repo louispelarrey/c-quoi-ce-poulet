@@ -9,9 +9,8 @@ const route = useRoute();
 
 const email = ref('')
 const password = ref('')
-
 const submit = () => {
-  fetch("https://localhost/auth", {
+  fetch(import.meta.env.VITE_API_URL+"auth", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -27,7 +26,7 @@ const submit = () => {
         if (data.code === 401) {
           alert(data.message);
         } else {
-          if (data.error) {
+          if (data.error && !data.token) {
             alert(data.error);
           } else {
             localStorage.setItem("token", data.token);

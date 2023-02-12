@@ -25,6 +25,7 @@ class Mailer
             return true;
         } catch (\Exception $e) {
             $this->logger->warning('Caught exception with response from sendGrid: ' . print_r($sendgrid, true) . ". Error: " . $e->getMessage() . "\n");
+            dd($e->getMessage());
             return false;
         }
     }

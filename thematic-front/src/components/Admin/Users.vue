@@ -1,13 +1,18 @@
 <script setup>
 import { ref } from 'vue'
+import EditUser from "../User/editProfile.vue";
+import Modal from "../lib/Modal.vue";
 // check if the user is the admin via his token
 // if not, redirect to home page
 
 const token = localStorage.getItem('token')
 
 const users = ref([])
+const userToEdit = ref({})
 
-fetch("https://localhost/users", {
+const modalOpen = ref(false)
+
+fetch(import.meta.env.VITE_API_URL+"users", {
   method: "GET",
   headers: {
     "Content-Type": "application/json",
@@ -25,7 +30,7 @@ fetch("https://localhost/users", {
   });
 
 const deleteUser = (id) => {
-  fetch("https://localhost/users/"+id, {
+  fetch(import.meta.env.VITE_API_URL+"users/"+id, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -44,8 +49,31 @@ const deleteUser = (id) => {
   });
 }
 
+fetch(import.meta.env.VITE_API_URL+"users", {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    'Authorization': `Bearer ${token}`,
+  }
+})
+.then((res) => res.json())
+.then((data) => {
+  if (data.error) {
+    alert(data.error);
+  } else {
+    users.value = data
+  }
+});
 
+const showPopupEditUser = (userfromList) => {
+  modalOpen.value = true;
+  userToEdit.value = userfromList
+}
 
+const closePopup = () => {
+  modalOpen.value = false;
+}
 
 </script>
 
@@ -66,14 +94,20 @@ const deleteUser = (id) => {
             </tr>
             </thead>
             <tbody>
-            <tr class="border-b" v-for="user in users">
+            <tr class="border-b" v-for="userfromList in users">
+              <div @click="closePopup" id="overlay" class="overlay" v-if="modalOpen">
+              </div>
+              <div id="modal-edit-user" class="popup" v-if="modalOpen">
+                <button @click="closePopup">close</button>
+                <EditUser :userEdit="userToEdit" :adminEdit="true"/>
+              </div>
               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{ user.email }}
+                {{ userfromList.email }}
               </td>
               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                <button class="mx-auto lg:mx-0 hover:underline gradient text-black font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                <button @click="showPopupEditUser(userfromList)" class="mx-auto lg:mx-0 hover:underline gradient text-black font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
                   Edit</button>
-                <button @click="deleteUser(user.id)"
+                <button @click="deleteUser(userfromList.id)"
                   class="mx-auto lg:mx-0 hover:underline gradient text-red font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
                   Delete</button>
               </td>
@@ -87,7 +121,26 @@ const deleteUser = (id) => {
 </template>
 
 <style scoped>
-.read-the-docs {
-  color: #888;
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  background-color: rgba(0, 0, 0, 0.47);
+  width: 100%;
+  height: 100%;
+}
+
+.popup{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  width: 80vw;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
 }
 </style>
