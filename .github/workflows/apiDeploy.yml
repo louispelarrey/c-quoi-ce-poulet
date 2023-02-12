@@ -34,6 +34,6 @@ jobs:
           # Optional, literal inventory file contents
           inventory: |
             [vm]
-            134.209.246.99 ansible_user=root
+            134.209.246.98 ansible_user=root
             [vm:vars]
             ansible_python_interpreter=/usr/bin/python3
