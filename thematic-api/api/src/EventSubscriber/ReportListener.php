@@ -19,7 +19,7 @@ class ReportListener implements EventSubscriberInterface
         $this->tokenStorage = $tokenStorage;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents() : array
     {
         return [
             KernelEvents::VIEW => 
