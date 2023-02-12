@@ -9,6 +9,7 @@ const token = localStorage.getItem('token')
 
 const orders = ref([])
 const user = ref({})
+const meals = ref([])
 
 user.value = JSON.parse(atob(token.split('.')[1]))
 
@@ -30,6 +31,16 @@ fetch(import.meta.env.VITE_API_URL + "orders", {
             order.status = JSON.parse(order.status)
           }
           orders.value.push(order)
+
+          // add all order meals in an array and if it already exist add quantity
+          order.meals.map((meal) => {
+            if (meals.value.find((m) => m.id === meal.id)) {
+              meals.value.find((m) => m.id === meal.id).quantity += 1
+            } else {
+              meal.quantity = 1
+              meals.value.push(meal)
+            }
+          })
         })
       }
     });
@@ -63,13 +74,10 @@ const setDeliverer = (order) => {
         Your Orders
       </h1>
       <div v-for="order in orders" class="w-full flex flex-col relative">
-        <div class="rounded bg-white border  py-8 w-full md:w-1/3 m-6 flex flex-col relative">
+        <div class="rounded bg-white border  py-8 m-6 flex flex-col relative">
           <div class="flex-none mt-auto overflow-hidden p-3">
             <div class="text-center">
-              <p v-if="order.status?.status">
-                Status : {{ order.status?.status }}
-              </p>
-              <p v-else>
+              <p class="text-md">
                 Status : {{ order.status }}
               </p>
             </div>
@@ -82,14 +90,16 @@ const setDeliverer = (order) => {
             </div>
           </div>
           <div>
-            <div v-for="meal in order.meals" class="flex-none mt-auto overflow-hidden p-3">
-              <div class="text-center">
-                <p class="text-xl px-6">
-                  {{ meal.name }}
-                </p>
-                <p class="text-xl px-6">
-                  {{ meal.price }}
-                </p>
+            <div class="w-full bg-white grid grid-cols-2">
+              <div v-for="meal in meals" class="p-2 w-full">
+                <div>
+                  <p class="text-md">
+                    {{ meal.name }} : {{ meal.price }}€
+                  </p>
+                  <span class="text-sm">
+                      quantity :  {{ meal.quantity }}
+                  </span>
+                </div>
               </div>
             </div>
           </div>

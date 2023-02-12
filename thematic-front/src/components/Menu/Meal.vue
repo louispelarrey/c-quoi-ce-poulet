@@ -37,7 +37,7 @@ const getOrder = () => {
     if (data.error) {
       alert(data.error);
     } else {
-      order.value = data
+      order.value = data[0]
     }
   });
 }
@@ -71,9 +71,16 @@ const initOrder = (meal) => {
 }
 
 const addToCart = (meal) => {
-  if (order.value[0].restaurantUser === undefined) {
-    initOrder(meal)
+  let orderId = ''
+  if (!order){
+    if (order.value[0].restaurantUser === undefined) {
+      initOrder(meal)
+      orderId = order.value[0].id
+    }
+  } else {
+    orderId = order.value.id
   }
+
   fetch(import.meta.env.VITE_API_URL + "meal_orders", {
     method: "POST",
     headers: {
@@ -83,7 +90,7 @@ const addToCart = (meal) => {
     },
     body: JSON.stringify({
       meal: 'api/meals/'+meal.id,
-      orderEntity: 'api/orders/'+order.value[0].id,
+      orderEntity: 'api/orders/'+orderId,
     })
   })
   .then((res) => res.json())
@@ -91,8 +98,9 @@ const addToCart = (meal) => {
     if (data.error) {
       alert(data.error);
     } else {
-      order.value = data
-      addToCart(meal)
+      if (!order.value){
+        order.value = data
+      }
     }
   });
   mealCounter.value++
@@ -121,10 +129,14 @@ const menu = ref(props.menu)
                @click="removeFromCart" />
         <span class="m-5">{{ mealCounter }}</span>
         <input style="width: 40px" class="cursor-pointer bg-transparent text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded"
-               type="button" value="+"
-               @click="addToCart(menu)" />
+           type="button" value="+"
+           @click="addToCart(menu)" />
       </div>
-      <input class="cursor-pointer bg-transparent text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded" v-else type="button" value="Ajouter au panier" @click="addToCart(menu)" />
+      <input class="cursor-pointer bg-transparent text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded"
+             v-else
+             type="button"
+             value="Ajouter au panier"
+             @click="addToCart(menu)" />
     </div>
   </div>
 
