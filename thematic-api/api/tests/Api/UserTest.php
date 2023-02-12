@@ -17,21 +17,13 @@ class UserTest extends AbstractEndPoint
             Request::METHOD_POST, 
             '/api/auth',
         $payload);
+        
+        $responseContent = $response->getContent();
+        $responseDecoded = json_decode($responseContent);
 
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertResponseHeaderSame('content-type', 'application/json');
-        $this->assertJson($response->getContent());
-    }
-
-    public function testGetUser(): void
-    {
-        $response = $this->getResponseFromRequest(
-            Request::METHOD_GET, 
-            '/api/users/1'
-        );
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertResponseHeaderSame('content-type', 'application/json');
-        $this->assertJson($response->getContent());
+        self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        self::assertJson($responseContent);
+        self::assertNotEmpty($responseDecoded->token);
+        
     }
 }

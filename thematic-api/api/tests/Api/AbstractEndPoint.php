@@ -17,7 +17,7 @@ abstract class AbstractEndPoint extends WebTestCase
     public function getResponseFromRequest(string $method, string $uri, string $payload =''): Response
     {
         $client = static::createClient();
-
+        
         $client->request(
             $method,
             $uri,
