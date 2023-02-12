@@ -33,5 +33,7 @@ jobs:
           key: ${{secrets.SERV_SSH_KEY}}
           # Optional, literal inventory file contents
           inventory: |
-            [all]
+            [vm]
             134.209.246.99 ansible_user=root
+            [vm:vars]
+            ansible_python_interpreter=/usr/bin/python3
