@@ -1,14 +1,100 @@
 <script setup>
-import { ref } from 'vue'
+import {onMounted, ref} from 'vue'
 
 let mealCounter = ref(0)
 const isMorethanOneInCart = ref(false)
+const order = ref({})
+
+const props = defineProps({
+  menu: {
+    type: Object,
+    required: true
+  },
+  restaurant_id: {
+    type: Number,
+    required: true
+  }
+})
+
+const token = localStorage.getItem('token')
+const actualUserId = JSON.parse(atob(token.split('.')[1])).user_id;
 
 const toggleCartHandler = () => {
   isMorethanOneInCart.value = mealCounter.value > 0
 }
 
-const addToCart = () => {
+const getOrder = () => {
+  fetch(import.meta.env.VITE_API_URL + "orders/?client.id="+actualUserId, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.error) {
+      alert(data.error);
+    } else {
+      order.value = data
+    }
+  });
+}
+
+onMounted(() => {
+  getOrder()
+})
+
+const initOrder = (meal) => {
+  fetch(import.meta.env.VITE_API_URL + "orders", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      restaurantUser: 'api/users/'+props.restaurant_id,
+      client: 'api/users/'+actualUserId,
+    })
+  })
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.error) {
+      alert(data.error);
+    } else {
+      order.value = data
+      addToCart(meal)
+    }
+  });
+}
+
+const addToCart = (meal) => {
+  if (order.value[0].restaurantUser === undefined) {
+    initOrder(meal)
+  }
+  fetch(import.meta.env.VITE_API_URL + "meal_orders", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      meal: 'api/meals/'+meal.id,
+      orderEntity: 'api/orders/'+order.value[0].id,
+    })
+  })
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.error) {
+      alert(data.error);
+    } else {
+      order.value = data
+      addToCart(meal)
+    }
+  });
   mealCounter.value++
   toggleCartHandler()
 }
@@ -17,13 +103,6 @@ const removeFromCart = () => {
   mealCounter.value--
   toggleCartHandler()
 }
-
-const props = defineProps({
-  menu: {
-    type: Object,
-    required: true
-  }
-})
 
 const menu = ref(props.menu)
 
@@ -43,10 +122,9 @@ const menu = ref(props.menu)
         <span class="m-5">{{ mealCounter }}</span>
         <input style="width: 40px" class="cursor-pointer bg-transparent text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded"
                type="button" value="+"
-               @click="addToCart" />
-
+               @click="addToCart(menu)" />
       </div>
-      <input class="cursor-pointer bg-transparent text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded" v-else type="button" value="Ajouter au panier" @click="addToCart" />
+      <input class="cursor-pointer bg-transparent text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded" v-else type="button" value="Ajouter au panier" @click="addToCart(menu)" />
     </div>
   </div>
 
