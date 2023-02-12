@@ -12,6 +12,7 @@ class OrderVoter extends Voter
     public const GET = 'ORDER_GET';
     public const CAN_DELIVER = 'ORDER_CAN_DELIVER';
     public const CAN_ACCEPT = 'ORDER_CAN_ACCEPT';
+    public const CAN_PREPARE = 'ORDER_CAN_PREPARE';
 
     public function __construct(
         private readonly Security $security,
@@ -21,7 +22,7 @@ class OrderVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::CAN_DELIVER, self::GET, self::CAN_ACCEPT])
+        return in_array($attribute, [self::CAN_DELIVER, self::GET, self::CAN_ACCEPT, self::CAN_PREPARE])
             && $subject instanceof \App\Entity\Order;
     }
 
@@ -54,8 +55,8 @@ class OrderVoter extends Voter
                  * @var User $user
                  * @var Order $subject
                  */
-                // Can deliver if the user is a deliveryman and the order is in "paid" status and the user is the deliveryman of the order
-                if($user->getRoles()[0] === 'ROLE_DELIVERER' && $subject->getStatus() === 'paid'){
+                // Can deliver if the user is a deliveryman and the order is in "prepared" status and the user is the deliveryman of the order
+                if($user->getRoles()[0] === 'ROLE_DELIVERER' && $subject->getStatus() === 'prepared'){
                     return true;
                 }
                 break;
@@ -66,6 +67,16 @@ class OrderVoter extends Voter
                  */
                 // Can deliver if the user is a deliveryman and the order is in "paid" status and the user is the deliveryman of the order
                 if($user->getRoles()[0] === 'ROLE_DELIVERER' && $subject->getStatus() === 'accepted' && $user->getDeliveryOrders()->contains($subject)){
+                    return true;
+                }
+                break;
+            case self::CAN_PREPARE:
+                /**
+                 * @var User $user
+                 * @var Order $subject
+                 */
+                // Can deliver if the user is a deliveryman and the order is in "paid" status and the user is the deliveryman of the order
+                if($user->getRoles()[0] === 'ROLE_RESTAURANT' && $subject->getStatus() === 'paid' && $user->getRestaurantOrders()->contains($subject)){
                     return true;
                 }
                 break;

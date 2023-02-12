@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
  *   to activate a restaurant.
  */
 #[AsController]
-class PreparingOrderController extends AbstractController
+class PreparedOrderController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $em
@@ -22,7 +22,7 @@ class PreparingOrderController extends AbstractController
 
     public function __invoke(Order $order): Order
     {
-        $order->setStatus("preparing");
+        $order->setStatus("prepared");
         $this->em->flush();
 
         return $order;
