@@ -6,23 +6,23 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\AcceptDeliveryController;
+use App\Controller\DeliveredDeliveryController;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
 #[ApiResource(
     operations: [
-        new GetCollection(
-            securityMessage: 'Only admins can list orders.',
-        ),
+        new GetCollection(),
         new Get(
             security: 'is_granted("ORDER_GET", object)',
             securityMessage: 'Only admins can get other orders.',
@@ -30,6 +30,18 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
         new Post(
             security: 'is_granted("ROLE_USER")',
             securityMessage: 'Only users can create orders.',
+        ),
+        new Patch(
+            security: 'is_granted("ORDER_CAN_DELIVER", object)',
+            securityMessage: 'Only deliverymen can deliver deliveries.',
+            uriTemplate: '/orders/{id}/delivered',
+            controller: DeliveredDeliveryController::class,
+        ),
+        new Patch(
+            security: 'is_granted("ORDER_CAN_ACCEPT", object)',
+            securityMessage: 'Only deliverymen can accept deliveries.',
+            uriTemplate: '/orders/{id}/accepted',
+            controller: AcceptDeliveryController::class,
         ),
         new Put(
             security: 'is_granted("ROLE_ADMIN")',
@@ -51,20 +63,11 @@ class Order
     #[Groups(["order:read", "user:read", "meal:read"])]
     private ?int $id = null;
 
-    #[ORM\Column(nullable: true)]
-    #[Groups(["order:read", "order:update"])]
-    private ?int $totalPrice = null;
-
-    #[ORM\Column(length: 255)]
-    #[Groups(["order:read", "order:update"])]
-    private ?string $address = null;
-
-    #[ORM\Column(type: Types::JSON)]
-    #[Groups(["order:read", "order:update"])]
-    private array $status = [];
+    #[ORM\Column]
+    #[Groups(["order:read"])]
+    private ?string $status = "opened";
 
     #[ORM\OneToMany(mappedBy: 'orderEntity', targetEntity: MealOrder::class, orphanRemoval: true)]
-    #[Groups(["order:read", "order:update"])]
     private Collection $mealOrders;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
@@ -72,7 +75,7 @@ class Order
     private ?User $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'deliveryOrders')]
-    #[Groups(["order:read", "order:update"])]
+    #[Groups(["order:read", "order:deliver"])]
     private ?User $deliverer = null;
 
     #[ORM\ManyToOne(inversedBy: 'restaurantOrders')]
@@ -90,40 +93,29 @@ class Order
     }
 
     #[Groups(["order:read"])]
-    public function getMeals() {
-        return $this->mealOrders->map(function (MealOrder $mealOrder) { return $mealOrder->getMeal(); });
-    }
-
-    public function getTotalPrice(): ?int
+    public function getMeals()
     {
-        return $this->totalPrice;
+        return $this->mealOrders->map(function (MealOrder $mealOrder) {
+            return $mealOrder->getMeal();
+        });
     }
 
-    public function setTotalPrice(?int $totalPrice): self
+    #[Groups(["order:read"])]
+    public function getTotalPrice()
     {
-        $this->totalPrice = $totalPrice;
-
-        return $this;
+        return $this->mealOrders->map(function (MealOrder $mealOrder) {
+            return $mealOrder->getMeal()->getPrice();
+        })->reduce(function ($carry, $item) {
+            return $carry + $item;
+        });
     }
 
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(string $address): self
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    public function getStatus(): array
+    public function getStatus(): string
     {
         return $this->status;
     }
 
-    public function setStatus(array $status): self
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 

@@ -10,6 +10,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class OrderVoter extends Voter
 {
     public const GET = 'ORDER_GET';
+    public const CAN_DELIVER = 'ORDER_CAN_DELIVER';
+    public const CAN_ACCEPT = 'ORDER_CAN_ACCEPT';
 
     public function __construct(
         private readonly Security $security,
@@ -19,19 +21,21 @@ class OrderVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::GET])
+        return in_array($attribute, [self::CAN_DELIVER, self::GET, self::CAN_ACCEPT])
             && $subject instanceof \App\Entity\Order;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
-
         $user = $token->getUser();
         // if the user is anonymous, do not grant access
         if (!$user instanceof UserInterface) {
             return false;
         }
 
+        if($this->security->isGranted('ROLE_ADMIN')){
+            return true;
+        }
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
@@ -44,10 +48,27 @@ class OrderVoter extends Voter
                     return true;
                 }
                 break;
-            // case self::VIEW:
-            //     // logic to determine if the user can VIEW
-            //     // return true or false
-            //     break;
+
+            case self::CAN_ACCEPT:
+                /**
+                 * @var User $user
+                 * @var Order $subject
+                 */
+                // Can deliver if the user is a deliveryman and the order is in "paid" status and the user is the deliveryman of the order
+                if($user->getRoles()[0] === 'ROLE_DELIVERER' && $subject->getStatus() === 'paid'){
+                    return true;
+                }
+                break;
+            case self::CAN_DELIVER:
+                /**
+                 * @var User $user
+                 * @var Order $subject
+                 */
+                // Can deliver if the user is a deliveryman and the order is in "paid" status and the user is the deliveryman of the order
+                if($user->getRoles()[0] === 'ROLE_DELIVERER' && $subject->getStatus() === 'accepted' && $user->getDeliveryOrders()->contains($subject)){
+                    return true;
+                }
+                break;
         }
 
         return false;

@@ -22,7 +22,7 @@ class StripeOrderWebhook extends AbstractWebhook
     $order = $this->orderRepository->findOneBy(['id' => $orderId]);
 
     if ($order) {
-      $order->setStatus(['status' => 'paid']);
+      $order->setStatus("paid");
       $this->em->persist($order);
       $this->em->flush();
       $this->mailer->sendMail(

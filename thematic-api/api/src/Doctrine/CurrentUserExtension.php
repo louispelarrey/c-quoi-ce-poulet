@@ -36,18 +36,25 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
             return;
         }
 
-
         $rootAlias = $queryBuilder->getRootAliases()[0];
 
         switch ($user->getRoles()[0]) {
-            case 'ROLE_USER':
-                $queryBuilder->andWhere(sprintf('%s.client = :current_user', $rootAlias));
-                break;
-            case 'ROLE_DELIVERY':
-                $queryBuilder->andWhere(sprintf('%s.deliverer = :current_user', $rootAlias));
-                break;
             case 'ROLE_RESTAURANT':
                 $queryBuilder->andWhere(sprintf('%s.restaurantUser = :current_user', $rootAlias));
+                break;
+            case 'ROLE_DELIVERER':
+                //Check if the user is the deliverer of the order or if the order is in "paid" status
+                $queryBuilder->andWhere(sprintf('%s.deliverer = :current_user', $rootAlias));
+                $queryBuilder->orWhere(sprintf('%s.status = :paid', $rootAlias));
+                $queryBuilder->orWhere(sprintf('%s.status = :accepted', $rootAlias));
+                $queryBuilder->orWhere(sprintf('%s.status = :delivered', $rootAlias));
+
+                $queryBuilder->setParameter('paid', 'paid');
+                $queryBuilder->setParameter('accepted', 'accepted');
+                $queryBuilder->setParameter('delivered', 'delivered');
+                break;
+            case 'ROLE_USER':
+                $queryBuilder->andWhere(sprintf('%s.client = :current_user', $rootAlias));
                 break;
         }
         /**
