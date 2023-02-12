@@ -8,11 +8,12 @@ const router = useRouter();
 const route = useRoute();
 
 const token = localStorage.getItem('token')
+const actualUserId = JSON.parse(atob(token.split('.')[1])).user_id;
 
 const restaurants = ref({})
 const addModelOpen = ref(false)
 
-fetch(import.meta.env.VITE_API_URL + "restaurants?owner.id=5", {
+fetch(import.meta.env.VITE_API_URL + "restaurants?owner.id="+actualUserId, {
   method: "GET",
   headers: {
     "Content-Type": "application/json",
