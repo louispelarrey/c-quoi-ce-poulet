@@ -59,7 +59,7 @@ const submit = () => {
         if (data.detail) {
           alert(data.violations[0].message);
         } else {
-          alert('The resquest to create a restaurant has been sent')
+          alert('The request to create a restaurant has been sent')
         }
       });
 }

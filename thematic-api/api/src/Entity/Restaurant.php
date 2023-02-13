@@ -48,6 +48,7 @@ use App\Repository\RestaurantRepository;
             securityMessage: 'Only admins can delete other restaurants.',
         ),
     ],
+
     normalizationContext: ['groups' => ['restaurant:read']],
     denormalizationContext: ['groups' => ['restaurant:create', 'restaurant:update']],
 )]

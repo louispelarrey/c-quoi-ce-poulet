@@ -63,7 +63,6 @@ if (restaurant.name) {
 
   restaurant.openingTime = openHour
   restaurant.closingTime = closeHour
-
 }
 
 const loadFile = (event) => {

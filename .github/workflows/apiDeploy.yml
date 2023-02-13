@@ -1,4 +1,4 @@
-name: Test API Server Deployment 
+name: Test API Server Deployment
 
 on:
   push:
@@ -34,6 +34,6 @@ jobs:
           # Optional, literal inventory file contents
           inventory: |
             [vm]
-            134.209.246.98 ansible_user=root
+            ${{secrets.SERV_IP}} ansible_user=root
             [vm:vars]
             ansible_python_interpreter=/usr/bin/python3

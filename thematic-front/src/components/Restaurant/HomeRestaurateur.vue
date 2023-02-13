@@ -30,49 +30,72 @@ fetch(import.meta.env.VITE_API_URL + "restaurants?owner.id="+actualUserId, {
       }
     });
 
-const editRestaurant = (restaurant) => {
-  restaurant.openingTime = [restaurant.openingTime, restaurant.closingTime]
-  restaurant.owner = '/api/users/' + restaurant.owner.id
-  fetch(import.meta.env.VITE_API_URL + "restaurants/" + restaurant.id, {
+// const editRestaurant = (restaurant) => {
+//   restaurant.openingTime = [restaurant.openingTime, restaurant.closingTime]
+//   restaurant.owner = '/api/users/' + restaurant.owner.id
+//   fetch(import.meta.env.VITE_API_URL + "restaurants/" + restaurant.id, {
+//     method: "PUT",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "Accept": "application/json",
+//       'Authorization': `Bearer ${token}`,
+//     },
+//     body: JSON.stringify(restaurant)
+//   })
+//       .then((res) => res.json())
+//       .then((data) => {
+//         if (data.detail) {
+//           alert(data.violations[0].message);
+//         } else {
+//           alert('Your restaurant datas has been updated')
+//         }
+//       });
+// }
+
+const editRestaurant = (restaurantToEdit) => {
+  restaurantToEdit.openingTime = [restaurantToEdit.openingTime, restaurantToEdit.closingTime]
+  restaurantToEdit.owner = '/api/users/' + restaurantToEdit.owner.id
+  fetch(import.meta.env.VITE_API_URL+"restaurants/"+restaurantToEdit.id, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
       'Authorization': `Bearer ${token}`,
     },
-    body: JSON.stringify(restaurant)
+    body: JSON.stringify(restaurantToEdit)
   })
       .then((res) => res.json())
       .then((data) => {
+        restaurantToEdit.tags.map(tag => {
+          console.log(actualTags.value)
+          console.log(tag)
+          if (actualTags.value.includes(tag)) {
+            return;
+          }
+          fetch(import.meta.env.VITE_API_URL+"tag_restaurants", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              "restaurant": "/api/restaurants/"+restaurantToEdit.id,
+              "tag": "/api/tags/"+tag
+            })
+          })
+        })
         if (data.detail) {
           alert(data.violations[0].message);
         } else {
           alert('Your restaurant datas has been updated')
-        }
-      });
-}
-
-const editMeal = (editedMeal) => {
-  fetch(import.meta.env.VITE_API_URL + "meals", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      'Authorization': `Bearer ${token}`,
-    },
-    body: JSON.stringify(editedMeal)
-  })
-      .then(res => {
-        if (res.ok !== true) {
-          alert(data.violations[0].message);
-        } else {
-          alert('Your meal has been added')
+          restaurantToEdit.value = {}
+          modalOpen.value = false
         }
       });
 }
 
 const addMeal = (mealAdded) => {
-  console.log(mealAdded)
   mealAdded.price = parseFloat(mealAdded.price)
   mealAdded.restaurant = 'api/restaurants/'+mealAdded.restaurant
   fetch(import.meta.env.VITE_API_URL + "meals", {
@@ -102,14 +125,13 @@ const deleteMeal = (mealId) => {
       'Authorization': `Bearer ${token}`,
     },
   })
-      .then(res => {
-        if (res.ok !== true) {
-        } else {
-          restaurants.value.meals = restaurants.value.meals.filter(meal => meal.id !== mealId)
-        }
-      });
+  .then(res => {
+    if (res.ok !== true) {
+    } else {
+      restaurants.value.meals = restaurants.value.meals.filter(meal => meal.id !== mealId)
+    }
+  });
 }
-
 
 </script>
 

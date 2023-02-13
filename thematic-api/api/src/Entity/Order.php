@@ -76,6 +76,7 @@ class Order
     private ?string $status = "opened";
 
     #[ORM\OneToMany(mappedBy: 'orderEntity', targetEntity: MealOrder::class, orphanRemoval: true)]
+    #[Groups(["order:read"])]
     private Collection $mealOrders;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]

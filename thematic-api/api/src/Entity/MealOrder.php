@@ -34,7 +34,7 @@ class MealOrder
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["mealOrder:read"])]
+    #[Groups(["mealOrder:read", "order:read"])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'mealOrders')]
