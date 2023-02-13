@@ -45,26 +45,26 @@ fetch(import.meta.env.VITE_API_URL + "orders", {
     });
 
 const sendCommand = (orderId) => {
-  fetch(import.meta.env.VITE_API_URL + "orders", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      'Authorization': `Bearer ${token}`,
-    }, body: JSON.stringify({
-      "email": user.value.email,
-      "orderId": orderId,
-      "successUrl": "http://example.com/",
-      "cancelUrl": "http://example.com/"
-    })
-  }).then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          alert(data.error);
-        } else {
-
-        }
-      });
+  // fetch(import.meta.env.VITE_API_URL + "orders", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     "Accept": "application/json",
+  //     'Authorization': `Bearer ${token}`,
+  //   }, body: JSON.stringify({
+  //     "email": user.value.email,
+  //     "orderId": orderId,
+  //     "successUrl": "http://example.com/",
+  //     "cancelUrl": "http://example.com/"
+  //   })
+  // }).then((res) => res.json())
+  //     .then((data) => {
+  //       if (data.error) {
+  //         alert(data.error);
+  //       } else {
+  //
+  //       }
+  //     });
 }
 
 const removeProduct = (mealId) => {
