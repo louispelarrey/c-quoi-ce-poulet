@@ -94,57 +94,60 @@ const removeProduct = (mealId) => {
 </script>
 
 <template>
-  <section >
-    <div class="container mx-auto flex flex-wrap pt-4 pb-12">
-      <h1 class="w-full my-2 text-5xl text-center font-bold leading-tight text-center text-gray-800">
+  <section class="cart-container">
+    <div>
+      <h1>
         Your Orders
       </h1>
-      <div v-for="order in orders" class="w-full flex flex-col relative">
-        <div class="rounded bg-white border  py-8 m-6 flex flex-col relative">
-          <div class="flex-none mt-auto overflow-hidden p-3">
-            <div class="text-center">
-              <p class="text-md">
+      <div v-for="order in orders" class="order-container">
+        <div>
+          <div>
+            <div>
+              <p class="status">
                 Status : {{ order.status }}
               </p>
             </div>
-              <div class="text-center">
-                <p class="text-sm px-6">
+              <div>
+                <p class="prepared-by">
                   Prepared by : {{ order.restaurantUser.firstname }} {{ order.restaurantUser.lastname }}
                 </p>
               </div>
           </div>
-          <div v-if="order.deliverer?.id" class="flex-none mt-auto overflow-hidden p-3">
-            <div class="text-center">
-              <p class="text-sm px-6">
+          <div v-if="order.deliverer?.id" class="">
+            <div>
+              <p class="delivered-from">
                 Delivered from : {{ order.deliverer.firstname }} {{ order.deliverer.lastname }}
               </p>
             </div>
           </div>
           <div>
-            <div class="w-full bg-white grid grid-cols-2">
-              <div v-for="meal in meals" class="p-2 w-full">
-                <div>
-                  <p class="text-md">
-                    {{ meal.name }} : {{ meal.price }}€
+            <div>
+              <div v-for="meal in meals" class="">
+                <div class="meal-item">
+                  <p class="meal-name">
+                    {{ meal.name }}
                   </p>
-                  <span class="text-sm">
+                  <span class="meal-price">
+                      {{ meal.price }}€
+                  </span>
+                  <span class="meal-quantity">
                       Quantity :  {{ meal.quantity }}
                   </span>
                   <button @click="removeProduct(meal.id)"
-                          class="mx-5 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ">
+                          class="remove-product-button">
                     Remove product
                   </button>
                 </div>
               </div>
             </div>
           </div>
-          <div v-if="order.totalPrice" class="flex-none mt-auto overflow-hidden p-3">
-            <div class="text-center justify-center items-center flex flex-row">
-              <p class="text-sm px-6 text-bold-400">
-                Total price : {{ order.totalPrice }}
+          <div v-if="order.totalPrice" class="">
+            <div>
+              <p class="total-price">
+                Total price : {{ order.totalPrice }}€
               </p>
               <button @click="sendCommand(order.id)"
-                      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ">
+                      class="proceed-to-payment-button">
                 Proceed to payment
               </button>
             </div>
@@ -154,3 +157,64 @@ const removeProduct = (mealId) => {
     </div>
   </section>
 </template>
+
+<style scoped>
+  .cart-container {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+  }
+  .order-container {
+    background-color: #f2f2f2;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .status {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .prepared-by {
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+  .delivered-from {
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+  .meal-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .meal-name {
+    font-weight: bold;
+  }
+  .meal-price {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  .meal-quantity {
+    margin-right: 10px;
+  }
+  .remove-product-button {
+    background-color: #ff0000;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .total-price {
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  .proceed-to-payment-button {
+    background-color: #0000ff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+</style>
