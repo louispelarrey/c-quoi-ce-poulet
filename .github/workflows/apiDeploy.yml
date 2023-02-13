@@ -9,48 +9,31 @@ on:
       - '.github/workflows/apiDeploy.yml'
 
 jobs:
+
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Deploy to DigitalOcean Droplet
-        uses: appleboy/ssh-action@master
+      - uses: actions/checkout@v2
+
+      - uses: kielabokkie/ssh-key-and-known-hosts-action@v1
         with:
-          host: ${{secrets.HOST}}
-          username: ${{secrets.USERNAME}}
-          key: ${{secrets.KEY}}
-          script: |
-            export NVM_DIR=~/.nvm
-            source ~/.nvm/nvm.sh
-            rm -rf test
-            mkdir test
-            cd test
-            git clone https://github.com/louispelarrey/c-quoi-ce-poulet.git
-            echo 'Deployment to digital ocean finished'
+          ssh-private-key: ${{ secrets.SERV_SSH_KEY }} # <---- mettre clé SSH privée faire un secret
+          ssh-host: ${{secrets.SERV_IP}} # <---- mettre l'adresse IP du server dans un secret
+          ssh-port: 22
 
-  # deploy:
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - uses: actions/checkout@v2
-
-  #     - uses: kielabokkie/ssh-key-and-known-hosts-action@v1
-  #       with:
-  #         ssh-private-key: ${{ secrets.SERV_SSH_KEY }} # <---- mettre clé SSH privée faire un secret
-  #         ssh-host: ${{secrets.SERV_IP}} # <---- mettre l'adresse IP du server dans un secret
-  #         ssh-port: 22
-
-  #     - name: Update docker compose image
-  #       uses: dawidd6/action-ansible-playbook@v2
-  #       with:
-  #         # Required, playbook filepath
-  #         playbook: apiDeploy.yml
-  #         # Optional, directory where playbooks live
-  #         directory: ./ansible
-  #         # Optional, SSH private key
-  #         key: ${{secrets.SERV_SSH_KEY}}
-  #         # Optional, literal inventory file contents
-  #         inventory: |
-  #           [vm]
-  #           134.209.246.98 ansible_user=root
-  #           [vm:vars]
-  #           ansible_python_interpreter=/usr/bin/python3
+      - name: Update docker compose image
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          # Required, playbook filepath
+          playbook: apiDeploy.yml
+          # Optional, directory where playbooks live
+          directory: ./ansible
+          # Optional, SSH private key
+          key: ${{secrets.SERV_SSH_KEY}}
+          # Optional, literal inventory file contents
+          inventory: |
+            [vm]
+            134.209.246.98 ansible_user=root
+            [vm:vars]
+            ansible_python_interpreter=/usr/bin/python3
