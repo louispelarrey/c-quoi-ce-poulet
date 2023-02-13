@@ -38,7 +38,11 @@ class WebhookCheckoutController extends AbstractController
                 'Votre commande est validée',
                 "Vous recevrez votre commande dans les plus brefs délais. Merci de votre confiance !",
             );
+
+            return $this->json($order);
         }
+
+        return $this->json($order);
 
         // header('Access-Control-Allow-Origin: *');
         // header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
