@@ -6,13 +6,15 @@ import editProfile from "../components/User/editProfile.vue"
 import Users from "../components/Admin/Users.vue";
 import HomeAdmin from "../components/Admin/HomeAdmin.vue";
 import Meals from "../components/Menu/Meals.vue";
-import {reactive, ref} from "vue";
+import {reactive} from "vue";
 import Restaurants from "../components/Admin/Restaurants.vue";
 import Reports from "../components/Admin/Reports.vue";
 import CreateRestaurant from "../components/Restaurant/CreateRestaurant.vue";
 import RecapOrder from "../components/Order/RecapOrder.vue";
 import Commands from "../components/Commands.vue";
 import HomeRestaurateur from "../components/Restaurant/HomeRestaurateur.vue";
+import Error403 from "../components/Error/Error403.vue";
+import Error404 from "../components/Error/Error404.vue";
 
 const state = reactive({
     token: localStorage.getItem("token"),
@@ -67,12 +69,24 @@ const router = createRouter({
         {
             path: "/admin/users",
             name: "admin_users",
-            component: Users,
+            component: function () {
+                if (state.userAdmin) {
+                    return Users
+                } else {
+                    return Error403
+                }
+            }
         },
         {
             path: "/admin/restaurants",
             name: "admin_restaurants",
-            component: Restaurants,
+            component: function () {
+                if (state.userAdmin) {
+                    return Restaurants
+                } else {
+                    return Error403
+                }
+            }
         },
         {
             path: "/restaurants/new",
@@ -80,9 +94,15 @@ const router = createRouter({
             component: CreateRestaurant,
         },
         {
-          path: "/admin/reports",
-          name: "admin_reports",
-          component: Reports,
+            path: "/admin/reports",
+            name: "admin_reports",
+            component: function () {
+                if (state.userAdmin) {
+                    return Reports
+                } else {
+                    return Error403
+                }
+            }
         },
         {
           path: "/your_order",
@@ -93,6 +113,11 @@ const router = createRouter({
             path: "/orders",
             name: "orders",
             component: Commands,
+        },
+        {
+            path: "/:pathMatch(.*)*",
+            name: "not_found",
+            component: Error404,
         }
     ],
 });

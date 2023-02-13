@@ -3,9 +3,11 @@
 
 import { useRoute, useRouter } from "vue-router";
 import {ref} from "vue";
+import ErrorMessage from "../Error/ErrorMessage.vue";
 
 const router = useRouter();
 const route = useRoute();
+const errorCode = ref(0);
 
 const email = ref('')
 const password = ref('')
@@ -14,7 +16,7 @@ const submit = () => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Accept": "application/json"
+      "Accept": "application/json"!
     },
     body: JSON.stringify({
       email: email.value,
@@ -24,10 +26,10 @@ const submit = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.code === 401) {
-          alert(data.message);
+          errorCode.value = 401;
         } else {
           if (data.error && !data.token) {
-            alert(data.error);
+            errorCode.value = 500;
           } else {
             localStorage.setItem("token", data.token);
             router.push("/");
@@ -90,6 +92,7 @@ const submit = () => {
         <a href="#!"
           class="text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out">Forgot
         password?</a>
+        <ErrorMessage v-if="errorCode" :code="errorCode" />
       <button type="submit" 
         class="
         w-full

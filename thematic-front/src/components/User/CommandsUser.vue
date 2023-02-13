@@ -97,7 +97,7 @@ const setDeliverer = (order) => {
                     {{ meal.name }} : {{ meal.price }}€
                   </p>
                   <span class="text-sm">
-                      quantity :  {{ meal.quantity }}
+                      Quantity :  {{ meal.quantity }}
                   </span>
                 </div>
               </div>
@@ -106,7 +106,7 @@ const setDeliverer = (order) => {
           <div class="flex-none mt-auto overflow-hidden p-3">
             <div class="text-center">
               <p class="text-xl px-6">
-                Meal from : {{ order.restaurantUser.firstname }} {{ order.restaurantUser.lastname }}
+                Prepared by : {{ order.restaurantUser.firstname }} {{ order.restaurantUser.lastname }}
               </p>
             </div>
           </div>

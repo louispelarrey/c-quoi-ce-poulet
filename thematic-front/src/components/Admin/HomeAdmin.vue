@@ -1,3 +1,3 @@
 <template>
-  <p>BONJOUR ADMIN</p>
+  <p>HELLO ADMIN</p>
 </template>

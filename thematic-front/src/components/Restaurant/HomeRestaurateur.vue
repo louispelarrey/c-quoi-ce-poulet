@@ -134,7 +134,7 @@ const deleteMeal = (mealId) => {
         />
       </div>
     </div>
-    <h2 class="text-2xl text-purple-600 my-5">Actuals Meals</h2>
+    <h2 class="text-2xl text-purple-600 my-5">Actual Meals</h2>
     <div class="grid grid-cols-2 gap-5 justify-between">
       <div v-for="meal in restaurant.meals" :key="meal.id">
         <div
