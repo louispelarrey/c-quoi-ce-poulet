@@ -79,7 +79,6 @@ const addToCart = (meal) => {
     initOrder(meal)
   } else {
     if (actualOrder.value.restaurantUser === undefined && actualOrder.value.status === 'delivered'){
-      console.log('order is null')
       initOrder(meal)
         orderId = actualOrder.value.id
     } else {
@@ -117,8 +116,11 @@ const menu = ref(props.menu)
 
 <template>
   <div v-if="menu.isAvailable" class="meal-container col-span-1 bg-white">
-    <img :src="menu" :alt="menu.name" />
-    <div class="meal">
+    <img
+        width="150"
+        src="../../../src/assets/Images/meal.png"
+        alt="menu image" />
+    <div class="meal ml-5">
       <h3>{{ menu.name }}</h3>
       <h4>{{ menu.price }} €</h4>
       <p>{{ menu.description }}</p>
@@ -132,6 +134,7 @@ const menu = ref(props.menu)
 </template>
 
 <style scoped>
+
 .meal-container {
   display: flex;
   flex-direction: row;
