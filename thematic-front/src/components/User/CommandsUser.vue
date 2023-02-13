@@ -45,26 +45,41 @@ fetch(import.meta.env.VITE_API_URL + "orders", {
     });
 
 const sendCommand = (orderId) => {
-  // fetch(import.meta.env.VITE_API_URL + "orders", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     "Accept": "application/json",
-  //     'Authorization': `Bearer ${token}`,
-  //   }, body: JSON.stringify({
-  //     "email": user.value.email,
-  //     "orderId": orderId,
-  //     "successUrl": "http://example.com/",
-  //     "cancelUrl": "http://example.com/"
-  //   })
-  // }).then((res) => res.json())
-  //     .then((data) => {
-  //       if (data.error) {
-  //         alert(data.error);
-  //       } else {
-  //
-  //       }
-  //     });
+  fetch(import.meta.env.VITE_API_URL + "webhook/checkout/index/"+orderId, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      'Authorization': `Bearer ${token}`,
+    }, body: JSON.stringify({})
+  }).then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          alert(data.error);
+        } else {
+          fetch(import.meta.env.VITE_API_URL + "generate-checkout", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              'Authorization': `Bearer ${token}`,
+            },body: JSON.stringify({
+              "email": user.value.username,
+              "orderId": orderId,
+              "successUrl": import.meta.env.VITE_HOME_URL,
+              "cancelUrl": import.meta.env.VITE_HOME_URL
+            })
+          })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.error) {
+                  alert(data.error);
+                } else {
+                  window.location.assign(data.url)
+                }
+              });
+        }
+      });
 }
 
 const removeProduct = (mealId) => {
