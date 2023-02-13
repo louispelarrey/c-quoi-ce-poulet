@@ -143,16 +143,16 @@ const router = createRouter({
     ],
 });
 
-router.beforeEach((to, from, next) => {
-    const token = localStorage.getItem("token");
-    if (!token && to.path !== "/login" && to.path !== "/register" && to.name !== "forgot_password" && to.name !== "reset_password_token") {
-        next({
-            path: "/login",
-            query: { redirect: to.fullPath }
-        });
-    } else {
-        next();
-    }
-})
+// router.beforeEach((to, from, next) => {
+//     const token = localStorage.getItem("token");
+//     if (!token && to.path !== "/login" && to.path !== "/register" && to.name !== "forgot_password" && to.name !== "reset_password_token") {
+//         next({
+//             path: "/login",
+//             query: { redirect: to.fullPath }
+//         });
+//     } else {
+//         next();
+//     }
+// })
 
 export default router;
