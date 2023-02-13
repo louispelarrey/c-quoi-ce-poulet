@@ -22,6 +22,10 @@ class ActivateRestaurantController extends AbstractController
     public function __invoke(Restaurant $restaurant): Restaurant
     {
         $restaurant->setIsActivated(true);
+        $user = $restaurant->getOwner();
+        $user->setRoles(['ROLE_USER', 'ROLE_RESTAURANT']);
+        $this->em->persist($restaurant);
+        $this->em->persist($user);
         $this->em->flush();
 
         return $restaurant;

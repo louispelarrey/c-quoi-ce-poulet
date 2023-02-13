@@ -28,12 +28,12 @@ use App\Repository\RestaurantRepository;
         new GetCollection(),
         new Get(),
         new Post(
-            security: 'is_granted("ROLE_ADMIN")',
+            security: 'is_granted("ROLE_USER")',
             securityMessage: 'Only admins can create restaurants.',
         ),
         new Post(
-            security: 'is_granted("ROLE_USER")',
-            securityMessage: 'Only users can create restaurants.',
+            security: 'is_granted("ROLE_ADMIN")',
+            securityMessage: 'Only admin can create restaurants.',
             uriTemplate: '/restaurants/activate/{id}',
             controller: ActivateRestaurantController::class,
             normalizationContext: ['groups' => ['restaurant:read', 'restaurant:update']],
