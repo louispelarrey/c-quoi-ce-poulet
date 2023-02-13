@@ -1,62 +1,108 @@
-<script setup>
-import { ref } from 'vue'
-</script>
-
 <template>
-  <footer class="bg-white">
-    <div class="container mx-auto px-8">
-      <div class="w-full flex flex-col md:flex-row py-6">
-        <div class="flex-1 mb-6 text-black">
-          <a class="text-pink-600 no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
-            Challenge
-          </a>
-        </div>
-        <div class="flex-1">
-          <p class="uppercase text-gray-500 md:mb-6">Links</p>
-          <ul class="list-reset mb-6">
-            <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-              <a href="#" class="no-underline hover:underline text-gray-800 hover:text-pink-500">FAQ</a>
-            </li>
-            <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-              <a href="#" class="no-underline hover:underline text-gray-800 hover:text-pink-500">Help</a>
-            </li>
-            <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-              <a href="#" class="no-underline hover:underline text-gray-800 hover:text-pink-500">Support</a>
-            </li>
-          </ul>
-        </div>
-        <div class="flex-1">
-          <p class="uppercase text-gray-500 md:mb-6">Legal</p>
-          <ul class="list-reset mb-6">
-            <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-              <a href="#" class="no-underline hover:underline text-gray-800 hover:text-pink-500">Terms</a>
-            </li>
-            <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-              <a href="#" class="no-underline hover:underline text-gray-800 hover:text-pink-500">Privacy</a>
-            </li>
-          </ul>
-        </div>
-        <div class="flex-1">
-          <p class="uppercase text-gray-500 md:mb-6">Social</p>
-          <ul class="list-reset mb-6">
-            <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-              <a href="#" class="no-underline hover:underline text-gray-800 hover:text-pink-500">Facebook</a>
-            </li>
-            <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-              <a href="#" class="no-underline hover:underline text-gray-800 hover:text-pink-500">Linkedin</a>
-            </li>
-            <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-              <a href="#" class="no-underline hover:underline text-gray-800 hover:text-pink-500">Twitter</a>
-            </li>
-          </ul>
-        </div>
+  <footer>
+    <div>
+      <div class="footerTitle">
+        <a href="#">
+          Challenge
+        </a>
+      </div>
+      <div class="section">
+        <p>Links</p>
+        <ul>
+          <li>
+            <a href="#">FAQ</a>
+          </li>
+          <li>
+            <a href="#">Help</a>
+          </li>
+          <li>
+            <a href="#">Support</a>
+          </li>
+        </ul>
+      </div>
+      <div class="section">
+        <p>Legal</p>
+        <ul>
+          <li>
+            <a href="#">Terms</a>
+          </li>
+          <li>
+            <a href="#">Privacy</a>
+          </li>
+          <li>
+            <a href="#">Cookies</a>
+          </li>
+        </ul>
+      </div>
+      <div class="section">
+        <p>Social</p>
+        <ul>
+          <li>
+            <a href="#">Facebook</a>
+          </li>
+          <li>
+            <a href="#">Linkedin</a>
+          </li>
+          <li>
+            <a href="#">Twitter</a>
+          </li>
+        </ul>
       </div>
     </div>
   </footer>
 </template>
 
 <style scoped>
-.read-the-docs {
-  color: #888;
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+footer div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+footer div .section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+footer div .section p {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+footer div .section ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+footer div .section ul li a:hover {
+  color: #f5f5f5;
+}
+
+footer div .footerTitle {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+footer div .footerTitle a {
+  color: #fff;
+  text-decoration: none;
+}
+
+footer div .footerTitle a:hover {
+  color: #f5f5f5;
 }
 </style>

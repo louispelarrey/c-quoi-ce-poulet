@@ -43,9 +43,14 @@ if (token) {
 <style>
 .fitPageHeight {
   min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .container_page {
-  margin: 0 auto;
   width: 80vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

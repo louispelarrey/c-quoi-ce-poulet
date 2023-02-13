@@ -7,121 +7,93 @@ const passwordConfirm = ref("");
 const router = useRouter();
 
 const submit = () => {
-    const token = router.currentRoute.value.params.token;
-    fetch(import.meta.env.VITE_API_URL + "forgot-password/" + token, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        },
-        body: JSON.stringify({
-            password: password.value,
-        }),
-    })
-        .then((res) => res.json())
-        .then((data) => {
-            if (data.error) {
-                alert(data.message);
-            } else {
-                router.push("/login?updated=success");
-            }
-        });
+  const token = router.currentRoute.value.params.token;
+  fetch(import.meta.env.VITE_API_URL + "forgot-password/" + token, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify({
+      password: password.value,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.error) {
+        alert(data.message);
+      } else {
+        router.push("/login?updated=success");
+      }
+    });
 };
 
 </script>
 <template>
-  <div class="p-6 rounded-lg shadow-lg bg-white max-w-md">
-    <h2 class="text-lg font-medium mb-6 text-center">Reset Password</h2>
+  <div>
     <form @submit.prevent="submit">
-      <div class="form-group mb-6">
-        <label for="password" class="form-label inline-block mb-2 text-gray-700">New Password</label>
-        <input
-          type="password"
-          name="password"
-          v-model="password"
-          required
-          class="form-control
-            block
-            w-full
-            px-3
-            py-1.5
-            text-base
-            font-normal
-            text-gray-700
-            bg-white
-            bg-clip-padding
-            border
-            border-solid
-            border-gray-300
-            rounded
-            transition
-            ease-in-out
-            m-0
-            focus:text-gray-700
-            focus:bg-white
-            focus:border-blue-600
-            focus:outline-none"
-          id="password"
-          placeholder="Enter your new password"
-        />
+      <h3>Reset Password</h3>
+      <div>
+        <label for="password">New Password</label>
+        <input type="password" name="password" v-model="password" required id="password"
+          placeholder="Enter your new password" />
       </div>
-      <div class="form-group mb-6">
-        <label for="passwordConfirm" class="form-label inline-block mb-2 text-gray-700">Confirm Password</label>
-        <input
-          type="password"
-          name="passwordConfirm"
-          v-model="passwordConfirm"
-          required
-          class="form-control
-            block
-            w-full
-            px-3
-            py-1.5
-            text-base
-            font-normal
-            text-gray-700
-            bg-white
-            bg-clip-padding
-            border
-            border-solid
-            border-gray-300
-            rounded
-            transition
-            ease-in-out
-            m-0
-            focus:text-gray-700
-            focus:bg-white
-            focus:border-blue-600
-            focus:outline-none"
-            id="passwordConfirm"
-            placeholder="Confirm your new password"
-        />
+      <div>
+        <label for="passwordConfirm">Confirm Password</label>
+        <input type="password" name="passwordConfirm" v-model="passwordConfirm" required id="passwordConfirm"
+          placeholder="Confirm your new password" />
       </div>
-        <button
-            type="submit"
-            class="
-            w-full
-            px-6
-            py-2.5
-            bg-blue-600
-            text-white
-            rounded
-            font-medium
-            text-sm
-            transition
-            ease-in-out
-            duration-150
-            hover:bg-blue-700
-            focus:outline-none
-            focus:shadow-outline
-            focus:border-blue-700
-            active:bg-blue-700
-            disabled:opacity-50
-            disabled:cursor-not-allowed
-            "
-        >
-            Reset Password
-        </button>
+      <button type="submit">
+        Reset Password
+      </button>
     </form>
-    </div>
+  </div>
 </template>
+
+<style scoped>
+  form {
+    width: 500px;
+    margin: 50px auto;
+    border: 1px solid #ddd;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 2px 3px #ccc;
+  }
+  h3 {
+    margin-bottom: 30px;
+    font-size: 24px;
+  }
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    font-size: 16px;
+  }
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  p {
+    margin-top: 30px;
+    font-size: 14px;
+  }
+  a {
+    color: #0077ff;
+    text-decoration: none;
+  }
+  .error {
+    color: red;
+  }
+</style>

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 
-
 import { useRoute, useRouter } from "vue-router";
-import {ref} from "vue";
+import { ref } from "vue";
 import ErrorMessage from "../Error/ErrorMessage.vue";
 
 const router = useRouter();
@@ -13,7 +12,7 @@ const updated = ref(route.query.updated === "success");
 const email = ref('')
 const password = ref('')
 const submit = () => {
-  fetch(import.meta.env.VITE_API_URL+"auth", {
+  fetch(import.meta.env.VITE_API_URL + "auth", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -24,96 +23,100 @@ const submit = () => {
       password: password.value,
     }),
   })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.code === 401) {
-          errorCode.value = 401;
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.code === 401) {
+        errorCode.value = 401;
+      } else {
+        if (data.error && !data.token) {
+          errorCode.value = 500;
         } else {
-          if (data.error && !data.token) {
-            errorCode.value = 500;
-          } else {
-            localStorage.setItem("token", data.token);
-            router.push("/");
-          }
+          localStorage.setItem("token", data.token);
+          router.push("/");
         }
-      });
+      }
+    });
 }
 
 </script>
 
 <template>
-  <div class="p-6 rounded-lg shadow-lg bg-white max-w-md">
+  <div>
     <form @submit.prevent="submit">
-      <div class="form-group mb-6">
-        <label for="exampleInputEmail2" class="form-label inline-block mb-2 text-gray-700">Email address</label>
-        <input type="email" name="email" v-model="email" required
-         class="form-control
-        block
-        w-full
-        px-3
-        py-1.5
-        text-base
-        font-normal
-        text-gray-700
-        bg-white bg-clip-padding
-        border border-solid border-gray-300
-        rounded
-        transition
-        ease-in-out
-        m-0
-        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInputEmail2"
-               aria-describedby="emailHelp" placeholder="Enter email">
+      <h3>Login</h3>
+      <div>
+        <label for="exampleInputEmail2">Email address</label>
+        <input type="email" name="email" v-model="email" required id="exampleInputEmail2" aria-describedby="emailHelp"
+          placeholder="Enter email">
       </div>
-      <div class="form-group mb-6">
-        <label for="exampleInputPassword2" class="form-label inline-block mb-2 text-gray-700">Password</label>
-        <input type="password" name="password" v-model="password" required class="form-control block
-        w-full
-        px-3
-        py-1.5
-        text-base
-        font-normal
-        text-gray-700
-        bg-white bg-clip-padding
-        border border-solid border-gray-300
-        rounded
-        transition
-        ease-in-out
-        m-0
-        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInputPassword2"
-               placeholder="Password">
+      <div>
+        <label for="exampleInputPassword2">Password</label>
+        <input type="password" name="password" v-model="password" required id="exampleInputPassword2"
+          placeholder="Password">
       </div>
-      <div class="flex justify-between items-center mb-6">
-        <div class="form-group form-check">
-          <input type="checkbox"
-                 class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                 id="exampleCheck2">
-          <label class="form-check-label inline-block text-gray-800" for="exampleCheck2">Remember me</label>
+      <div>
+        <div>
+          <input type="checkbox" id="exampleCheck2">
+          <label for="exampleCheck2">Remember me</label>
         </div>
       </div>
-      <router-link to="/forgot-password" class="text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out">Forgot password ?</router-link>
+      <router-link to="/forgot-password">Forgot password ?</router-link>
       <ErrorMessage v-if="errorCode" :code="errorCode" />
-      <p v-if="updated" class="text-green-600">Your password has been updated successfully.</p>
-      <button type="submit" 
-        class="
-        w-full
-        px-6
-        py-2.5
-        bg-blue-600
-        text-white
-        font-medium
-        text-xs
-        leading-tight
-        uppercase
-        rounded
-        shadow-md
-        hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+      <p v-if="updated">Your password has been updated successfully.</p>
+      <button type="submit">
         Login
       </button>
-      <p class="text-gray-800 mt-6 text-center">Not a member? 
-        <router-link to="/register" class="text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out">Register</router-link>
+      <p>Not a member?
+        <router-link to="/register">Register</router-link>
       </p>
     </form>
   </div>
 </template>
 
-
+<style scoped>
+  form {
+    width: 500px;
+    margin: 50px auto;
+    border: 1px solid #ddd;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 2px 3px #ccc;
+  }
+  h3 {
+    margin-bottom: 30px;
+    font-size: 24px;
+  }
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    font-size: 16px;
+  }
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  p {
+    margin-top: 30px;
+    font-size: 14px;
+  }
+  a {
+    color: #0077ff;
+    text-decoration: none;
+  }
+  .error {
+    color: red;
+  }
+</style>

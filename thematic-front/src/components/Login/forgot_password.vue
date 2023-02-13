@@ -30,49 +30,68 @@ const submit = () => {
 </script>
 
 <template>
-    <div class="p-6 rounded-lg shadow-lg bg-white max-w-md">
-        <h2 class="text-lg font-medium mb-6 text-center">Forgot Password</h2>
+    <div>
         <form @submit.prevent="submit">
-            <div class="form-group mb-6">
-                <label for="exampleInputEmail2" class="form-label inline-block mb-2 text-gray-700">Email address</label>
-                <input type="email" name="email" v-model="email" required class="form-control
-          block
-          w-full
-          px-3
-          py-1.5
-          text-base
-          font-normal
-          text-gray-700
-          bg-white bg-clip-padding
-          border border-solid border-gray-300
-          rounded
-          transition
-          ease-in-out
-          m-0
-          focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInputEmail2"
+            <h3>Forgot Password</h3>
+            <div>
+                <label for="exampleInputEmail2">Email address</label>
+                <input type="email" name="email" v-model="email" required id="exampleInputEmail2"
                     aria-describedby="emailHelp" placeholder="Enter email">
             </div>
-            <button type="submit"
-                class="
-          w-full
-          px-6
-          py-2.5
-          bg-blue-600
-          text-white
-          font-medium
-          text-xs
-          leading-tight
-          uppercase
-          rounded
-          shadow-md
-          hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+            <button type="submit">
                 Reset Password
             </button>
-            <p class="text-gray-800 mt-6 text-center">Remember your password ?
-                <router-link to="/login"
-                    class="text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out">Login</router-link>
+            <p>Remember your password ?
+                <router-link to="/login">Login</router-link>
             </p>
         </form>
     </div>
 </template>
-  
+
+<style scoped>
+  form {
+    width: 500px;
+    margin: 50px auto;
+    border: 1px solid #ddd;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 2px 3px #ccc;
+  }
+  h3 {
+    margin-bottom: 30px;
+    font-size: 24px;
+  }
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    font-size: 16px;
+  }
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  p {
+    margin-top: 30px;
+    font-size: 14px;
+  }
+  a {
+    color: #0077ff;
+    text-decoration: none;
+  }
+  .error {
+    color: red;
+  }
+</style>

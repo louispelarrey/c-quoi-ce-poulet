@@ -48,156 +48,75 @@ const submit = () => {
 </script>
 
 <template>
-  <div class="p-6 rounded-lg shadow-lg bg-white max-w-md">
+  <div>
     <form @submit.prevent="submit">
-      <div class="form-group mb-6">
-        <label for="exampleInputEmail2" class="form-label inline-block mb-2 text-gray-700">Email address</label>
-        <input type="email" name="email" v-model="email" required
-               class="form-control
-                    block
-                    w-full
-                    px-3
-                    py-1.5
-                    text-base
-                    font-normal
-                    text-gray-700
-                    bg-white bg-clip-padding
-                    border border-solid border-gray-300
-                    rounded
-                    transition
-                    ease-in-out
-                    m-0
-                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInputEmail2"
-               aria-describedby="emailHelp" placeholder="Enter email">
+      <h3>Register</h3>
+      <div>
+        <label for="exampleInputEmail2">Email address</label>
+        <input type="email" name="email" v-model="email" required id="exampleInputEmail2" aria-describedby="emailHelp" placeholder="Enter email">
       </div>
-      <div class="form-group mb-6">
-        <label for="exampleInputPassword2" class="form-label inline-block mb-2 text-gray-700">Password</label>
-        <input type="password" name="password" v-model="password" required class="form-control block
-                  w-full
-                  px-3
-                  py-1.5
-                  text-base
-                  font-normal
-                  text-gray-700
-                  bg-white bg-clip-padding
-                  border border-solid border-gray-300
-                  rounded
-                  transition
-                  ease-in-out
-                  m-0
-                  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="password"
-               placeholder="Password">
+      <div>
+        <label for="exampleInputPassword2">Password</label>
+        <input type="password" name="password" v-model="password" required id="password" placeholder="Password">
       </div>
-      <div class="form-group mb-6">
-        <label for="exampleInputPassword2" class="form-label inline-block mb-2 text-gray-700">Confirm
-          password</label>
-        <input type="password" name="password_confirm" v-model="password_confirm" required class="form-control block
-        w-full
-        px-3
-        py-1.5
-        text-base
-        font-normal
-        text-gray-700
-        bg-white bg-clip-padding
-        border border-solid border-gray-300
-        rounded
-        transition
-        ease-in-out
-        m-0
-        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="password_confirm"
-               placeholder="Repeated Password">
+      <div>
+        <label for="exampleInputPassword2">Confirm password</label>
+        <input type="password" name="password_confirm" v-model="password_confirm" required id="password_confirm" placeholder="Repeated Password">
       </div>
-
-      <div class="form-group mb-6">
-        <label for="exampleInputPassword2" class="form-label inline-block mb-2 text-gray-700">Firstname</label>
-        <input type="text" name="firstname" v-model="firstname" required class="form-control block
-        w-full
-        px-3
-        py-1.5
-        text-base
-        font-normal
-        text-gray-700
-        bg-white bg-clip-padding
-        border border-solid border-gray-300
-        rounded
-        transition
-        ease-in-out
-        m-0
-        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInputPassword2"
-               placeholder="Firstname">
+      <div>
+        <label for="exampleInputPassword2">Firstname</label>
+        <input type="text" name="firstname" v-model="firstname" required id="exampleInputPassword2" placeholder="Firstname">
       </div>
-      <div class="form-group mb-6">
-        <label for="exampleInputPassword2" class="form-label inline-block mb-2 text-gray-700">Lastname</label>
-        <input type="text" name="lastname" v-model="lastname" required class="form-control block
-        w-full
-        px-3
-        py-1.5
-        text-base
-        font-normal
-        text-gray-700
-        bg-white bg-clip-padding
-        border border-solid border-gray-300
-        rounded
-        transition
-        ease-in-out
-        m-0
-        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInputPassword2"
-               placeholder="Lastname">
+      <div>
+        <label for="exampleInputPassword2">Lastname</label>
+        <input type="text" name="lastname" v-model="lastname" required id="exampleInputPassword2" placeholder="Lastname">
       </div>
-      <div class="form-group mb-6">
-        <label for="exampleInputPassword2" class="form-label inline-block mb-2 text-gray-700">Phone number</label>
-        <input type="tel" name="NumberPhone" v-model="NumberPhone" required class="form-control block
-        w-full
-        px-3
-        py-1.5
-        text-base
-        font-normal
-        text-gray-700
-        bg-white bg-clip-padding
-        border border-solid border-gray-300
-        rounded
-        transition
-        ease-in-out
-        m-0
-        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInputPassword2"
-               placeholder="NumberPhone">
+      <div>
+        <label for="exampleInputPassword2">Phone number</label>
+        <input type="tel" name="NumberPhone" v-model="NumberPhone" required id="exampleInputPassword2" placeholder="NumberPhone">
       </div>
-      <div class="form-group mb-6">
-        <label for="exampleInputPassword2" class="form-label inline-block mb-2 text-gray-700">Address</label>
-        <input type="string" name="address" v-model="address" required class="form-control block
-        w-full
-        px-3
-        py-1.5
-        text-base
-        font-normal
-        text-gray-700
-        bg-white bg-clip-padding
-        border border-solid border-gray-300
-        rounded
-        transition
-        ease-in-out
-        m-0
-        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInputPassword2"
-               placeholder="address">
+      <div>
+        <label for="exampleInputPassword2">Address</label>
+        <input type="string" name="address" v-model="address" required id="exampleInputPassword2" placeholder="address">
       </div>
-      <button type="submit"
-              class="
-        w-full
-        px-6
-        py-2.5
-        bg-blue-600
-        text-white
-        font-medium
-        text-xs
-        leading-tight
-        uppercase
-        rounded
-        shadow-md
-        hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
-        Sign in
-      </button>
+      <button type="submit">Sign in</button>
     </form>
   </div>
 </template>
 
-
+<style scoped>
+  form {
+    width: 500px;
+    margin: 50px auto;
+    border: 1px solid #ddd;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 2px 3px #ccc;
+  }
+  h3 {
+    margin-bottom: 30px;
+    font-size: 24px;
+  }
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    font-size: 16px;
+  }
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+</style>
