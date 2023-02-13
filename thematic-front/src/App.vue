@@ -25,7 +25,7 @@ if (token) {
 <template>
   <AuthProvider>
     <Nav/>
-    <div class="relative">
+    <div>
       <div id="viewcontainer" class="fitPageHeight mx-auto">
         <div v-if="userAdmin" class="flex flex-row full-height ">
           <navAdmin />
@@ -43,9 +43,14 @@ if (token) {
 <style>
 .fitPageHeight {
   min-height: 70vh;
+  align-items: center;
+  justify-content: center;
 }
 .container_page {
   margin: 0 auto;
   width: 80vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

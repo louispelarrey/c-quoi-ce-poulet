@@ -27,7 +27,7 @@ fetch(import.meta.env.VITE_API_URL+"reports", {
 
 <template>
     <div class="hidden z-5 lg:block navbar-menu relative ">
-      <nav style="min-height: 70vh; height: 100%" class="top-0 left-0 bottom-0 flex flex-col w-2/4 lg:w-60 sm:max-w-xs pt-6 pb-8 bg-gray-800 overflow-y-auto ">
+      <nav style="position: relative; min-height: 70vh; height: 100%" class="top-0 left-0 bottom-0 flex flex-col w-2/4 lg:w-60 sm:max-w-xs pt-6 pb-8 bg-gray-800 overflow-y-auto ">
         <div class="px-4 pb-6">
           <h3 class="mb-2 text-xs uppercase text-gray-500 font-medium">Admin menu</h3>
           <ul class="mb-8 text-sm font-medium">
