@@ -67,9 +67,9 @@ const sendCommand = (orderId) => {
       });
 }
 
-const removeProduct = (mealId, orderId) => {
-  console.log(orders.value[0])
-  fetch(import.meta.env.VITE_API_URL + "meal_orders", {
+const removeProduct = (mealId) => {
+  const mealOrdersToDelete = orders.value[0].mealOrders.filter((mealOrder) => mealOrder.meal.id === mealId)
+  fetch(import.meta.env.VITE_API_URL + "meal_orders/"+mealOrdersToDelete[0].id, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -77,14 +77,16 @@ const removeProduct = (mealId, orderId) => {
       'Authorization': `Bearer ${token}`,
     },
   })
-      .then((res) => res.json())
       .then((data) => {
         if (data.error) {
           alert(data.error);
         } else {
-          if (!order.value){
-            order.value = data
+          if (meals.value.find((m) => m.id === mealId).quantity > 1) {
+            meals.value.find((m) => m.id === mealId).quantity -= 1
+          } else {
+            meals.value = meals.value.filter((m) => m.id !== mealId)
           }
+          orders.value[0].mealOrders = orders.value[0].mealOrders.filter((mealOrder) => mealOrder !== mealOrdersToDelete[0])
         }
       });
 }
@@ -128,7 +130,7 @@ const removeProduct = (mealId, orderId) => {
                   <span class="text-sm">
                       Quantity :  {{ meal.quantity }}
                   </span>
-                  <button @click="removeProduct(meal.id, order.id)"
+                  <button @click="removeProduct(meal.id)"
                           class="mx-5 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ">
                     Remove product
                   </button>
