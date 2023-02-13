@@ -33,7 +33,7 @@ fetch(import.meta.env.VITE_API_URL+"restaurants/"+id, {
 <template>
   <div>
     <div>
-      <h1 class="text-4xl text-center mb-10">Restaurant's menu {{restaurant.name}}</h1>
+      <h1 class="text-4xl text-center mb-10">{{restaurant.name}}'s menu</h1>
     </div>
     <div>
       <p class="text-center" v-if="restaurant.meals?.length === 0">There is no meal for now.</p>
