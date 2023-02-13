@@ -41,7 +41,7 @@ final class ForgotPasswordEventSubscriber implements EventSubscriberInterface
         $this->mailer->sendMail(
             $user->getEmail(),
             "Réinitialisation de votre mot de passe",
-            "Cliquez ici pour réinitialiser votre mot de passe : " . $_ENV["FRONT_URL"] . "/forgot-password/" . $passwordToken->getToken()
+            "Cliquez ici pour réinitialiser votre mot de passe : " . $_ENV["FRONT_URL"] . "/reset-password/" . $passwordToken->getToken()
         );
     }
 }
