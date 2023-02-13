@@ -23,6 +23,10 @@ services:
       MERCURE_URL: ${CADDY_MERCURE_URL:-http://caddy/.well-known/mercure}
       MERCURE_PUBLIC_URL: https://${SERVER_NAME:-localhost}/.well-known/mercure
       MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+      APP_ENV: prod
+      APP_DEBUG: true
+      FRONT_URL: https://c-quoi-ce-poulet.netlify.app
+      CORS_ALLOW_ORIGIN: '^https:\/\/c-quoi-ce-poulet.netlify.app$'
 
   pwa:
     build:
@@ -48,6 +52,7 @@ services:
       - php_socket:/var/run/php
       - caddy_data:/data
       - caddy_config:/config
+      - ./api/docker/caddy/CaddyfileProd:/etc/caddy/Caddyfile:ro
     ports:
       # HTTP
       - target: 80
