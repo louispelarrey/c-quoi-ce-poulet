@@ -8,6 +8,7 @@ import ErrorMessage from "../Error/ErrorMessage.vue";
 const router = useRouter();
 const route = useRoute();
 const errorCode = ref(0);
+const updated = ref(route.query.updated === "success");
 
 const email = ref('')
 const password = ref('')
@@ -91,6 +92,7 @@ const submit = () => {
       </div>
       <router-link to="/forgot-password" class="text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out">Forgot password ?</router-link>
       <ErrorMessage v-if="errorCode" :code="errorCode" />
+      <p v-if="updated" class="text-green-600">Your password has been updated successfully.</p>
       <button type="submit" 
         class="
         w-full

@@ -22,7 +22,7 @@ const submit = () => {
             if (data.error) {
                 alert(data.message);
             } else {
-                router.push("/login");
+                router.push("/reset-password");
             }
         });
 };

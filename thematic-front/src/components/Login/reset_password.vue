@@ -1,4 +1,4 @@
-<script>
+<script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -7,12 +7,8 @@ const passwordConfirm = ref("");
 const router = useRouter();
 
 const submit = () => {
-    if (password.value !== passwordConfirm.value) {
-        alert("Passwords do not match!");
-        return;
-    }
-
-    fetch(import.meta.env.VITE_API_URL + "reset-password/", {
+    const token = router.currentRoute.value.params.token;
+    fetch(import.meta.env.VITE_API_URL + "forgot-password/" + token, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -20,7 +16,6 @@ const submit = () => {
         },
         body: JSON.stringify({
             password: password.value,
-            reset_token: this.$route.params.reset_token,
         }),
     })
         .then((res) => res.json())
@@ -28,7 +23,7 @@ const submit = () => {
             if (data.error) {
                 alert(data.message);
             } else {
-                router.push("/login");
+                router.push("/login?updated=success");
             }
         });
 };
