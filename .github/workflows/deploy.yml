@@ -3,7 +3,7 @@ name: Deploy Netlify
 on:
   push:
     branches:
-      - dev
+      - feat/test
     paths:
       - 'thematic-front/**'
       - '.github/workflows/deploy.yml'
@@ -46,7 +46,7 @@ jobs:
           run: cd ./thematic-front && npm ci
 
         - name: Build
-          run: cd ./thematic-front && npm run build && mv dist ../
+          run: cd ./thematic-front && npm run dev && mv dist ../
         - name: Deploy to Netlify
           uses: nwtgck/actions-netlify@v1.2
           with:
