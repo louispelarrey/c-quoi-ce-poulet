@@ -1,5 +1,5 @@
 [web]
-134.209.246.99 ansible_user=root
+134.209.246.99 ansible_user=root 
 
 [web:vars]
 ansible_python_interpreter=/usr/bin/python3
