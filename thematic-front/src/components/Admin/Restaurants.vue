@@ -13,7 +13,7 @@ const actualTags = ref([])
 const modalOpen = ref(false)
 
 const getRestaurants = () => {
-  fetch(import.meta.env.VITE_API_URL+"restaurants", {
+  fetch(import.meta.env.VITE_API_URL+"restaurants?isActivated=true", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -27,7 +27,6 @@ const getRestaurants = () => {
           alert(data.error);
         } else {
           restaurants.value = data
-          // set all data tags id to actualTags
           data.forEach(restaurant => {
             restaurant.tags.forEach(tag => {
               actualTags.value.push(tag.id)

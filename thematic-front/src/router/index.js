@@ -10,7 +10,6 @@ import {reactive} from "vue";
 import Restaurants from "../components/Admin/Restaurants.vue";
 import Reports from "../components/Admin/Reports.vue";
 import CreateRestaurant from "../components/Restaurant/CreateRestaurant.vue";
-import RecapOrder from "../components/Order/RecapOrder.vue";
 import Commands from "../components/Commands.vue";
 import HomeRestaurateur from "../components/Restaurant/HomeRestaurateur.vue";
 import Error403 from "../components/Error/Error403.vue";
@@ -38,7 +37,7 @@ const router = createRouter({
             name: 'home',
             component: function () {
                 if (state.token && state.userAdmin) {
-                    return HomeAdmin
+                    return Users
                 } else if (state.token && state.userRestaurateur) {
                     return HomeRestaurateur
                 }else {
@@ -103,11 +102,6 @@ const router = createRouter({
                     return Error403
                 }
             }
-        },
-        {
-          path: "/your_order",
-          name: "order_recap",
-          component: RecapOrder,
         },
         {
             path: "/orders",

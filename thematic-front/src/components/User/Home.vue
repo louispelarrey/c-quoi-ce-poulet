@@ -9,7 +9,7 @@ const token = localStorage.getItem('token')
 
 const restaurants = ref({})
 
-fetch(import.meta.env.VITE_API_URL+"restaurants", {
+fetch(import.meta.env.VITE_API_URL+"restaurants?isActivated=true", {
   method: "GET",
   headers: {
     "Content-Type": "application/json",
