@@ -23,4 +23,4 @@ jobs:
 
       - name: Update docker compose image
         run: |
-          doctl compute ssh root@${{secrets.SERV_IP}} --ssh-port 22 --ssh-command "cd /home/root/c-quoi-ce-poulet/thematic-api && git pull
+          doctl compute ssh root@${{secrets.SERV_IP}} --ssh-port 22 --ssh-command "cd /home/root/c-quoi-ce-poulet/thematic-api && git pull"
