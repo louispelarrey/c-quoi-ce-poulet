@@ -1,9 +1,8 @@
 <script setup>
 import {onMounted, ref} from 'vue'
 
-let mealCounter = ref(0)
-const isMorethanOneInCart = ref(false)
 const order = ref({})
+const actualOrder = ref({})
 
 const props = defineProps({
   menu: {
@@ -19,10 +18,6 @@ const props = defineProps({
 const token = localStorage.getItem('token')
 const actualUserId = JSON.parse(atob(token.split('.')[1])).user_id;
 
-const toggleCartHandler = () => {
-  isMorethanOneInCart.value = mealCounter.value > 0
-}
-
 const getOrder = () => {
   fetch(import.meta.env.VITE_API_URL + "orders/?client.id="+actualUserId, {
     method: "GET",
@@ -37,7 +32,13 @@ const getOrder = () => {
     if (data.error) {
       alert(data.error);
     } else {
-      order.value = data[0]
+      if (data){
+        data.filter((order) => {
+          if (order.status === "opened"){
+            actualOrder.value = order
+          }
+        })
+      }
     }
   });
 }
@@ -71,14 +72,19 @@ const initOrder = (meal) => {
 }
 
 const addToCart = (meal) => {
-  let orderId = ''
-  if (!order){
-    if (order.value[0].restaurantUser === undefined) {
-      initOrder(meal)
-      orderId = order.value[0].id
-    }
+  let orderId = '';
+  if (!actualOrder){
+    initOrder(meal)
+  } else if (!actualOrder.value){
+    initOrder(meal)
   } else {
-    orderId = order.value.id
+    if (actualOrder.value.restaurantUser === undefined && actualOrder.value.status === 'delivered'){
+      console.log('order is null')
+      initOrder(meal)
+        orderId = actualOrder.value.id
+    } else {
+      orderId = actualOrder.value.id
+    }
   }
 
   fetch(import.meta.env.VITE_API_URL + "meal_orders", {
@@ -103,13 +109,6 @@ const addToCart = (meal) => {
       }
     }
   });
-  mealCounter.value++
-  toggleCartHandler()
-}
-
-const removeFromCart = () => {
-  mealCounter.value--
-  toggleCartHandler()
 }
 
 const menu = ref(props.menu)
@@ -123,17 +122,7 @@ const menu = ref(props.menu)
       <h3>{{ menu.name }}</h3>
       <h4>{{ menu.price }} €</h4>
       <p>{{ menu.description }}</p>
-      <div v-if="isMorethanOneInCart">
-        <input style="width: 40px" class="cursor-pointer bg-transparent text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded"
-               value="-"
-               @click="removeFromCart" />
-        <span class="m-5">{{ mealCounter }}</span>
-        <input style="width: 40px" class="cursor-pointer bg-transparent text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded"
-           type="button" value="+"
-           @click="addToCart(menu)" />
-      </div>
       <input class="cursor-pointer bg-transparent text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded"
-             v-else
              type="button"
              value="Ajouter au panier"
              @click="addToCart(menu)" />
