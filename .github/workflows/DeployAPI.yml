@@ -1,0 +1,26 @@
+name: API Server Deployment with doctl
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'thematic-api/**'
+      - '.github/workflows/apiDeploy.yml'
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+
+      - name: Update docker compose image
+        run: |
+          doctl compute ssh root@${{secrets.SERV_IP}} --ssh-key-fingerprint ${{secrets.SSH_FINGERPRINT}} --ssh-key-path ${{secrets.SSH_KEY_PATH}} --ssh-port 22 --ssh-command "cd /home/root/c-quoi-ce-poulet/thematic-api && git pull
