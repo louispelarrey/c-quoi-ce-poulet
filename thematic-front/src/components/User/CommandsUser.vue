@@ -32,7 +32,6 @@ fetch(import.meta.env.VITE_API_URL + "orders", {
           }
           orders.value.push(order)
 
-          // add all order meals in an array and if it already exist add quantity
           order.meals.map((meal) => {
             if (meals.value.find((m) => m.id === meal.id)) {
               meals.value.find((m) => m.id === meal.id).quantity += 1

@@ -107,7 +107,47 @@ const addToCart = (meal) => {
   toggleCartHandler()
 }
 
-const removeFromCart = () => {
+const orderToDelete = ref({})
+
+const removeFromCart = (meal) => {
+  fetch(import.meta.env.VITE_API_URL + "meal_orders?meal.id="+meal.id, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      'Authorization': `Bearer ${token}`,
+    }
+  })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          alert(data.error);
+        } else {
+          if (!order.value){
+            orderToDelete.value = data
+          }
+        }
+      });
+
+  console.log(order.value)
+  // fetch(import.meta.env.VITE_API_URL + "meal_orders/"+, {
+  //   method: "DELETE",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     "Accept": "application/json",
+  //     'Authorization': `Bearer ${token}`,
+  //   }
+  // })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       if (data.error) {
+  //         alert(data.error);
+  //       } else {
+  //         if (!order.value){
+  //           order.value = data
+  //         }
+  //       }
+  //     });
   mealCounter.value--
   toggleCartHandler()
 }
@@ -126,7 +166,7 @@ const menu = ref(props.menu)
       <div v-if="isMorethanOneInCart">
         <input style="width: 40px" class="cursor-pointer bg-transparent text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded"
                value="-"
-               @click="removeFromCart" />
+               @click="removeFromCart(menu)" />
         <span class="m-5">{{ mealCounter }}</span>
         <input style="width: 40px" class="cursor-pointer bg-transparent text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded"
            type="button" value="+"

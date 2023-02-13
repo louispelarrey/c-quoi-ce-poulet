@@ -9,6 +9,7 @@ const token = localStorage.getItem('token')
 const actualUserId = JSON.parse(atob(token.split('.')[1])).user_id;
 
 const orders = ref([])
+const meals = ref([])
 const user = ref({})
 
 user.value = JSON.parse(atob(token.split('.')[1]))
@@ -31,6 +32,14 @@ fetch(import.meta.env.VITE_API_URL+"orders", {
         order.status = JSON.parse(order.status)
       }
       orders.value.push(order)
+      order.meals.map((meal) => {
+        if (meals.value.find((m) => m.id === meal.id)) {
+          meals.value.find((m) => m.id === meal.id).quantity += 1
+        } else {
+          meal.quantity = 1
+          meals.value.push(meal)
+        }
+      })
     })
   }
 });
@@ -64,13 +73,13 @@ const confirmDelivery = (order) => {
     },
     body: JSON.stringify({})
   })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          alert(data.error);
-        } else {
-        }
-      });
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.error) {
+      alert(data.error);
+    } else {
+    }
+  });
 }
 </script>
 
@@ -93,30 +102,29 @@ const confirmDelivery = (order) => {
             </p>
           </div>
         </div>
-        <div class="flex-none mt-auto overflow-hidden p-3">
+        <div class="flex-none mt-auto overflow-hidden p-3" v-if="actualUserId !== order.client.id">
           <div class="text-center">
             <p class="text-xl px-6">
               order from : {{ order.client.firstname }} {{ order.client.lastname }}
-              order from : {{ order.deliverer.id }} {{ order.client.lastname }}
             </p>
           </div>
         </div>
         <div v-if="order.deliverer?.id" class="flex-none mt-auto overflow-hidden p-3">
           <div class="text-center">
             <p class="text-xl px-6">
-              Delivered from : {{ order.deliverer.firstname }} {{ order.deliverer.lastname }}
+              Delivered from : {{ order.deliverer?.firstname }} {{ order.deliverer?.lastname }}
             </p>
           </div>
         </div>
         <div>
-          <div v-for="meal in order.meals" class="flex-none mt-auto overflow-hidden p-3">
-            <div class="text-center">
-              <p class="text-xl px-6">
-                {{ meal.name }}
+          <div v-for="meal in meals" class="p-2 w-full">
+            <div>
+              <p class="text-md">
+                {{ meal.name }} : {{ meal.price }} €
               </p>
-              <p class="text-xl px-6">
-                {{ meal.price }}
-              </p>
+              <span class="text-sm">
+                      Quantity :  {{ meal.quantity }}
+                  </span>
             </div>
           </div>
         </div>

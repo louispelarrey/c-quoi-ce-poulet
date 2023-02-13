@@ -58,7 +58,7 @@ fetch(import.meta.env.VITE_API_URL+"reports", {
               </router-link>
             </li>
             <li>
-              <router-link to="/admin/reports" class="flex items-center pl-3 py-3 pr-2 text-gray-50 hover:bg-gray-900 rounded" >
+              <router-link to="/admin/restaurants_request" class="flex items-center pl-3 py-3 pr-2 text-gray-50 hover:bg-gray-900 rounded" >
                 <a class="flex items-center pl-3 py-3 pr-4 text-gray-50 hover:bg-gray-900 rounded" href="#">
                 <span class="inline-block mr-3">
                   <svg class="text-gray-600 w-5 h-5" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

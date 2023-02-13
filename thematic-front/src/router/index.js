@@ -16,6 +16,7 @@ import Commands from "../components/Commands.vue";
 import HomeRestaurateur from "../components/Restaurant/HomeRestaurateur.vue";
 import Error403 from "../components/Error/Error403.vue";
 import Error404 from "../components/Error/Error404.vue";
+import RestaurantsRequest from "../components/Admin/RestaurantsRequest.vue";
 
 
 const state = reactive({
@@ -95,6 +96,17 @@ const router = createRouter({
             component: function () {
                 if (state.userAdmin) {
                     return Restaurants
+                } else {
+                    return Error403
+                }
+            }
+        },
+        {
+            path: "/admin/restaurants_request",
+            name: "admin_restaurants_request",
+            component: function () {
+                if (state.userAdmin) {
+                    return RestaurantsRequest
                 } else {
                     return Error403
                 }

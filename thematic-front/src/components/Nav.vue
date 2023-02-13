@@ -1,8 +1,5 @@
 <script setup>
 import { ref } from 'vue'
-import Cart from "./Cart/Cart.vue";
-import Reports from "./Admin/Reports.vue";
-import Commands from "./Commands.vue";
 import CommandsUser from "./User/CommandsUser.vue";
 
 function logout() {
@@ -64,7 +61,7 @@ const closePopup = () => {
           <li class="mr-3">
             <router-link class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" to="/profile" >Profile</router-link>
           </li>
-          <li class="mr-3" v-if="isNotUser">
+          <li class="mr-3">
             <router-link class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" to="/orders" >Orders</router-link>
           </li>
         </ul>

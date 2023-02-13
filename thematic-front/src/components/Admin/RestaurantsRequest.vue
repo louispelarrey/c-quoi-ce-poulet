@@ -13,7 +13,7 @@ const actualTags = ref([])
 const modalOpen = ref(false)
 
 const getRestaurants = () => {
-  fetch(import.meta.env.VITE_API_URL+"restaurants?isActivated=true", {
+  fetch(import.meta.env.VITE_API_URL+"restaurants?isActivated=false", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -205,8 +205,6 @@ const validate = (restaurantId) => {
                 {{ restaurant.address }}
               </td>
               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                <button @click="showPopupEditRestaurant(restaurant)" class="mx-auto lg:mx-0 hover:underline gradient text-black font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-                  Edit</button>
                 <button @click="deleteRestaurants(restaurant.id)"
                         class="mx-auto lg:mx-0 hover:underline gradient text-red font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
                   Delete</button>
