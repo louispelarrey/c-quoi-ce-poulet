@@ -26,7 +26,7 @@ class WebhookCheckoutController extends AbstractController
 
     public function __invoke(int $id): JsonResponse
     {
-        $order = $this->orderRepository->findOneBy(['id' => (int) $id]);
+        $order = $this->orderRepository->findOneBy(['id' => $id]);
         $email = $order->getClient()->getEmail();
 
         if ($order) {
@@ -39,10 +39,10 @@ class WebhookCheckoutController extends AbstractController
                 "Vous recevrez votre commande dans les plus brefs délais. Merci de votre confiance !",
             );
 
-            return $this->json($order);
+            return $this->json("ok");
         }
 
-        return $this->json($order);
+        return $this->json("ok");
 
         // header('Access-Control-Allow-Origin: *');
         // header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
