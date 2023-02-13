@@ -16,11 +16,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: get tag name
+      - uses: olegtarsov/get-tag@v2
+
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
 
-      - name: Update docker compose image
+      - name: Install sshpass
+        run: sudo apt-get install sshpass
+      
+      - name: Deploy to Digital Ocean
         run: |
-          doctl compute ssh root@$134.209.246.99 --ssh-port 22 --ssh-command "cd /home/root/c-quoi-ce-poulet/thematic-api && git pull"
+          sshpass -p ${{ secrets.SERV_SSH_PASS }} ssh root@${{ secrets.SERV_IP }} --ssh-port 22 --ssh-command "cd /home/root/c-quoi-ce-poulet/thematic-api && git pull"
+          doctl compute droplet $GIT_TAG_NAME --user-data-file deploy-prod.sh
