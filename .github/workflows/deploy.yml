@@ -3,7 +3,7 @@ name: Deploy Netlify
 on:
   push:
     branches:
-      - dev
+      - feat/testBuild
     paths:
       - 'thematic-front/**'
       - '.github/workflows/deploy.yml'
