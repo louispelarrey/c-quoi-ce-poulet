@@ -90,7 +90,7 @@ const submit = () => {
       </div>
       <div class="form-group mb-6">
         <label for="exampleInputPassword2" class="form-label inline-block mb-2 text-gray-700">Confirm
-          Password</label>
+          password</label>
         <input type="password" name="password_confirm" v-model="password_confirm" required class="form-control block
         w-full
         px-3
@@ -109,7 +109,7 @@ const submit = () => {
       </div>
 
       <div class="form-group mb-6">
-        <label for="exampleInputPassword2" class="form-label inline-block mb-2 text-gray-700">Firtsname</label>
+        <label for="exampleInputPassword2" class="form-label inline-block mb-2 text-gray-700">Firstname</label>
         <input type="text" name="firstname" v-model="firstname" required class="form-control block
         w-full
         px-3

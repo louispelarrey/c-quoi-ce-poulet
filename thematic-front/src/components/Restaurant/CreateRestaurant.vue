@@ -80,7 +80,7 @@ const loadFile = (event) => {
     <div class="border-b-2 block text-center">
       <div class="w-full p-4 sm:p-6 lg:p-8 bg-white shadow-md">
         <div class="flex justify-between">
-          <span class="text-xl font-semibold block">Créer votre restaurant</span>
+          <span class="text-xl font-semibold block">Create your restaurant</span>
         </div>
       </div>
       <div class="w-full flex flex-column p-8 bg-white lg:ml-5 mt-1">
@@ -140,7 +140,7 @@ const loadFile = (event) => {
         rounded
         shadow-md
         hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
-        Create demand
+        Request
       </button>
     </div>
   </form>

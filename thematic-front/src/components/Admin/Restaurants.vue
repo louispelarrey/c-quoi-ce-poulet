@@ -173,7 +173,7 @@ const validate = (restaurantId) => {
                 Opening Date
               </th>
               <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                address
+                Address
               </th>
               <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                 Actions
@@ -199,8 +199,8 @@ const validate = (restaurantId) => {
                 </div>
               </td>
               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                <p>Ouverture : {{ restaurant.openingTime[0] }}</p>
-                <p>Fermeture : {{ restaurant.openingTime[1] }}</p>
+                <p>Opening time : {{ restaurant.openingTime[0] }}</p>
+                <p>Closing time : {{ restaurant.openingTime[1] }}</p>
               </td>
               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 {{ restaurant.address }}
@@ -214,7 +214,7 @@ const validate = (restaurantId) => {
                 <button v-if="restaurant.isActivated === false"
                     @click="validate(restaurant.id)"
                     class="mx-auto lg:mx-0 hover:underline gradient text-red font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-                  Valider</button>
+                  Submit</button>
               </td>
             </tr>
             </tbody>

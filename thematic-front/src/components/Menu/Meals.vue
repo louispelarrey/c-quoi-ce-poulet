@@ -33,10 +33,10 @@ fetch(import.meta.env.VITE_API_URL+"restaurants/"+id, {
 <template>
   <div>
     <div>
-      <h1 class="text-4xl text-center mb-10">Menus du restaurant {{restaurant.name}}</h1>
+      <h1 class="text-4xl text-center mb-10">Restaurant's menu {{restaurant.name}}</h1>
     </div>
     <div>
-      <p class="text-center" v-if="restaurant.meals?.length === 0">Il n'y a aucun menu pour le moment</p>
+      <p class="text-center" v-if="restaurant.meals?.length === 0">There is no meal for now.</p>
       <div class="menu grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-10 my-5">
         <Meal :menu="menu" v-for="menu in menus" :key="menu" :restaurant_id="restaurant.id"/>
       </div>
