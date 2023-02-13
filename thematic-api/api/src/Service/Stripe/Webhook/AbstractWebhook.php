@@ -59,6 +59,7 @@ abstract class AbstractWebhook
     $session = $event->data->object;
     $this->logger->notice("[Webhook] - Received checkout : " . $session->client_reference_id);
 
+    var_dump("test");
     if ($session->payment_status == "paid") {
       //TODO: Mettre ici le code exécuté lorsqu'un paiement est payé
       $this->treatPayment($session["customer_details"]["email"], $session->metadata["orderId"]);

@@ -17,6 +17,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use App\Controller\ActivateRestaurantController;
 use App\Repository\RestaurantRepository;
 
@@ -27,12 +28,12 @@ use App\Repository\RestaurantRepository;
         new GetCollection(),
         new Get(),
         new Post(
-            security: 'is_granted("ROLE_ADMIN")',
+            security: 'is_granted("ROLE_USER")',
             securityMessage: 'Only admins can create restaurants.',
         ),
         new Post(
-            security: 'is_granted("ROLE_USER")',
-            securityMessage: 'Only users can create restaurants.',
+            security: 'is_granted("ROLE_ADMIN")',
+            securityMessage: 'Only admin can create restaurants.',
             uriTemplate: '/restaurants/activate/{id}',
             controller: ActivateRestaurantController::class,
             normalizationContext: ['groups' => ['restaurant:read', 'restaurant:update']],
@@ -51,6 +52,7 @@ use App\Repository\RestaurantRepository;
     denormalizationContext: ['groups' => ['restaurant:create', 'restaurant:update']],
 )]
 #[ApiFilter(SearchFilter::class, properties: ['owner.id' => 'exact'])]
+#[ApiFilter(BooleanFilter::class, properties: ['isActivated'])]
 class Restaurant
 {
     #[ORM\Id]

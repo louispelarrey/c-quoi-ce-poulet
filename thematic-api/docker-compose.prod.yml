@@ -6,6 +6,9 @@ services:
     environment:
       APP_ENV: prod
       APP_DEBUG: false
+      STRIPE_WEBHOOK_ENDPOINT_SECRET: whsec_KuHK0vmLz3sNVY33c3vCd9vIgBSJGMZL
+      FRONT_URL: https://c-quoi-ce-poulet.netlify.app
+      CORS_ALLOW_ORIGIN: '^https:\/\/c-quoi-ce-poulet.netlify.app$'
 
   caddy:
     volumes:

@@ -15,7 +15,7 @@ class Mailer
     public function sendMail(string $to, string $subject, string $body): bool
     {
         $email = new Mail();
-        $email->setFrom("noreply@tikero.site", "Tikero");
+        $email->setFrom("noreply@cquoicepoulet.com", "C quoi ce poulet");
         $email->setSubject($subject);
         $email->addTo($to);
         $email->addContent("text/html", trim($body));
