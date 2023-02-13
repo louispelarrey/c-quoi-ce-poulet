@@ -45,24 +45,27 @@ fetch(import.meta.env.VITE_API_URL + "orders", {
       }
     });
 
-const setDeliverer = (order) => {
-  fetch(import.meta.env.VITE_API_URL + "orders/" + order + "/accepted", {
-    method: "PATCH",
+const sendCommand = (orderId) => {
+  fetch(import.meta.env.VITE_API_URL + "orders", {
+    method: "POST",
     headers: {
-      "Content-Type": "application/merge-patch+json",
+      "Content-Type": "application/json",
       "Accept": "application/json",
       'Authorization': `Bearer ${token}`,
-    },
-    body: JSON.stringify({})
-  })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          alert(data.error);
-        } else {
-          console.log(data)
-        }
-      });
+    },body: JSON.stringify({
+      "email": user.value.email,
+      "orderId": orderId,
+      "successUrl": "http://example.com/",
+      "cancelUrl": "http://example.com/"
+    })
+  }).then((res) => res.json())
+  .then((data) => {
+    if (data.error) {
+      alert(data.error);
+    } else {
+
+    }
+  });
 }
 
 </script>
@@ -121,7 +124,7 @@ const setDeliverer = (order) => {
         </div>
         <button @click="sendCommand(order.id)"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ">
-          Send order
+          Proceed to payment
         </button>
       </div>
       <div>

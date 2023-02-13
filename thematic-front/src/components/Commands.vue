@@ -12,7 +12,6 @@ const orders = ref([])
 const user = ref({})
 
 user.value = JSON.parse(atob(token.split('.')[1]))
-console.log( )
 
 fetch(import.meta.env.VITE_API_URL+"orders", {
   method: "GET",
@@ -51,7 +50,6 @@ const setDeliverer = (order) => {
         if (data.error) {
           alert(data.error);
         } else {
-          console.log(data)
         }
       });
 }
@@ -71,7 +69,6 @@ const confirmDelivery = (order) => {
         if (data.error) {
           alert(data.error);
         } else {
-          console.log(data)
         }
       });
 }
