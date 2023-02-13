@@ -1,5 +1,7 @@
 import {createRouter, createWebHistory} from "vue-router";
 import Login from "../components/Login/login.vue";
+import ForgotPassword from "../components/Login/forgot_password.vue";
+import ResetPassword from "../components/Login/reset_password.vue";
 import Home from "../components/User/Home.vue";
 import Register from "../components/Login/register.vue"
 import editProfile from "../components/User/editProfile.vue"
@@ -15,6 +17,7 @@ import Commands from "../components/Commands.vue";
 import HomeRestaurateur from "../components/Restaurant/HomeRestaurateur.vue";
 import Error403 from "../components/Error/Error403.vue";
 import Error404 from "../components/Error/Error404.vue";
+
 
 const state = reactive({
     token: localStorage.getItem("token"),
@@ -50,6 +53,16 @@ const router = createRouter({
             path: "/login",
             name: "login",
             component: Login,
+        },
+        {
+            path: "/forgot-password",
+            name: "forgot_password",
+            component: ForgotPassword,
+        },
+        {
+            path: "/reset-password/:token",
+            name: "reset_password_token",
+            component: ResetPassword,
         },
         {
             path: "/register",
@@ -124,7 +137,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem("token");
-    if (!token && to.path !== "/login" && to.path !== "/register") {
+    if (!token && to.path !== "/login" && to.path !== "/register" && to.path !== "/forgot-password" && to.path !== "/reset-password/:token") {
         next({
             path: "/login",
             query: { redirect: to.fullPath }
