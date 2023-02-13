@@ -6,7 +6,7 @@ on:
       - dev
     paths:
       - 'thematic-api/**'
-      - '.github/workflows/apiDeploy.yml'
+      - '.github/workflows/DeployAPI.yml'
 
 jobs:
 
