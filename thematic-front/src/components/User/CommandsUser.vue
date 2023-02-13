@@ -26,20 +26,20 @@ fetch(import.meta.env.VITE_API_URL + "orders", {
       if (data.error) {
         alert(data.error);
       } else {
-        data.map((order) => {
-          if (order.status !== 'accepted' && order.status !== 'opened') {
-            order.status = JSON.parse(order.status)
+        data.filter((order) => {
+          if (order.status === "opened") {
+            data = order
           }
-          orders.value.push(order)
+        })
+        orders.value.push(data)
 
-          order.meals.map((meal) => {
-            if (meals.value.find((m) => m.id === meal.id)) {
-              meals.value.find((m) => m.id === meal.id).quantity += 1
-            } else {
-              meal.quantity = 1
-              meals.value.push(meal)
-            }
-          })
+        data.meals.map((meal) => {
+          if (meals.value.find((m) => m.id === meal.id)) {
+            meals.value.find((m) => m.id === meal.id).quantity += 1
+          } else {
+            meal.quantity = 1
+            meals.value.push(meal)
+          }
         })
       }
     });
@@ -51,26 +51,48 @@ const sendCommand = (orderId) => {
       "Content-Type": "application/json",
       "Accept": "application/json",
       'Authorization': `Bearer ${token}`,
-    },body: JSON.stringify({
+    }, body: JSON.stringify({
       "email": user.value.email,
       "orderId": orderId,
       "successUrl": "http://example.com/",
       "cancelUrl": "http://example.com/"
     })
   }).then((res) => res.json())
-  .then((data) => {
-    if (data.error) {
-      alert(data.error);
-    } else {
+      .then((data) => {
+        if (data.error) {
+          alert(data.error);
+        } else {
 
-    }
-  });
+        }
+      });
+}
+
+const removeProduct = (mealId, orderId) => {
+  console.log(orders.value[0])
+  fetch(import.meta.env.VITE_API_URL + "meal_orders", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          alert(data.error);
+        } else {
+          if (!order.value){
+            order.value = data
+          }
+        }
+      });
 }
 
 </script>
 
 <template>
-  <section class="bg-white border-b py-8 w-full">
+  <section >
     <div class="container mx-auto flex flex-wrap pt-4 pb-12">
       <h1 class="w-full my-2 text-5xl text-center font-bold leading-tight text-center text-gray-800">
         Your Orders
@@ -83,10 +105,15 @@ const sendCommand = (orderId) => {
                 Status : {{ order.status }}
               </p>
             </div>
+              <div class="text-center">
+                <p class="text-sm px-6">
+                  Prepared by : {{ order.restaurantUser.firstname }} {{ order.restaurantUser.lastname }}
+                </p>
+              </div>
           </div>
           <div v-if="order.deliverer?.id" class="flex-none mt-auto overflow-hidden p-3">
             <div class="text-center">
-              <p class="text-xl px-6">
+              <p class="text-sm px-6">
                 Delivered from : {{ order.deliverer.firstname }} {{ order.deliverer.lastname }}
               </p>
             </div>
@@ -101,32 +128,26 @@ const sendCommand = (orderId) => {
                   <span class="text-sm">
                       Quantity :  {{ meal.quantity }}
                   </span>
+                  <button @click="removeProduct(meal.id, order.id)"
+                          class="mx-5 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ">
+                    Remove product
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-          <div class="flex-none mt-auto overflow-hidden p-3">
-            <div class="text-center">
-              <p class="text-xl px-6">
-                Prepared by : {{ order.restaurantUser.firstname }} {{ order.restaurantUser.lastname }}
+          <div v-if="order.totalPrice" class="flex-none mt-auto overflow-hidden p-3">
+            <div class="text-center justify-center items-center flex flex-row">
+              <p class="text-sm px-6 text-bold-400">
+                Total price : {{ order.totalPrice }}
               </p>
+              <button @click="sendCommand(order.id)"
+                      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ">
+                Proceed to payment
+              </button>
             </div>
           </div>
-
         </div>
-        <div v-if="order.totalPrice" class="flex-none mt-auto overflow-hidden p-3">
-          <div class="text-center">
-            <p class="text-xl px-6 text-bold-400">
-              Total price : {{ order.totalPrice }}
-            </p>
-          </div>
-        </div>
-        <button @click="sendCommand(order.id)"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ">
-          Proceed to payment
-        </button>
-      </div>
-      <div>
       </div>
     </div>
   </section>

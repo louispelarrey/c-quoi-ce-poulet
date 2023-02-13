@@ -28,7 +28,7 @@ fetch(import.meta.env.VITE_API_URL+"orders", {
     alert(data.error);
   } else {
     data.map((order) => {
-      if (order.status !== 'accepted' && order.status !== 'opened') {
+      if (order.status !== 'accepted' && order.status !== 'opened' && order.status !== 'paid' && order.status !== 'prepared') {
         order.status = JSON.parse(order.status)
       }
       orders.value.push(order)
@@ -65,6 +65,25 @@ const setDeliverer = (order) => {
 
 const confirmDelivery = (order) => {
   fetch(import.meta.env.VITE_API_URL+"orders/"+order+"/delivered", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/merge-patch+json",
+      "Accept": "application/json",
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({})
+  })
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.error) {
+      alert(data.error);
+    } else {
+    }
+  });
+}
+
+const confirmPreparation = (order) => {
+  fetch(import.meta.env.VITE_API_URL+"orders/"+order+"/prepared", {
     method: "PATCH",
     headers: {
       "Content-Type": "application/merge-patch+json",
@@ -142,7 +161,7 @@ const confirmDelivery = (order) => {
             </p>
           </div>
         </div>
-        <div v-if="order.status?.status === 'pending' && user.roles.includes('ROLE_DELIVERER')" class="flex-none mt-auto overflow-hidden p-3">
+        <div v-if="order.status === 'prepared' && user.roles.includes('ROLE_DELIVERER')" class="flex-none mt-auto overflow-hidden p-3">
           <div class="text-center">
             <button @click="setDeliverer(order.id)" class="bg-white p-3 rounded">Deliver this command</button>
           </div>
@@ -150,6 +169,11 @@ const confirmDelivery = (order) => {
         <div v-if="order.status === 'accepted' && user.roles.includes('ROLE_DELIVERER')" class="flex-none mt-auto overflow-hidden p-3">
           <div class="text-center">
             <button @click="confirmDelivery(order.id)" class="bg-white p-3 rounded">Confirm delivery</button>
+          </div>
+        </div>
+        <div v-if="order.status === 'paid' && user.roles.includes('ROLE_RESTAURANT')" class="flex-none mt-auto overflow-hidden p-3">
+          <div class="text-center">
+            <button @click="confirmPreparation(order.id)" class="bg-white p-3 rounded">Confirm preparation</button>
           </div>
         </div>
       </div>

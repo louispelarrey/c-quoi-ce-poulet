@@ -4,25 +4,6 @@ import {ref} from "vue";
 
 const token = localStorage.getItem('token')
 
-const reportsCount = ref(0)
-
-fetch(import.meta.env.VITE_API_URL+"reports", {
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    'Authorization': `Bearer ${token}`,
-  }
-})
-  .then((res) => res.json())
-  .then((data) => {
-    if (data.error) {
-      alert(data.error);
-    } else {
-      reportsCount.value = data.length
-    }
-  });
-
 </script>
 
 <template>
@@ -54,7 +35,6 @@ fetch(import.meta.env.VITE_API_URL+"reports", {
                 </svg>
               </span>
                 <span>Reports</span>
-                <span class="flex justify-center items-center ml-auto bg-indigo-500 w-6 h-6 text-xs rounded-full">{{}}</span>
               </router-link>
             </li>
             <li>

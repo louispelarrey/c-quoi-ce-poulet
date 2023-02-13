@@ -33,7 +33,14 @@ const getOrder = () => {
         if (data.error) {
           alert(data.error);
         } else {
-          order.value = data
+          console.log(order)
+          if (data){
+            data.filter((order) => {
+              if (order.status === "opened"){
+                order.value = order
+              }
+            })
+          }
         }
       });
 }

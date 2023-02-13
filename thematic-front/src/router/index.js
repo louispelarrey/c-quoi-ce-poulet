@@ -44,6 +44,8 @@ const router = createRouter({
                     return Users
                 } else if (state.token && state.userRestaurateur) {
                     return HomeRestaurateur
+                }else if (state.token && state.userDeliverer) {
+                    return Commands
                 }else {
                     return Home
                 }
