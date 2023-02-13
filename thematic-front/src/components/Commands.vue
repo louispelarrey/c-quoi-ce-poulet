@@ -1,6 +1,7 @@
 <script setup>
 import {ref} from 'vue'
 import {useRoute, useRouter} from "vue-router";
+import ReportForm from "./User/ReportForm.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -10,7 +11,13 @@ const actualUserId = JSON.parse(atob(token.split('.')[1])).user_id;
 
 const orders = ref([])
 const meals = ref([])
-const user = ref({})
+const user = ref('')
+const userReport = ref({})
+const cartOpen = ref(false);
+
+const closePopup = () => {
+  cartOpen.value = false;
+}
 
 user.value = JSON.parse(atob(token.split('.')[1]))
 
@@ -28,10 +35,9 @@ fetch(import.meta.env.VITE_API_URL+"orders", {
     alert(data.error);
   } else {
     data.map((order) => {
-      if (order.status !== 'accepted' && order.status !== 'opened' && order.status !== 'paid' && order.status !== 'prepared') {
-        order.status = JSON.parse(order.status)
+      if (order.status !== "delivered") {
+        orders.value.push(order)
       }
-      orders.value.push(order)
       order.meals.map((meal) => {
         if (meals.value.find((m) => m.id === meal.id)) {
           meals.value.find((m) => m.id === meal.id).quantity += 1
@@ -100,9 +106,23 @@ const confirmPreparation = (order) => {
     }
   });
 }
+
+const reportDeliverer = (userId) => {
+  console.log(userId)
+  cartOpen.value = true;
+  userReport.value = userId;
+}
 </script>
 
 <template>
+  <div @click="closePopup" id="overlay" class="overlay" v-if="cartOpen">
+  </div>
+  <div id="modal-edit-user" class="popup" v-if="cartOpen">
+    <button @click="closePopup">close</button>
+    <ReportForm
+      :userToReport="userReport"
+    />
+  </div>
   <section class="bg-white border-b py-8 w-full">
     <div class="container mx-auto flex flex-wrap pt-4 pb-12">
       <h1 class="w-full my-2 text-5xl text-center font-bold leading-tight text-center text-gray-800">
@@ -133,6 +153,9 @@ const confirmPreparation = (order) => {
             <p class="text-xl px-6">
               Delivered from : {{ order.deliverer?.firstname }} {{ order.deliverer?.lastname }}
             </p>
+            <button @click="reportDeliverer(order.deliverer.id)" class="bg-white p-3 rounded">
+              Report Deliverer
+            </button>
           </div>
         </div>
         <div>
@@ -180,3 +203,30 @@ const confirmPreparation = (order) => {
     </div>
   </section>
 </template>
+
+<style scoped>
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  overflow-y: hidden;
+  background-color: rgba(0, 0, 0, 0.47);
+  width: 100%;
+  height: 100%;
+}
+
+.popup{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  width: 80vw;
+  height: 80vh;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+}
+</style>
