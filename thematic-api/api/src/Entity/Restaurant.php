@@ -17,6 +17,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use App\Controller\ActivateRestaurantController;
 use App\Repository\RestaurantRepository;
 
@@ -51,6 +52,7 @@ use App\Repository\RestaurantRepository;
     denormalizationContext: ['groups' => ['restaurant:create', 'restaurant:update']],
 )]
 #[ApiFilter(SearchFilter::class, properties: ['owner.id' => 'exact'])]
+#[ApiFilter(BooleanFilter::class, properties: ['isActivated'])]
 class Restaurant
 {
     #[ORM\Id]
