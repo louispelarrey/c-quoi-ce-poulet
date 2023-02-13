@@ -6,6 +6,7 @@ services:
     environment:
       APP_ENV: prod
       APP_DEBUG: false
+      STRIPE_WEBHOOK_ENDPOINT_SECRET: whsec_KuHK0vmLz3sNVY33c3vCd9vIgBSJGMZL
 
   caddy:
     volumes:
