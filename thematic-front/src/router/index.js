@@ -129,17 +129,41 @@ const router = createRouter({
         {
             path: "/admin/users",
             name: "admin_users",
-            component: routesAdminUser,
+            component: () => {
+                return new Promise((resolve) => {
+                    if (state.token && state.userAdmin) {
+                        resolve(import("../components/Admin/Reports.vue"))
+                    } else {
+                        resolve(import("../components/Error/Error403.vue"))
+                    }
+                })
+            }
         },
         {
             path: "/admin/restaurants",
             name: "admin_restaurants",
-            component: routesAdminRestaurant
+            component: () => {
+                return new Promise((resolve) => {
+                    if (state.token && state.userAdmin) {
+                        resolve(import("../components/Admin/Restaurants.vue"))
+                    } else {
+                        resolve(import("../components/Error/Error403.vue"))
+                    }
+                })
+            }
         },
         {
             path: "/admin/restaurants_request",
             name: "admin_restaurants_request",
-            component: routesAdminRestaurantsRequest
+            component: () => {
+                return new Promise((resolve) => {
+                    if (state.token && state.userAdmin) {
+                        resolve(import("../components/Admin/RestaurantsRequest.vue"))
+                    } else {
+                        resolve(import("../components/Error/Error403.vue"))
+                    }
+                })
+            }
         },
         {
             path: "/restaurants/new",
@@ -149,7 +173,15 @@ const router = createRouter({
         {
             path: "/admin/reports",
             name: "admin_reports",
-            component: routesAdminReports
+            component: () => {
+                return new Promise((resolve) => {
+                    if (state.token && state.userAdmin) {
+                        resolve(import("../components/Admin/Reports.vue"))
+                    } else {
+                        resolve(import("../components/Error/Error403.vue"))
+                    }
+                })
+            }
         },
         {
             path: "/orders",
