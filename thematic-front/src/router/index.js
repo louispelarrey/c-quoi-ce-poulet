@@ -74,13 +74,27 @@ const routesAdminReports = () => {
     }
 }
 
+
+
 const router = createRouter({
     history: createWebHistory('/'),
     routes: [
         {
             path: '/',
             name: 'home',
-            component: homeRoutes
+            component: () => {
+                return new Promise((resolve) => {
+                    if (state.token && state.userAdmin) {
+                        resolve(import("../components/Admin/Users.vue"))
+                    } else if (state.token && state.userRestaurateur) {
+                        resolve(import("../components/Restaurant/HomeRestaurateur.vue"))
+                    } else if (state.token && state.userDeliverer) {
+                        resolve(import("../components/Commands.vue"))
+                    } else {
+                        resolve(import("../components/User/Home.vue"))
+                    }
+                })
+            }
         },
         {
             path: "/login",
@@ -159,7 +173,6 @@ router.beforeEach((to, from, next) => {
         });
     } else {
         next();
-
     }
 })
 
