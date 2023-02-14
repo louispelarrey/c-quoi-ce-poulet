@@ -33,23 +33,54 @@ if (state.token) {
     state.userDeliverer = Object.values(user.roles).includes('ROLE_DELIVERER');
 }
 
+const homeRoutes = () => {
+    if (state.token && state.userAdmin) {
+        return Users;
+    } else if (state.token && state.userRestaurateur) {
+        return HomeRestaurateur;
+    } else if (state.token && state.userDeliverer) {
+        return Commands;
+    } else {
+        return Home;
+    }
+}
+
+const routesAdminUser = () => {
+    if (state.userAdmin) {
+        return Users
+    } else {
+        return Error403
+    }
+}
+const routesAdminRestaurant = () => {
+    if (state.userAdmin) {
+        return Restaurants
+    } else {
+        return Error403
+    }
+}
+const routesAdminRestaurantsRequest = () => {
+    if (state.userAdmin) {
+        return RestaurantsRequest
+    } else {
+        return Error403
+    }
+}
+const routesAdminReports = () => {
+    if (state.userAdmin) {
+        return Reports
+    } else {
+        return Error403
+    }
+}
+
 const router = createRouter({
     history: createWebHistory('/'),
     routes: [
         {
             path: '/',
             name: 'home',
-            component: function () {
-                if (state.token && state.userAdmin) {
-                    return Users
-                } else if (state.token && state.userRestaurateur) {
-                    return HomeRestaurateur
-                }else if (state.token && state.userDeliverer) {
-                    return Commands
-                }else {
-                    return Home
-                }
-            }
+            component: homeRoutes
         },
         {
             path: "/login",
@@ -84,35 +115,17 @@ const router = createRouter({
         {
             path: "/admin/users",
             name: "admin_users",
-            component: function () {
-                if (state.userAdmin) {
-                    return Users
-                } else {
-                    return Error403
-                }
-            }
+            component: routesAdminUser,
         },
         {
             path: "/admin/restaurants",
             name: "admin_restaurants",
-            component: function () {
-                if (state.userAdmin) {
-                    return Restaurants
-                } else {
-                    return Error403
-                }
-            }
+            component: routesAdminRestaurant
         },
         {
             path: "/admin/restaurants_request",
             name: "admin_restaurants_request",
-            component: function () {
-                if (state.userAdmin) {
-                    return RestaurantsRequest
-                } else {
-                    return Error403
-                }
-            }
+            component: routesAdminRestaurantsRequest
         },
         {
             path: "/restaurants/new",
@@ -122,13 +135,7 @@ const router = createRouter({
         {
             path: "/admin/reports",
             name: "admin_reports",
-            component: function () {
-                if (state.userAdmin) {
-                    return Reports
-                } else {
-                    return Error403
-                }
-            }
+            component: routesAdminReports
         },
         {
             path: "/orders",
@@ -143,17 +150,17 @@ const router = createRouter({
     ],
 });
 
-// router.beforeEach((to, from, next) => {
-//     const token = localStorage.getItem("token");
-//     if (!token && to.path !== "/login" && to.path !== "/register" && to.name !== "forgot_password" && to.name !== "reset_password_token") {
-//         next({
-//             path: "/login",
-//             query: { redirect: to.fullPath }
-//         });
-//     } else {
-//         next();
+router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem("token");
+    if (!token && to.path !== "/login" && to.path !== "/register" && to.name !== "forgot_password" && to.name !== "reset_password_token") {
+        next({
+            path: "/login",
+            query: { redirect: to.fullPath }
+        });
+    } else {
+        next();
 
-//     }
-// })
+    }
+})
 
 export default router;
